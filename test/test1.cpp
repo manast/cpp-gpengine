@@ -81,11 +81,11 @@ int main(int argc, char *argv[])
     printTokens (tokens);
 
     LALR *lalr = cgtFile.getParser();
-
+       
     lalr->parse(tokens);
    
     rdc = lalr->buildParseTree(true, true);
-   
+    
     myErrors = lalr->getErrors(); 
     if (myErrors->errors.size() == 0) {
       lalr->printReductionTree(rdc, 0);
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
       }
       myErrors->print();
-    }
+    } 
   } else { 
       wprintf (L"Compilation Failed\n");
   }

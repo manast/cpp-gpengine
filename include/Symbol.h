@@ -20,15 +20,18 @@
 #define _GP_SYMBOL_H
 
 #include <string>
+using namespace std;
+
 #include "SymbolTable.h"
 #include "misc.h"
 
-using namespace std;
+#if defined (WIN32) && defined (_USRDLL)
+	// Windows crap!. Maybe it is possible to export this without generating 
+	// any warnings... 
+	struct __declspec(dllexport) Symbol;
+	//class __declspec(dllexport) wstring;    
+#endif
 
- #ifdef WIN32
-    struct __declspec(dllexport) Symbol;
- //   class __declspec(dllexport) wstring;
- #endif
 
 struct Symbol {
 public:

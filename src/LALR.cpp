@@ -15,7 +15,9 @@
  *                                                                         *
  ***************************************************************************/
 
+ #include <assert.h>
  #include "LALR.h"
+ 
 
  LALR::LALR (const LALRStateTable *stateTable, const SymbolTable *symbolTable,
  const RuleTable *ruleTable, integer startState) {
@@ -72,6 +74,8 @@
 
    delete errorTab;
    errorTab = new ErrorTable();
+
+   trim = false;
  }
 
 
@@ -92,7 +96,6 @@
    NonTerminal  *newNonTerminal;
    Terminal     *newTerminal;
 
-   bool trim;
    integer index;
 
    integer i;
@@ -114,7 +117,8 @@
        // Generate ERROR & recover pushing expected symbol in the stack
        // RECOVERING IS IN THE TODO LIST!
        // FOR THAT WE NEED A MECHANISM TO "ESTIMATE" THE NEXT TOKEN
-
+       // Or use Burke-Fisher recovering algorithm
+       
        // Create a symbol traceback vector.
        vector <Symbol*> traceback;
        vector <Symbol*> tmptokvector = symbolStack.get_vector();
@@ -183,19 +187,8 @@
          if (DEBUG) {
            wprintf (L"Reducing...\n");
          }
-
-         // If the rule has only a nonterminal then we dont create a reduction
-         // node for this rule in the tree since its not usefull.
-         // User can decide to simplfy this enabling the trimming
-         if ((ruleTable->rules[target].symbols.size() == 1) &&
-            (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
-            NON_TERMINAL) && trimReduction) {
-                trim = true;  
-         } else {
-                trim = false;
-         }
-
-         // Create a new Non Terminal (to represent this reduction)
+         
+		 // Create a new Non Terminal (to represent this reduction)
          newNonTerminal = new NonTerminal();
          index = ruleTable->rules[target].nonTerminal;
          
@@ -203,6 +196,17 @@
          newNonTerminal->symbol = symbolTable->symbols [index].name;
          newNonTerminal->line = currentLine;
          newNonTerminal->col = currentCol;
+         
+         // If the rule has only a nonterminal then we dont create a reduction
+         // node for this rule in the tree since its not usefull.
+         // User can decide to simplify this by enabling the trimming
+         if ((ruleTable->rules[target].symbols.size() == 1) &&
+            (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
+             NON_TERMINAL) && trimReduction) {
+                trim = true; 
+         } else {
+                trim = false;
+         }
 
          if (DEBUG) {
            wprintf (symbolTable->symbols[ruleTable->rules[target].nonTerminal].name);
@@ -211,17 +215,27 @@
 
          // pop from the stack the tokens for the reduced rule
          // and store them in the reduction
-         for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
-           if (!trim) {
+		 if (trim) {
+			// Since it is a trimmed reduction we take directly the children of the terminal at the 
+		    // right side of the reduction
+			assert (symbolStack.top()->type == NON_TERMINAL);
+		    NonTerminal *trimmedNT = (NonTerminal*) symbolStack.top ();
+			for (i=0; i < trimmedNT->children.size(); i++) {
+				newNonTerminal->children.push_back (trimmedNT->children[i]);
+			}
+			symbolStack.pop();
+		 } else {
+			for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
                 newNonTerminal->children.push_front (symbolStack.top());
-           }
-           symbolStack.pop();
+				symbolStack.pop();
+			}
          }
+
          if (DEBUG) {
            for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
                int symIndex;
                if (!trim) {
-                   symIndex = newNonTerminal->children[i]->symbolIndex;
+                    symIndex = newNonTerminal->children[i]->symbolIndex;
                }
              wprintf (symbolTable->symbols[symIndex].name);
              wprintf (L" ");
@@ -249,13 +263,17 @@
            return NULL;
          }
 
+		 /*
          if (trim) {
             reductionResult = REDUCTION_SIMPLIFIED;
-            return NULL;
+         //   return NULL;
+            return newNonTerminal;
          } else {
             reductionResult = REDUCTION_OK;
             return newNonTerminal;
          }
+		 */
+		 return newNonTerminal;
          break;
 
          // This Action can never happen...
@@ -340,7 +358,6 @@
  ErrorTable *LALR::getErrors() {
      return errorTab;
  }
-
 
  void LALR::printReductionTree (Symbol *reduction, int deep) {
  integer i;

@@ -22,26 +22,44 @@
 
  ASTNode::ASTNode () {
 	 image = L"";
-     name = L"";
+     symbol = L"";
  } 
-
-
- void ASTNode::init (const NonTerminal &s) {
- 	line = s.line;
-	col = s.col;
-    
-    image = s.symbol;
-    name = s.symbol;
-    
-	parent = NULL;
- }
-
 
  ASTNode::~ASTNode () {
 	for (unsigned int i = 0; i < children.size (); i++) {
 		delete children[i];
 	}
  }
+
+ 
+ void ASTNode::init (const NonTerminal &s) {
+ 	line = s.line;
+	col = s.col;
+    
+    image = s.symbol;
+    symbol = s.symbol;
+    
+	parent = NULL;
+ }
+
+ void ASTNode::setImage (wstring image) {
+    this->image = image;
+ }
+
+ void ASTNode::setSymbol (wstring symbol) {
+    this->symbol = symbol;
+ }
+
+ wstring ASTNode::getImage () {
+    return image;
+ }
+
+ wstring ASTNode::getSymbol () {
+    return symbol;
+ }
+
+
+
 
  vector <ASTNode*> *ASTNode::getChildren () {
 	return &children;

@@ -24,7 +24,7 @@
 #include "NonTerminal.h"
 #include "ASTNode.h"
 
-using namespace std;
+;using namespace std;
 
 class ASTCreator {
 	public:

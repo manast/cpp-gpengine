@@ -33,7 +33,7 @@
 
  class ASTNode {
  protected:
-	wstring  name;
+	wstring  symbol;
     wstring  image;
 
 	unsigned short line, col;
@@ -46,6 +46,10 @@
 	virtual ~ASTNode ();
 
 	void    init (const NonTerminal &s);
+    void    setImage  (wstring image);
+    void    setSymbol (wstring symbol);
+    wstring getImage  ();
+    wstring getSymbol ();
 	void	setParent (ASTNode *parent);
 	ASTNode *getParent ();
 	vector <ASTNode*> *getChildren ();
@@ -55,3 +59,4 @@
 
 
 #endif
+

@@ -30,7 +30,7 @@
 
  using namespace std;
 
- #ifdef WIN32
+ #if defined (WIN32) && defined (_USRDLL)
     class __declspec(dllexport) DFA;
  #endif
 

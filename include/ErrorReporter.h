@@ -29,7 +29,7 @@
 
   */
 
-#ifdef WIN32
+#if defined (WIN32) && defined (_USRDLL)
     class __declspec(dllexport) ErrorReporter;
 #endif
 

@@ -37,14 +37,15 @@
  #define REDUCTION_SIMPLYFIED 3
 */
 
-enum Actions {ACTION_SHIFT = 1, ACTION_REDUCE = 2, ACTION_GOTO = 3, ACTION_ACCEPT = 4};
-enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTION_SIMPLIFIED};
-
- #define DEBUG false
-
- #ifdef WIN32
+ #if defined (WIN32) && defined (_USRDLL)
     class __declspec(dllexport) LALR;
  #endif
+
+
+ enum Actions {ACTION_SHIFT = 1, ACTION_REDUCE = 2, ACTION_GOTO = 3, ACTION_ACCEPT = 4};
+ enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTION_SIMPLIFIED};
+
+ #define DEBUG false
 
  class LALR {
  public:
@@ -105,6 +106,8 @@ enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTI
    int reductionResult;
 
    ErrorTable *errorTab;
+
+   bool trim;
 
  };
 

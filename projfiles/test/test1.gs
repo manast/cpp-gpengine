@@ -9,7 +9,6 @@ while do
 
 .defs
 
-
 # This is a comment
 
 speed 5
@@ -32,8 +31,5 @@ BORN:
 
 # This is a comment          
   
-
-
-
 
 end

@@ -21,8 +21,14 @@
  #include "misc.h"
  #include "Terminal.h"
 
-
  using namespace std;
+
+ 
+ #if defined (WIN32) && defined (_USRDLL)
+    class __declspec(dllexport) ErrorTable;
+ //   class __declspec(dllexport) vector <GPError*>; 
+ #endif 
+
 
  typedef enum error_type {
      ERROR_PARSE, 
@@ -48,11 +54,6 @@
      vector <Symbol*>  traceback;
      Terminal lastTerminal;
  };
-
- #ifdef WIN32
-    class __declspec(dllexport) ErrorTable;
-    class __declspec(dllexport) vector <GPError*>; 
- #endif 
 
  class ErrorTable {
    public:
