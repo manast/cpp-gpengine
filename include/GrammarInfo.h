@@ -18,7 +18,7 @@
 #ifndef GRAMMAR_INFO_H
 #define GRAMMAR_INFO_H
 
-#include "wchar.h"
+#include <wchar.h>
 
 
 
