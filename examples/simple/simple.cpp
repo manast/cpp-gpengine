@@ -19,7 +19,7 @@
 #include <stdlib.h>
 
 #include "CGTFile.h"
-#include "SimpleErrorRep.h"
+#include "simpleErrorRep.h"
 
 
 char *load_source (char *filename);
