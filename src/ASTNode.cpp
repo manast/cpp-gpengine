@@ -32,11 +32,15 @@
  }
 
  
- void ASTNode::init (const NonTerminal &s) {
+ void ASTNode::init (const Symbol &s) {
  	line = s.line;
 	col = s.col;
     
-    image = s.symbol;
+	if (s.type == NON_TERMINAL) {
+		image = s.symbol;
+	} else {
+		image = ((Terminal&) s).image;
+	}
     symbol = s.symbol;
     
 	parent = NULL;
@@ -58,7 +62,9 @@
     return symbol;
  }
 
-
+ void ASTNode::addChild (ASTNode *child) {
+	children.push_back (child);
+ }
 
 
  vector <ASTNode*> *ASTNode::getChildren () {

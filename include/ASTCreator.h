@@ -1,5 +1,5 @@
 /***************************************************************************
-                           ASTCreator.h 
+                          ASTCreator.h 
 						  This class works as a framework for the 
 						  creation of an abstract syntax tree specific 
 						  for a grammar
@@ -30,6 +30,10 @@ using namespace std;
     class __declspec(dllexport) ASTCreator;
 #endif
 
+#ifndef CREATE_NODE
+	#define CREATE_NODE(X,x) X *x = new X(); x->init(*reduction); x->setParent(parent);  
+#endif
+
 class ASTCreator {
 	public:
 		/*! 
@@ -43,7 +47,7 @@ class ASTCreator {
 		  must be customized.
 		  See the implementation of this method for guidelines.
 		*/
-		virtual ASTNode *getASTNode (NonTerminal *reduction, ASTNode *parent);
+		virtual ASTNode *getASTNode (const Symbol *reduction, ASTNode *parent);
 
 		void getASTNodeList (vector <ASTNode*> *children, wstring iterNode,
 			NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent);

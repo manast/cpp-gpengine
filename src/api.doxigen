@@ -58,7 +58,8 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = d:/Projects/cpp-gpengine/src/
+INPUT                  = d:/Projects/cpp-gpengine/src/ \
+                         D:/Projects/cpp-gpengine/include/
 FILE_PATTERNS          = 
 RECURSIVE              = NO
 EXCLUDE                = 

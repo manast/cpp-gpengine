@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="gpengine"
 	SccProjectName=""
 	SccLocalPath="">
@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Release\gpengine.lib"
+				OutputFile="..\..\lib\gpengine.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -52,6 +52,12 @@
 				Culture="1053"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
@@ -79,7 +85,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Debug\gpengine.lib"
+				OutputFile="..\..\lib\gpengine_d.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -95,8 +101,16 @@
 				Culture="1053"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
@@ -120,7 +134,10 @@
 				RelativePath="..\..\src\DFAStateTable.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\Error.cpp">
+				RelativePath="..\..\src\ErrorReporter.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\ErrorTable.cpp">
 			</File>
 			<File
 				RelativePath="..\..\src\GrammarInfo.cpp">
@@ -132,65 +149,86 @@
 				RelativePath="..\..\src\LALRStateTable.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\Reduction.cpp">
+				RelativePath="..\..\src\NonTerminal.cpp">
 			</File>
 			<File
 				RelativePath="..\..\src\RuleTable.cpp">
 			</File>
 			<File
+				RelativePath="..\..\src\Symbol.cpp">
+			</File>
+			<File
 				RelativePath="..\..\src\SymbolTable.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\Token.cpp">
+				RelativePath="..\..\src\Terminal.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\misc.h">
+				RelativePath="..\..\src\Token.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl">
 			<File
-				RelativePath="..\..\src\ASTCreator.h">
+				RelativePath="..\..\include\ASTCreator.h">
 			</File>
 			<File
-				RelativePath="..\..\src\ASTNode.h">
+				RelativePath="..\..\include\ASTNode.h">
 			</File>
 			<File
-				RelativePath="..\..\src\CGTFile.h">
+				RelativePath="..\..\include\CGTFile.h">
 			</File>
 			<File
-				RelativePath="..\..\src\CharacterSetTable.h">
+				RelativePath="..\..\include\CharacterSetTable.h">
 			</File>
 			<File
-				RelativePath="..\..\src\DFA.h">
+				RelativePath="..\..\include\DFA.h">
 			</File>
 			<File
-				RelativePath="..\..\src\DFAStateTable.h">
+				RelativePath="..\..\include\DFAStateTable.h">
 			</File>
 			<File
-				RelativePath="..\..\src\Error.h">
+				RelativePath="..\..\include\ErrorReporter.h">
 			</File>
 			<File
-				RelativePath="..\..\src\GrammarInfo.h">
+				RelativePath="..\..\include\ErrorTable.h">
 			</File>
 			<File
-				RelativePath="..\..\src\LALR.h">
+				RelativePath="..\..\include\GPEngine.h">
 			</File>
 			<File
-				RelativePath="..\..\src\LALRStateTable.h">
+				RelativePath="..\..\include\GrammarInfo.h">
 			</File>
 			<File
-				RelativePath="..\..\src\Reduction.h">
+				RelativePath="..\..\include\LALR.h">
 			</File>
 			<File
-				RelativePath="..\..\src\RuleTable.h">
+				RelativePath="..\..\include\LALRStateTable.h">
 			</File>
 			<File
-				RelativePath="..\..\src\SymbolTable.h">
+				RelativePath="..\..\include\misc.h">
 			</File>
 			<File
-				RelativePath="..\..\src\Token.h">
+				RelativePath="..\..\include\NonTerminal.h">
+			</File>
+			<File
+				RelativePath="..\..\include\RuleTable.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Symbol.h">
+			</File>
+			<File
+				RelativePath="..\..\include\SymbolStack.h">
+			</File>
+			<File
+				RelativePath="..\..\include\SymbolTable.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Terminal.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Token.h">
 			</File>
 		</Filter>
 	</Files>

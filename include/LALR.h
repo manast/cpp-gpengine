@@ -55,11 +55,14 @@ using namespace std;
    const RuleTable *ruleTable, integer startState);
    ~LALR ();
 
-   /*!
+    /*!
      setup the parsing engine.
    */
-   void parse (const vector <Token*> &tokens);
+   void init (const vector <Token*> &tokens);
 
+   /*
+     parse just until ONE reduction is performed
+   */
    Symbol *nextReduction (bool trimReduction, bool reportOnlyOneError);
 
    /*!
@@ -73,7 +76,7 @@ using namespace std;
      Every Reduction node has a list of tokens, and every token a pointer to
      its correspondent reduction node.
    */
-   Symbol *buildParseTree (bool trimReductions, bool reportOnlyOneError);
+   Symbol *parse (const vector <Token*> &tokens, bool trimReductions, bool reportOnlyOneError);
 
  //  void symplifyParseTree (Reduction *reduction);
 

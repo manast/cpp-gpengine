@@ -48,7 +48,7 @@
  /sa buildParseTree();
 
  */
- void LALR::parse (const vector <Token*> &tokens) {
+ void LALR::init (const vector <Token*> &tokens) {
 
    // Copy the tokens vector (maybe just having a reference to it is enough...)
    this->tokens = tokens;
@@ -331,7 +331,10 @@
 
   /sa getError(), getNextReduction()
  */
- Symbol *LALR::buildParseTree (bool trimReductions, bool reportOnlyOneError) {
+ Symbol *LALR::parse (const vector <Token*> &tokens, bool trimReductions, 
+                      bool reportOnlyOneError) {
+   init (tokens);
+     
    Symbol *reduction;
    prevReduction = NULL;
    while (true) {

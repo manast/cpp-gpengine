@@ -50,13 +50,15 @@
     ASTNode ();
 	virtual ~ASTNode ();
 
-	void    init (const NonTerminal &s);
-    void    setImage  (wstring image);
+	void    init (const Symbol &s);
+	void    setImage  (wstring image);
     void    setSymbol (wstring symbol);
     wstring getImage  ();
     wstring getSymbol ();
 	void	setParent (ASTNode *parent);
 	ASTNode *getParent ();
+
+	void	addChild  (ASTNode *child);
 	vector <ASTNode*> *getChildren ();
 
 	void print (int tabs);
