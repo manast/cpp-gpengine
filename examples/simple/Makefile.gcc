@@ -4,7 +4,7 @@
 
 CPP  = g++ 
 OBJ  = 	simple.o   
-LIBS = -L"/usr/lib" -L"../../lib" ../../lib/cpp-gpengine-1.0.4.a  
+LIBS = -L"/usr/lib" -L"../../lib" ../../lib/cpp-gpengine-1.2.0.a  
 CXXINCS = -I"../../include/" -I"/usr/include" 
 BIN  = simple 
 CXXFLAGS = $(CXXINCS)  

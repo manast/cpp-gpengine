@@ -6,7 +6,7 @@ CPP  = aCC
 OBJ  = 	src/ASTCreator.o  src/ASTNode.o src/CGTFile.o src/CharacterSetTable.o src/DFA.o src/DFAStateTable.o src/ErrorReporter.o src/ErrorTable.o src/GrammarInfo.o src/LALR.o src/LALRStateTable.o src/NonTerminal.o src/RuleTable.o src/Symbol.o src/SymbolTable.o src/Terminal.o src/Token.o  
 #LIBS =   
 CXXINCS = -I"include/"
-BIN  = lib/cpp-gpengine-1.0.4.sl
+BIN  = lib/cpp-gpengine-1.2.0.sl
 CXXFLAGS = -AA +z -g0 -D_XOPEN_SOURCE=500 -D_BIGENDIAN=500 $(CXXINCS) 
 all: $(BIN) 
 

@@ -4,7 +4,7 @@
 
 CPP  =  aCC 
 OBJ  = 	XML.o 
-GPENGINELIB = ../../lib/cpp-gpengine-1.0.4.sl   
+GPENGINELIB = ../../lib/cpp-gpengine-1.2.0.sl   
 LIBS = -L"../../lib" 
 CXXINCS = -I"../../include/" -I"/usr/include" 
 BIN  = XML
