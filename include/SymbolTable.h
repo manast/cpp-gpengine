@@ -18,7 +18,7 @@
  #define SYMBOLTABLE_H
 
  #include "misc.h"
- #include "wchar.h"
+ #include <wchar.h>
 
 
  enum SymbolType {TERMINAL = 1, NON_TERMINAL = 0};
