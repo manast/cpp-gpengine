@@ -1,0 +1,9 @@
+2003-11-10  Pablo Garcia  <pgarcia@web.de>
+
+	* Added Endian Conversion support
+
+2003-11-02  Pablo Garcia  <pgarcia@web.de>
+
+	* Make gcc-linux makefiles for compiling the library and the test example program.
+
+
