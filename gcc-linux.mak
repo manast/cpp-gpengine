@@ -1,13 +1,13 @@
 # Project: cpp-gpengine
 # Makefile created by Pablo Garcia Ganzalez 
 # Date: 19.10.2003
-# CVS-ID: $Id: gcc-linux.mak,v 1.2 2003/11/02 00:04:41 xtremox Exp $
+# CVS-ID: $Id: gcc-linux.mak,v 1.3 2003/11/07 00:18:23 xtremox Exp $
 
-CPP  = gcc 
+CPP  = g++ 
 OBJ  = 	src/ASTCreator.o  src/ASTNode.o src/CGTFile.o src/CharacterSetTable.o src/DFA.o src/DFAStateTable.o src/ErrorReporter.o src/ErrorTable.o src/GrammarInfo.o src/LALR.o src/LALRStateTable.o src/NonTerminal.o src/RuleTable.o src/Symbol.o src/SymbolTable.o src/Terminal.o src/Token.o 
 CXXINCS = -I"include/"
 BIN  = lib/cpp-gpengine-1.0.4.a
-CXXFLAGS = $(CXXINCS) 
+CXXFLAGS = -Wall $(CXXINCS) 
 
 all: lib/cpp-gpengine-1.0.4.a 
 
