@@ -24,7 +24,11 @@
 #include "NonTerminal.h"
 #include "ASTNode.h"
 
-;using namespace std;
+using namespace std;
+
+#if defined (WIN32) && defined (_USRDLL)
+    class __declspec(dllexport) ASTCreator;
+#endif
 
 class ASTCreator {
 	public:

@@ -196,7 +196,7 @@
 					}	
 				}
                 if (rdcChildren[i]->type == NON_TERMINAL) {
-				    getASTNodeList (children, iterNode, (NonTerminal*) rdcChildren[i],
+		   		    getASTNodeList (children, iterNode, (NonTerminal*) rdcChildren[i],
                                     nbrInsert, nbrElements, parent);
                 }
 			}
@@ -224,7 +224,7 @@
  */
 
  void ASTCreator::getASTNodeList (vector <ASTNode*> *children, 
-	 NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent) {
+    NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent) {
 	integer i;
 	ASTNode *ast;
 	deque <Symbol*> rdcChildren = reduction->children;
@@ -263,8 +263,8 @@
 				}	
 			}
             if (rdcChildren[i]->type == NON_TERMINAL) {
-			    getASTNodeList (children, (NonTerminal*) rdcChildren[i],
-			    nbrInsert, nbrElements, parent);
+		 	    getASTNodeList (children, (NonTerminal*) rdcChildren[i],
+		 	    nbrInsert, nbrElements, parent);
             }
 		}
 	}

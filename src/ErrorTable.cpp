@@ -68,7 +68,7 @@
    }
 
   void ErrorTable::print () {
-    int i,k;
+    unsigned int i,k;
     for (i = 0; i < errors.size(); i++) {
        wprintf (L"Error line: %d, col: %d ", errors[i]->line, errors[i]->col);
       // wprintf (errors[i]->msg);

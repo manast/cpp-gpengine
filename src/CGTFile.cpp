@@ -90,7 +90,7 @@
 
    while (!theStream->eof()) {
      // Read record type & number of entries
-     theStream->read ((char*)&recordType, sizeof (unsigned char));
+     theStream->read ((char*)&recordType, 1);
      if (theStream->fail()) {
         if (theStream->eof()) {
 			break;
@@ -99,7 +99,7 @@
         }
      }
 
-     theStream->read ((char*) &nbrEntries, sizeof(integer));
+     theStream->read ((char*) &nbrEntries, 2);
   //  wprintf (L"Record Type: %d\n", recordType);
   //  wprintf (L"Entries: %d\n", nbrEntries);
 
@@ -320,10 +320,10 @@
 		}
 		break;
 		case 'b':
-		theStream->read ((char*) &entry->vByte, sizeof(byte));
+		theStream->read ((char*) &entry->vByte, 1);
         break;
 		case 'I':
-		theStream->read ((char*) &entry->vInteger, sizeof(integer));
+		theStream->read ((char*) &entry->vInteger, 2);
         break;
 		case 'S':
 		entry->vString = readUnicodeString();

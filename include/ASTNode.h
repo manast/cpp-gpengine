@@ -29,8 +29,13 @@
 
  using namespace std;
 
- class ASTNode;
+ #if defined (WIN32) && defined (_USRDLL)
+    class __declspec(dllexport) ASTNode;
+ #else 
+	class ASTNode;
+ #endif
 
+ 
  class ASTNode {
  protected:
 	wstring  symbol;

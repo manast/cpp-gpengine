@@ -71,7 +71,7 @@ wstring ErrorReporter::composeParseErrorMsgU (const GPError &err) {
 }
 
 bool ErrorReporter::in (wstring a, vector<wstring> expected, int *pos) {
-    for (int i = 0; i < expected.size(); i ++) {
+    for (unsigned int i = 0; i < expected.size(); i ++) {
         if (a == expected[i]) {
             *pos = i;
             return true;
@@ -82,7 +82,7 @@ bool ErrorReporter::in (wstring a, vector<wstring> expected, int *pos) {
 }
 
 Symbol *ErrorReporter::in (wstring a, vector <Symbol*> traceback, int *pos) {
-    for (int i = 0; i < traceback.size(); i ++) {
+    for (unsigned int i = 0; i < traceback.size(); i ++) {
         wstring b = traceback[i]->symbol;
         if (a == b) {
             *pos = i;

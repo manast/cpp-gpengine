@@ -20,7 +20,7 @@
 
 #include "wchar.h"
 
-using namespace std;
+
 
 class GrammarInfo {
 
