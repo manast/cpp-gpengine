@@ -102,3 +102,4 @@ string ErrorReporter::atoi (int i) {
 string ErrorReporter::composeLineCol (const GPError &err) {
     return atoi (err.line) + ":" + atoi (err.col) + ":";
 }
+
