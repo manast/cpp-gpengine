@@ -1,7 +1,13 @@
 History
 -------
 
-version 1.0.6 2003/11/29
+version 1.2   2004/01/15
+------------------------
+- Burke-Fisher global error repair implemented
+- Remove remaining wchar_t*
+- Updated documentation 
+
+version 1.0.6 2003/11/29 (was never public released)
 ------------------------
 + Added 3 examples to show how to use the engine.
 + Exchange a lot of wchar_t* strings to the more reliable wstring

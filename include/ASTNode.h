@@ -52,9 +52,11 @@
 	void    init      (const Symbol *s, ASTNode *parent);
 	void    setImage  (wstring image);
     void    setSymbol (wstring symbol);
+
     std::wstring getImage  ();
     std::wstring getSymbol ();
-	void	setParent (ASTNode *parent);
+	
+    void	setParent (ASTNode *parent);
 	ASTNode *getParent ();
 
 	void	addChild  (ASTNode *child);

@@ -162,10 +162,7 @@
              if (!commentBlock) {
               // tmpImage[imgIndex-1] = 0;
                tokenSymbol = symbolTable->symbols[index2].name;
-               tokenImage = tmpImage;
-
-             //  wcscpy (tokenSymbol, symbolTable->symbols[index2].name);
-             //  wcscpy (tokenImage, tmpImage.c_str());
+               tokenImage = tmpImage.substr (0, tmpImage.length()-1);
 
                t = new Token();
                t->symbol = tokenSymbol;

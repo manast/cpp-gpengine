@@ -7,7 +7,7 @@
     copyright            : (C) 2002-2003 by Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
-
+ 
  /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -16,7 +16,7 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- 
+  
 #include <iostream>
 #include <stdlib.h>
 

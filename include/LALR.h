@@ -19,6 +19,7 @@
 
  #include <vector>
  #include <string>
+ #include <queue>
 
  #include "SymbolStack.h"
  #include "Token.h"
@@ -34,9 +35,9 @@
     class __declspec(dllexport) LALR;
  #endif
 
-
  enum Actions {ACTION_SHIFT = 1, ACTION_REDUCE = 2, ACTION_GOTO = 3, ACTION_ACCEPT = 4};
- enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTION_SIMPLIFIED};
+ enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, 
+                  REDUCTION_TOKEN_SHIFT, REDUCTION_COMPLETED, REDUCTION_SIMPLIFIED};
 
  #define DEBUG false
 
@@ -78,8 +79,12 @@ using namespace std;
 
  private:
    Action *getNextAction (integer symbolIndex, integer index);
-
    vector<wstring> getPossibleTokens (integer index);
+
+   Symbol *parseToken (Action *actObj, SymbolStack &theStack, int tokenIndex, 
+                       integer &currentState);
+   Terminal *createTerminal (Token *tok);
+   NonTerminal *createNonTerminal (int index, int target);
 
    // Member variables
    const LALRStateTable *stateTable;
@@ -88,6 +93,8 @@ using namespace std;
 
    integer startState;
    integer currentState;
+
+   bool m_trimReductions;
 
    integer currentLine, currentCol;
 
@@ -104,6 +111,13 @@ using namespace std;
    ErrorTable *errorTab;
 
    bool trim;
+
+   // Global Error Recovery Members
+   void updateBurkeFisher (Symbol *symbol);
+   queue <Symbol*> errorQueue;
+   SymbolStack errorStack;
+   int nbrBackUpTokens;
+
 
  };
 

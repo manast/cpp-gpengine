@@ -27,6 +27,7 @@
    this->startState = startState;
 
    errorTab = NULL;
+   nbrBackUpTokens = 10;
  }
 
  LALR::~LALR () {
@@ -102,17 +103,20 @@
 
    int action, target;
 
+   m_trimReductions = trimReductions;
+
    for (;tokenIndex < tokens.size();tokenIndex++) {
-     // Get next action
-     actObj = getNextAction (tokens[tokenIndex]->symbolIndex, currentState);
-   
      // Save this tokens information for the error system.
      tok = tokens[tokenIndex];
      lastTerminal.symbol = tok->symbol;
      lastTerminal.image = tok->image;
      lastTerminal.line =  tok->line;
      lastTerminal.col = tok->col;
+
+     // Get next action
+     actObj = getNextAction (tokens[tokenIndex]->symbolIndex, currentState);
    
+     // Test for errors
      if (actObj == NULL) {
        // Generate ERROR & recover pushing expected symbol in the stack
        // RECOVERING IS IN THE TODO LIST!
@@ -137,17 +141,29 @@
           return NULL;
        }
           
-     }
-     else {
+     } else {
+       // Update Global Error recovery system
+       if (action == ACTION_SHIFT) {
+            updateBurkeFisher (createTerminal(tokens[tokenIndex]));
+       }
+
+       Symbol *rdc = parseToken (actObj, symbolStack, tokenIndex, currentState);
+       if (rdc == NULL) {
+           if (reductionResult != REDUCTION_TOKEN_SHIFT) {
+            return NULL;
+           } 
+       } else {
+            return rdc;
+       }
+
+     /*
        action = actObj->action;
        target = actObj->target;
 
        if (DEBUG) wprintf (L"Action: %d\n", action);
 
        switch (action) {
-         /*
-           Pushes current token into the stack
-         */
+         //  Pushes current token into the stack
          case ACTION_SHIFT:
          if (DEBUG) {
            wprintf (L"Shifting: ");
@@ -177,12 +193,15 @@
          currentCol = tok->col;
 
 		 symbolStack.push (newTerminal);
+
+         // Update Burke-Fisher Queue and Stack
+         updateBurkeFisher (newTerminal);
          break;
 
-         /*
-            Creates a new reduction. Pops all the terminals and non terminals
-            for this rule and pushes the most left non terminal.
-         */
+         
+         //   Creates a new reduction. Pops all the terminals and non terminals
+         //   for this rule and pushes the most left non terminal.
+        
          case ACTION_REDUCE:
          if (DEBUG) {
            wprintf (L"Reducing...\n");
@@ -260,6 +279,8 @@
 
            // Push the reduced nonterminal in the stack
            symbolStack.push (newNonTerminal);
+           updateBurkeFisher (newNonTerminal);
+
          } else {
            wprintf (L"Internal Error!!\n");
            reductionResult = REDUCTION_ERROR;
@@ -269,7 +290,7 @@
 		 return newNonTerminal;
          break;
 
-         // This Action can never happen...
+         // This Action should never happen...
          case ACTION_GOTO:
          wprintf (L"Goto: %d", target);
          currentState = target;
@@ -281,8 +302,8 @@
          return NULL;
          break;
        }
+       */
      }
-
    }
    reductionResult = REDUCTION_ERROR;
    return NULL;
@@ -350,7 +371,6 @@
      return reductionResult;
  }
 
-
  ErrorTable *LALR::getErrors() {
      return errorTab;
  }
@@ -383,6 +403,146 @@
  }
 }
 
+ void LALR::updateBurkeFisher (Symbol *symbol) {
+    if (errorQueue.size() == nbrBackUpTokens) {
+            errorStack.push (errorQueue.front());
+            errorQueue.pop();
+     }
+     errorQueue.push (symbol);
+ }
 
 
-
+ Symbol *LALR::parseToken (Action *actObj, SymbolStack &theStack, int tokenIndex, 
+     integer &currentState) {
+     Token *tok;
+     NonTerminal  *newNonTerminal;
+     Terminal     *newTerminal;
+     
+     integer index, i;
+     
+     int action, target;
+     
+     action = actObj->action;
+     target = actObj->target;
+     
+     switch (action) {
+     /*
+     Pushes current token into the stack
+         */
+     case ACTION_SHIFT:
+         // Push current token on the stack
+         currentState = target;
+         
+         currentLine = tokens[tokenIndex]->line;
+         currentCol = tokens[tokenIndex]->col;
+         
+         tokens[tokenIndex]->state = target;
+         
+         // Create a terminal symbol and push it onto the stack
+         newTerminal = createTerminal (tokens[tokenIndex]);
+         
+         theStack.push (newTerminal);
+         reductionResult = REDUCTION_TOKEN_SHIFT;
+         return NULL;
+         break;
+         
+         /*
+         Creates a new reduction. Pops all the terminals and non terminals
+         for this rule and pushes the most left non terminal.
+         */
+     case ACTION_REDUCE:
+         
+         // Create a new Non Terminal (to represent this reduction)
+         index = ruleTable->rules[target].symbolIndex;
+         
+         newNonTerminal = createNonTerminal (index, target);
+         
+         // If the rule has only a nonterminal then we dont create a reduction
+         // node for this rule in the tree since its not usefull.
+         // User can decide to simplify this by enabling the trimming
+         if ((ruleTable->rules[target].symbols.size() == 1) &&
+             (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
+             NON_TERMINAL) && m_trimReductions) {
+             trim = true; 
+             newNonTerminal->trimmed = true;
+         } else {
+             newNonTerminal->trimmed = false;
+             trim = false;
+         }
+         
+         // pop from the stack the tokens for the reduced rule
+         // and store them in the NonTerminal as its sons.
+         for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
+             Symbol *s = theStack.top ();
+             // If the symbol is trimmed we just pick up its children
+             if (s->trimmed) {
+                 assert (s->type == NON_TERMINAL);
+                 NonTerminal *trimmedNT = (NonTerminal*) s;
+                 
+                 assert (trimmedNT->children.size() == 1);
+                 newNonTerminal->children.push_front (trimmedNT->children[0]);
+             } else {
+                 newNonTerminal->children.push_front (s);
+             }
+             theStack.pop();
+         }
+         
+         // Perform GOTO
+         actObj = getNextAction (newNonTerminal->symbolIndex, theStack.top()->state);
+         
+         if ((actObj != NULL) && (actObj->action == ACTION_GOTO)) {
+             currentState = actObj->target;
+             newNonTerminal->state = currentState;
+             
+             // Push the reduced nonterminal in the stack
+             theStack.push (newNonTerminal);
+         } else {
+             wprintf (L"Internal Error!!\n");
+             reductionResult = REDUCTION_ERROR;
+             return NULL;
+         }
+         
+         reductionResult = REDUCTION_COMPLETED;
+         return newNonTerminal;
+         break;
+         
+         // This Action should never happen...
+     case ACTION_GOTO:
+         wprintf (L"Goto: %d", target);
+         currentState = target;
+         break;
+         
+     case ACTION_ACCEPT:
+         reductionResult = REDUCTION_TEXT_ACCEPTED;
+         return NULL;
+         break;
+     }
+     return NULL;
+ }
+ 
+ Terminal *LALR::createTerminal (Token *tok) {
+     Terminal *newTerminal;
+     newTerminal = new Terminal();
+     newTerminal->symbol = tok->symbol;
+     newTerminal->image = tok->image;
+     newTerminal->symbolIndex = tok->symbolIndex;
+     newTerminal->state = tok->state;
+     newTerminal->line = tok->line;
+     newTerminal->col = tok->col;
+     return newTerminal;
+ }
+ 
+ NonTerminal *LALR::createNonTerminal (int index, int target) {
+     NonTerminal *newNonTerminal;
+     newNonTerminal = new NonTerminal();
+     
+     newNonTerminal->symbolIndex = index;
+     newNonTerminal->symbol = symbolTable->symbols [index].name;
+     
+     newNonTerminal->ruleIndex = ruleTable->rules[target].ruleIndex;
+     newNonTerminal->line = currentLine;
+     newNonTerminal->col = currentCol;
+     
+     return newNonTerminal;
+ }
+ 

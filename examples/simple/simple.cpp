@@ -14,7 +14,7 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
-  
+    
 #include <iostream>
 #include <stdlib.h>
 
@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
       cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }
     return -1;
-  }
- 
+  }  
+  
   // Get the tokens to feed the LALR machine with them
   vector <Token*> tokens = dfa->getTokens();
   printTokens (tokens);
