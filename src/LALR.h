@@ -80,7 +80,7 @@
    */
    void parse (const vector <Token*> &tokens);
 
-   Reduction *nextReduction (bool trimReduction);
+   Reduction *nextReduction (bool trimReduction, bool reportOnlyOneError);
 
 
    /*!
@@ -94,7 +94,7 @@
      Every Reduction node has a list of tokens, and every token a pointer to
      its correspondent reduction node.
    */
-   Reduction *buildParseTree (bool trimReductions);
+   Reduction *buildParseTree (bool trimReductions, bool reportOnlyOneError);
 
 
    void symplifyParseTree (Reduction *reduction);

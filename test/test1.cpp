@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
     lalr->parse(tokens);
    
-    rdc = lalr->buildParseTree(true);
+    rdc = lalr->buildParseTree(true, true);
 
     myError = lalr->getError(); 
     myError->print();

@@ -96,6 +96,10 @@ SOURCE=..\..\test\test1.cpp
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\test1.gs
+# End Source File
 # End Group
 # End Target
 # End Project

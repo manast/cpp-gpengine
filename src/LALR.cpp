@@ -91,8 +91,6 @@
    firstToken->state = startState;
    tokenStack.push (firstToken);
 
-   
-
    // We replicate all the tokens (to eliminate dependencies with other classes)
    for (i=0; i < tokens.size(); i++) {
 	   this->tokens.push_back (tokens[i]->newInstance());
@@ -120,7 +118,7 @@
   /sa getResult (), buildParseTree ()
  */
 
- Reduction *LALR::nextReduction (bool trimReduction) {
+ Reduction *LALR::nextReduction (bool trimReduction, bool reportOnlyOneError) {
    Action *actObj;
    Token *newToken;
 
@@ -149,6 +147,11 @@
 
        error->addError (errorMsg, tokens[tokenIndex]->line,
        tokens[tokenIndex]->col);
+       if (reportOnlyOneError) {
+          reductionResult = REDUCTION_ERROR;
+          return NULL;
+       }
+
      }
      else {
        action = actObj->action;
@@ -175,7 +178,6 @@
 
          tokens[tokenIndex]->state = currentState;
 
-	
 		 tokenStack.push (tokens[tokenIndex]);
          break;
 
@@ -191,7 +193,7 @@
          // Create a new token for this rule
          newToken = new Token();
 
-		 // Save it in the pool to release it later
+		 // Save it in the token pool to release it later
 		 tokensList.push_back(newToken);
 
          newToken->kind = SYMBOL_NON_TERMINAL;
@@ -337,14 +339,14 @@
 
   /sa getError(), getNextReduction()
  */
- Reduction *LALR::buildParseTree (bool trimReductions) {
+ Reduction *LALR::buildParseTree (bool trimReductions, bool reportOnlyOneError) {
    Reduction *reduction, *prevReduction;
    while (true) {
-     reduction = nextReduction(trimReductions);
+     reduction = nextReduction(trimReductions, reportOnlyOneError);
      if ((reduction == NULL) && ((getResult() == REDUCTION_ERROR) ||
      (getResult() == REDUCTION_TEXT_ACCEPTED))) {
        break;
-     } else {
+     } else if (reduction) {
        prevReduction = reduction;
      }
    }

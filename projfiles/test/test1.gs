@@ -9,14 +9,14 @@ attack 3
 inteligence 7
 
 
-# This is a comment
-
+#* This is a multiline comment
+*#
 
 .events
 
 BORN:
   a = b or c
-c = a and d or c and (not d)
+  c = a and d or c and (not d)
 
   if a = d then
      j = a + b*g
@@ -27,4 +27,3 @@ c = a and d or c and (not d)
 
 
 end
-# This is a comment

@@ -11,7 +11,7 @@ inteligence 7
 .events
 
 BORN:
-  a = b or c
+  a := b or c
   c = a and d or c and (not d)
 
   if a = d then

@@ -1,6 +1,6 @@
 /***************************************************************************
                           DFA.cpp  -  Deterministic Finite Automata
-                             -------------------
+                          -------------------
     begin                : Sun Jun 2 2002
     copyright            : (C) 2002 by Manuel Astudillo
     email                : d00mas@efd.lth.se

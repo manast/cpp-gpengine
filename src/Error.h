@@ -23,6 +23,8 @@
  using namespace std;
 
  typedef struct ErrorStruct  {
+      ErrorStruct() { msg = NULL; }
+     ~ErrorStruct() { delete [] msg; }
      wchar_t *msg;
      integer line;
      integer col;

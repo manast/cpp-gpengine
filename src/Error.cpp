@@ -25,7 +25,6 @@
 
   Error::~Error () {
     for (unsigned short i = 0; i < errors.size(); i++) {
-      delete [] errors[i]->msg;
 	  delete errors[i];
     }
   }
