@@ -20,9 +20,7 @@
  #include "misc.h"
  #include <wchar.h>
 
-
  enum SymbolType {TERMINAL = 1, NON_TERMINAL = 0};
-
 
  typedef struct SymbolStruct {
    wchar_t *name;
@@ -37,7 +35,6 @@
 
    SymbolTable (integer nbrEntries);
    ~SymbolTable ();
-
  };
 
 

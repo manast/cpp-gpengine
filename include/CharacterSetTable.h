@@ -21,14 +21,13 @@
  #include "wchar.h"
  #include "misc.h"
 
- 
 
  class CharacterSetTable {
    public:
    integer nbrEntries;
    wchar_t **characters;
 
-   CharacterSetTable (integer nbrEntries);
+   CharacterSetTable  (integer nbrEntries);
    ~CharacterSetTable ();
 
  };

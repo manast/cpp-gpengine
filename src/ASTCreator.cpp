@@ -59,6 +59,34 @@
 		rdcChildren = ((NonTerminal*) reduction)->children;
 	 } 
 
+     /*
+        If the symbol constants are included it is possible to use a switch-case 
+        instead.
+        switch (reduction->symbolIndex) {
+
+            // <If Statement> ::= if <Expression> then <StatementList> end
+            case RULE_IF_THEN_END_STATEMENT:
+                CREATE_NODE (IfStatement, ifStmt);
+                    
+                ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
+                ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
+	
+                return ifStmt;
+
+            // <If Statement> ::= if <Expression> then <StatementList> else <StatementList> end
+            case RULE_IF_THEN_END_ELSE_STATEMENT:
+                CREATE_NODE (IfStatement, ifStatement);
+
+                ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
+                ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
+	            ifStmt->addChild (getASTNode(rdcChildren[5], ifStmt));
+                return ifStmt;
+            default: return searchEquivNode( rdcChildren, parent);
+        }
+
+     */
+
+
 	 /*
 	  Next is a colection of if statements that checks for the
 	  equivalency between nodes in the reduction tree and in the

@@ -87,10 +87,10 @@
 
   /return next reduction or NULL if error or test accepted
 
-  /sa getResult (), buildParseTree ()
+  /sa getResult (), parse ()
  */
 
- Symbol *LALR::nextReduction (bool trimReduction, bool reportOnlyOneError) {
+ Symbol *LALR::nextReduction (bool trimReductions, bool reportOnlyOneError) {
    Action *actObj;
    Token *tok;
    NonTerminal  *newNonTerminal;
@@ -202,7 +202,7 @@
          // User can decide to simplify this by enabling the trimming
          if ((ruleTable->rules[target].symbols.size() == 1) &&
             (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
-             NON_TERMINAL) && trimReduction) {
+             NON_TERMINAL) && trimReductions) {
                 trim = true; 
 				newNonTerminal->trimmed = true;
          } else {
@@ -264,16 +264,6 @@
            return NULL;
          }
 
-		 /*
-         if (trim) {
-            reductionResult = REDUCTION_SIMPLIFIED;
-         //   return NULL;
-            return newNonTerminal;
-         } else {
-            reductionResult = REDUCTION_OK;
-            return newNonTerminal;
-         }
-		 */
 		 return newNonTerminal;
          break;
 

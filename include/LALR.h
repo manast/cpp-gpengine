@@ -30,13 +30,6 @@
  #include "Terminal.h"
  #include "NonTerminal.h" 
 
-/*
- #define REDUCTION_OK 0
- #define REDUCTION_ERROR 1
- #define REDUCTION_TEXT_ACCEPTED 2
- #define REDUCTION_SIMPLYFIED 3
-*/
-
  #if defined (WIN32) && defined (_USRDLL)
     class __declspec(dllexport) LALR;
  #endif
@@ -55,15 +48,15 @@ using namespace std;
    const RuleTable *ruleTable, integer startState);
    ~LALR ();
 
-    /*!
+   /*!
      setup the parsing engine.
    */
    void init (const vector <Token*> &tokens);
 
    /*
-     parse just until ONE reduction is performed
+     parses just until ONE reduction is performed
    */
-   Symbol *nextReduction (bool trimReduction, bool reportOnlyOneError);
+   Symbol *nextReduction (bool trimReductions, bool reportOnlyOneError);
 
    /*!
      Gets the result constant for the last reduction attempt.
@@ -78,9 +71,7 @@ using namespace std;
    */
    Symbol *parse (const vector <Token*> &tokens, bool trimReductions, bool reportOnlyOneError);
 
- //  void symplifyParseTree (Reduction *reduction);
-
-   void printRule (integer rule);
+   void printRule          (integer rule);
    void printReductionTree (Symbol *reduction, int deep);
 
    ErrorTable *getErrors ();

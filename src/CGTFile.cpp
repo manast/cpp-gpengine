@@ -62,7 +62,7 @@
 
     cgtStream.open (filename, ifstream::in | ifstream::binary);
 
-    if (cgtStream.bad()) {
+    if (((void*) cgtStream) == NULL) {
         return false;
     }
 

@@ -58,7 +58,8 @@
    integer currentLine = 1, currentCol = 1, tokenBeginCol = 1;
 
    Token *t = NULL;
-   wchar_t tmpImage[64];
+  
+   wstring tmpImage;
    wchar_t *tokenSymbol, *tokenImage;
    wchar_t currentChar;
    integer currentState = startState;
@@ -85,8 +86,9 @@
             errorTab->addError (ERROR_SCAN, END_COMMENT_NOT_FOUND, 
                                 NULL, currentLine, tokenBeginCol);
             currentState = startState;
-            imgIndex = 0;
-            return false;
+           
+            tmpImage.clear();
+			return false;
          } else {
             run = false;
          }
@@ -96,7 +98,7 @@
        currentCol = 1;
        if (commentLine) {
          commentLine = false;
-       //  i++;
+       
          if (text[i] == 0) {
            break;
          }
@@ -111,8 +113,7 @@
 
      if (!commentLine) {
 
-       tmpImage[imgIndex] = text[i];
-       imgIndex++;
+	   tmpImage.append (1,text[i]);
 
        // Check which is the next state
        integer e;
@@ -159,12 +160,12 @@
              // Terminal symbol
              case 1 :
              if (!commentBlock) {
-               tmpImage[imgIndex-1] = 0;
+              // tmpImage[imgIndex-1] = 0;
                tokenSymbol = new wchar_t [wcslen(symbolTable->symbols[index2].name)+1];
-               tokenImage = new wchar_t [wcslen (tmpImage)+1];
+               tokenImage = new wchar_t [tmpImage.length()+1];
 
                wcscpy (tokenSymbol, symbolTable->symbols[index2].name);
-               wcscpy (tokenImage, tmpImage);
+               wcscpy (tokenImage, tmpImage.c_str());
 
                t = new Token();
                t->symbol = tokenSymbol;
@@ -206,14 +207,16 @@
              break;
            }
            currentState = startState;
-           imgIndex = 0;
-         } else {
+       
+		   tmpImage.clear();
+		 } else {
            if (!commentBlock) {
              // Set error and return
              errorTab->addError (ERROR_SCAN, UNKNOWN_TOKEN, NULL, currentLine, tokenBeginCol);
              currentState = startState;
-             imgIndex = 0;
-             return false;
+     
+			 tmpImage.clear();            
+			 return false;
            }
            tokenBeginCol = currentCol;
          }
