@@ -1,8 +1,8 @@
 /***************************************************************************
                           ASTCreator.h 
-						  This class works as a framework for the 
-						  creation of an abstract syntax tree specific 
-						  for a grammar
+              This class works as a framework for the 
+	      creation of an abstract syntax tree specific 
+	      for a grammar
                           -------------------
     begin                : Sun Jun 2 2002
     copyright            : (C) 2002 by Manuel Astudillo
@@ -27,11 +27,7 @@
 using namespace std;
 
 #if defined (WIN32) && defined (_USRDLL)
-    class __declspec(dllexport) ASTCreator;
-#endif
-
-#ifndef CREATE_NODE
-	#define CREATE_NODE(X,x) X *x = new X(); x->init(*reduction); x->setParent(parent);  
+class __declspec(dllexport) ASTCreator;
 #endif
 
 class ASTCreator {

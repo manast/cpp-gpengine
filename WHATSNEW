@@ -1,6 +1,13 @@
 History
 -------
 
+version 1.0.6 2003/11/29
+------------------------
++ Added 3 examples to show how to use the engine.
++ Exchange a lot of wchar_t* strings to the more reliable wstring
+- Fixed a buffer overflow bug in the DFA 
+- A few more clean ups
+
 version 1.0.4 2003/11/11
 ------------------------
 + UNIX support. The engine compiles and runs on UNIX-based operating 

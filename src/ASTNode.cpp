@@ -20,10 +20,6 @@
  #include "ASTNode.h"
  #include "Terminal.h"
 
- ASTNode::ASTNode () {
-	 image = L"";
-     symbol = L"";
- } 
 
  ASTNode::~ASTNode () {
 	for (unsigned int i = 0; i < children.size (); i++) {
@@ -32,34 +28,33 @@
  }
 
  
- void ASTNode::init (const Symbol &s) {
- 	line = s.line;
-	col = s.col;
+ void ASTNode::init (const Symbol *s, ASTNode *parent) {
+ 	m_line = s->line;
+	m_col = s->col;
     
-	if (s.type == NON_TERMINAL) {
-		image = s.symbol;
+	if (s->type == NON_TERMINAL) {
+		m_image = s->symbol;
 	} else {
-		image = ((Terminal&) s).image;
+		m_image = ((Terminal*) s)->image;
 	}
-    symbol = s.symbol;
-    
-	parent = NULL;
+    m_symbol = s->symbol;
+	m_parent = parent;
  }
 
  void ASTNode::setImage (wstring image) {
-    this->image = image;
+    m_image = image;
  }
 
  void ASTNode::setSymbol (wstring symbol) {
-    this->symbol = symbol;
+    m_symbol = symbol;
  }
 
  wstring ASTNode::getImage () {
-    return image;
+    return m_image;
  }
 
  wstring ASTNode::getSymbol () {
-    return symbol;
+    return m_symbol;
  }
 
  void ASTNode::addChild (ASTNode *child) {
@@ -73,7 +68,7 @@
 
 
  ASTNode *ASTNode::getParent () {
-	return parent;
+	return m_parent;
  }
 
 
@@ -84,7 +79,7 @@
   */
 
  void ASTNode::setParent (ASTNode *parent) {
-	this->parent = parent;
+	m_parent = parent;
  }
 
 
@@ -94,9 +89,9 @@
 		wprintf (L" ");
 	}
 
-	wprintf (symbol.c_str());
+	wprintf (m_symbol.c_str());
 	wprintf (L":");
-	wprintf (image.c_str());
+	wprintf (m_image.c_str());
 	wprintf (L"\n");
 	
 	for (i=0; i < children.size(); i++) {

@@ -1,11 +1,11 @@
 /***************************************************************************
-								simple.cpp  
+				simple.cpp  
                              -------------------
     begin                : Fri May 31 00:53:11 CEST 2002
     copyright            : (C) 2002-2003 by Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
-
+                 
  /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -14,7 +14,7 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- 
+  
 #include <iostream>
 #include <stdlib.h>
 
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   SimpleErrorRep   myReporter; 
 
   // Load grammar file
-  if (cgtFile.load ("simple.cgt")) {
+  if (cgtFile.load ("simple.cgt")) {     
     wprintf (L"%s\n", "Grammar loaded succesfully");
     cgtFile.printInfo ();
   } else {
@@ -66,9 +66,9 @@ int main(int argc, char *argv[])
   
   // If there are errors report them
   if (myErrors->errors.size() > 0) {
-    for (int i=0; i < myErrors->errors.size(); i++) {
-        cout << filename << ":";
-        cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
+    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
+      cout << filename << ":";
+      cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }
     return -1;
   }
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
    
   myErrors = lalr->getErrors(); 
   if (myErrors->errors.size() != 0) {
-    for (int i=0; i < myErrors->errors.size(); i++) {
+    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
         cout << filename << ":";
         cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }
