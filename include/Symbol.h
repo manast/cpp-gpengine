@@ -20,10 +20,10 @@
 #define _GP_SYMBOL_H
 
 #include <string>
-using namespace std;
-
 #include "SymbolTable.h"
 #include "misc.h"
+
+using namespace std;
 
 #if defined (WIN32) && defined (_USRDLL)
 	// Windows crap!. Maybe it is possible to export this without generating 
@@ -33,7 +33,7 @@ using namespace std;
 #endif
 
 
-struct Symbol {
+class Symbol {
 public:
 	Symbol ();
     virtual ~Symbol ();
