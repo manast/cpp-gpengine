@@ -32,7 +32,7 @@
      }
  }
 
- ASTNode *ASTCreator::getASTNode (const NonTerminal *reduction, ASTNode *parent) {
+ ASTNode *ASTCreator::getASTNode (NonTerminal *reduction, ASTNode *parent) {
      
 	 vector <ASTNode*> *children = NULL;
 

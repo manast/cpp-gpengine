@@ -21,10 +21,11 @@
  #ifndef AST_NODE_H
  #define AST_NODE_H
 
- #include "Token.h"
-
  #include <vector>
+ #include <string>
+
  #include "wchar.h"
+ #include "NonTerminal.h"
 
  using namespace std;
 
@@ -32,11 +33,11 @@
 
  class ASTNode {
  protected:
-	wchar_t *name;
+	wstring  name;
+    wstring  image;
 
 	unsigned short line, col;
-	wchar_t *image;
-
+	
 	vector <ASTNode*> children;
 	ASTNode *parent;
 
@@ -44,7 +45,7 @@
     ASTNode ();
 	virtual ~ASTNode ();
 
-	void init (Token *t);
+	void    init (const NonTerminal &s);
 	void	setParent (ASTNode *parent);
 	ASTNode *getParent ();
 	vector <ASTNode*> *getChildren ();

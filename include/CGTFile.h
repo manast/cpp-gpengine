@@ -16,14 +16,13 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- #ifndef CGTFILE_H
- #define CGTFILE_H
+ #ifndef _GP_CGTFILE_H
+ #define _GP_CGTFILE_H
 
  #include <stdio.h>
  #include <wchar.h>
  #include <iostream> 
  #include <fstream>
-
  #include <vector>
 
  #include "misc.h"
@@ -34,7 +33,6 @@
 
  using namespace std;
 
-
  typedef union EntryStruct {
    bool vBool;
    integer vInteger;
@@ -42,8 +40,12 @@
    wchar_t *vString;
  } EntryStruct ;
 
+ #ifdef WIN32
+    class __declspec(dllexport) CGTFile;
+ #endif
 
  class CGTFile {
+
  public:
 
    CGTFile ();

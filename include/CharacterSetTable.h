@@ -15,8 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
- #ifndef CHARACTER_SET_TABLE_H
- #define CHARACTER_SET_TABLE_H
+ #ifndef _GP_CHARACTER_SET_TABLE_H
+ #define _GP_CHARACTER_SET_TABLE_H
 
  #include "wchar.h"
  #include "misc.h"

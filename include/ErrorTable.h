@@ -49,7 +49,11 @@
      Terminal lastTerminal;
  };
 
-  
+ #ifdef WIN32
+    class __declspec(dllexport) ErrorTable;
+    class __declspec(dllexport) vector <GPError*>; 
+ #endif 
+
  class ErrorTable {
    public:
    vector <GPError*>  errors;

@@ -157,83 +157,79 @@ SOURCE=..\..\src\Token.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=..\..\src\ASTCreator.h
+SOURCE=..\..\include\ASTCreator.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\ASTNode.h
+SOURCE=..\..\include\ASTNode.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\CGTFile.h
+SOURCE=..\..\include\CGTFile.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\CharacterSetTable.h
+SOURCE=..\..\include\CharacterSetTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\DFA.h
+SOURCE=..\..\include\DFA.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\DFAStateTable.h
+SOURCE=..\..\include\DFAStateTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\ErrorReporter.h
+SOURCE=..\..\include\ErrorReporter.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\ErrorTable.h
+SOURCE=..\..\include\ErrorTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\GrammarInfo.h
+SOURCE=..\..\include\GrammarInfo.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\LALR.h
+SOURCE=..\..\include\LALR.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\LALRStateTable.h
+SOURCE=..\..\include\LALRStateTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\misc.h
+SOURCE=..\..\include\misc.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\NonTerminal.h
+SOURCE=..\..\include\NonTerminal.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\RuleTable.h
+SOURCE=..\..\include\RuleTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\Symbol.h
+SOURCE=..\..\include\Symbol.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\SymbolStack.h
+SOURCE=..\..\include\SymbolStack.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\SymbolTable.h
+SOURCE=..\..\include\SymbolTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\Terminal.h
+SOURCE=..\..\include\Terminal.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\Token.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\Tokenstack.h
+SOURCE=..\..\include\Token.h
 # End Source File
 # End Group
 # End Target

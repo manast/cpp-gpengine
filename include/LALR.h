@@ -19,6 +19,7 @@
 
  #include <vector>
  #include <string>
+
  #include "SymbolStack.h"
  #include "Token.h"
  #include "LALRStateTable.h"
@@ -39,8 +40,11 @@
 enum Actions {ACTION_SHIFT = 1, ACTION_REDUCE = 2, ACTION_GOTO = 3, ACTION_ACCEPT = 4};
 enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTION_SIMPLIFIED};
 
-
  #define DEBUG false
+
+ #ifdef WIN32
+    class __declspec(dllexport) LALR;
+ #endif
 
  class LALR {
  public:

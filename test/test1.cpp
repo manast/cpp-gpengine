@@ -22,8 +22,8 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "../src/CGTFile.h"
-#include "../src/ErrorReporter.h"
+#include "CGTFile.h"
+#include "ErrorReporter.h"
 #include "testErrorRep.h"
 
 

@@ -25,6 +25,11 @@
 
 using namespace std;
 
+ #ifdef WIN32
+    struct __declspec(dllexport) Symbol;
+ //   class __declspec(dllexport) wstring;
+ #endif
+
 struct Symbol {
 public:
     virtual ~Symbol ();

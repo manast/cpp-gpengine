@@ -18,29 +18,26 @@
 
 
  #include "ASTNode.h"
-
+ #include "Terminal.h"
 
  ASTNode::ASTNode () {
-	 image = NULL;
+	 image = L"";
+     name = L"";
  } 
 
 
- void ASTNode::init (Token *t) {
- 	line = t->line;
-	col = t->col;
-
-	image = new wchar_t [wcslen (t->image)+1];
-	wcscpy (image, t->image);
-
-	name = NULL;
+ void ASTNode::init (const NonTerminal &s) {
+ 	line = s.line;
+	col = s.col;
+    
+    image = s.symbol;
+    name = s.symbol;
+    
 	parent = NULL;
  }
 
 
  ASTNode::~ASTNode () {
-	delete [] name;
-	delete [] image;
-
 	for (unsigned int i = 0; i < children.size (); i++) {
 		delete children[i];
 	}
@@ -73,7 +70,7 @@
 		wprintf (L" ");
 	}
 
-	wprintf (image);
+	wprintf (image.c_str());
 	wprintf (L"\n");
 	
 	for (i=0; i < children.size(); i++) {

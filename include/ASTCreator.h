@@ -39,7 +39,7 @@ class ASTCreator {
 		  must be customized.
 		  See the implementation of this method for guidelines.
 		*/
-		virtual ASTNode *getASTNode (const NonTerminal *reduction, ASTNode *parent);
+		virtual ASTNode *getASTNode (NonTerminal *reduction, ASTNode *parent);
 
 		void getASTNodeList (vector <ASTNode*> *children, wstring iterNode,
 			NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent);

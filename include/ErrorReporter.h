@@ -29,6 +29,10 @@
 
   */
 
+#ifdef WIN32
+    class __declspec(dllexport) ErrorReporter;
+#endif
+
 class ErrorReporter {
 protected:
     string endComment;

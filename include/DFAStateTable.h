@@ -14,8 +14,8 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- #ifndef DFASTATETABLE_H
- #define DFASTATETABLE_H
+ #ifndef _GP_DFASTATETABLE_H
+ #define _GP_DFASTATETABLE_H
 
  #include <vector>
  #include "misc.h"

@@ -28,10 +28,11 @@
  #include "Token.h"
  #include "ErrorTable.h"
 
-
-
  using namespace std;
 
+ #ifdef WIN32
+    class __declspec(dllexport) DFA;
+ #endif
 
  class DFA {
  public:
