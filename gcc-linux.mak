@@ -1,11 +1,10 @@
 # Project: cpp-gpengine
 # Makefile created by Pablo Garcia Ganzalez 
 # Date: 19.10.2003
-# CVS-ID: $Id: gcc-linux.mak,v 1.1 2003/10/28 18:12:08 d00mas Exp $
+# CVS-ID: $Id: gcc-linux.mak,v 1.2 2003/11/02 00:04:41 xtremox Exp $
 
-CPP  = g++32
+CPP  = gcc 
 OBJ  = 	src/ASTCreator.o  src/ASTNode.o src/CGTFile.o src/CharacterSetTable.o src/DFA.o src/DFAStateTable.o src/ErrorReporter.o src/ErrorTable.o src/GrammarInfo.o src/LALR.o src/LALRStateTable.o src/NonTerminal.o src/RuleTable.o src/Symbol.o src/SymbolTable.o src/Terminal.o src/Token.o 
-#LIBS =   
 CXXINCS = -I"include/"
 BIN  = lib/cpp-gpengine-1.0.4.a
 CXXFLAGS = $(CXXINCS) 
@@ -52,8 +51,8 @@ src/LALR.o: src/LALR.cpp
 src/LALRStateTable.o: src/LALRStateTable.cpp
 	$(CPP) -c src/LALRStateTable.cpp -o src/LALRStateTable.o $(CXXFLAGS)
 
-src/NonTerminal.o: src/NonTerminal.cpp
-    $(CPP) -c src/NonTerminal.cpp -o src/NonTerminal.o $(CXXFLAGS)
+src/NonTerminal.o: src/NonTerminal.cpp 
+	$(CPP) -c src/NonTerminal.cpp -o src/NonTerminal.o $(CXXFLAGS)
 
 src/RuleTable.o: src/RuleTable.cpp
 	$(CPP) -c src/RuleTable.cpp -o src/RuleTable.o $(CXXFLAGS)
@@ -65,8 +64,9 @@ src/SymbolTable.o: src/SymbolTable.cpp
 	$(CPP) -c src/SymbolTable.cpp -o src/SymbolTable.o $(CXXFLAGS)
 	
 src/Terminal.o: src/Terminal.cpp
-    $(CPP) -c src/Terminal.cpp -o src/Terminal.o $(CXXFLAGS)
+	$(CPP) -c src/Terminal.cpp -o src/Terminal.o $(CXXFLAGS)
 
 src/Token.o: src/Token.cpp
 	$(CPP) -c src/Token.cpp -o src/Token.o $(CXXFLAGS)
+
 
