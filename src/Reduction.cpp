@@ -2,7 +2,7 @@
                           Reduction.cpp  -  description
                              -------------------
     begin                : Sun Jun 16 2002
-    copyright            : (C) 2002 by Manuel Astudillo
+    copyright            : (C) 2002 Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
 

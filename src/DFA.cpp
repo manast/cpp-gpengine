@@ -27,7 +27,7 @@
    this->characterSetTable = characterSetTable;
    this->caseSensitive = caseSensitive;
 
-   error = NULL;
+   errorTab = NULL;
  }
 
  DFA::~DFA () {
@@ -35,7 +35,7 @@
 		delete tokens[j];
    }
    
-   delete error;
+   delete errorTab;
  }
 
 
@@ -72,8 +72,8 @@
 
    tokens.clear();
 
-   delete error;
-   error = new Error();
+   delete errorTab;
+   errorTab = new ErrorTable();
 
    bool run = true;
 
@@ -81,19 +81,15 @@
 	 if (text[i] == 0) {
          // Check if Comment Block not ended
          if (commentBlock) {
-		    // Set error message and exit
-            wchar_t *msg = new wchar_t [256];
-            msg[0] = 0;
-		    wcscat (msg, L"EOF reached but not end comment symbol found\n");
-            error->addError (ERROR_SCAN, msg, NULL, currentLine, tokenBeginCol);
-            delete [] msg;
+		    // Set error and return
+            errorTab->addError (ERROR_SCAN, END_COMMENT_NOT_FOUND, 
+                                NULL, currentLine, tokenBeginCol);
             currentState = startState;
             imgIndex = 0;
             return false;
          } else {
             run = false;
          }
-
 	 }
      if (text[i] == L'\n') {
        currentLine++;
@@ -212,17 +208,14 @@
            currentState = startState;
            imgIndex = 0;
          } else {
-           // Set error message and exit
-           wchar_t *msg = new wchar_t [256];
-		   msg[0] = 0;
-           tmpImage[imgIndex] = 0;
-		   wcscat (msg, tmpImage);
-		   wcscat (msg, L" is not any known token\n");
-           error->addError (ERROR_SCAN,msg, NULL, currentLine, tokenBeginCol);
-           delete [] msg;
-           currentState = startState;
-           imgIndex = 0;
-           return false;
+           if (!commentBlock) {
+             // Set error and return
+             errorTab->addError (ERROR_SCAN, UNKNOWN_TOKEN, NULL, currentLine, tokenBeginCol);
+             currentState = startState;
+             imgIndex = 0;
+             return false;
+           }
+           tokenBeginCol = currentCol;
          }
        }
 
@@ -251,8 +244,8 @@
 
  }
 
- Error *DFA::getError () {
-   return error;
+ ErrorTable *DFA::getErrors () {
+   return errorTab;
  }
 
 

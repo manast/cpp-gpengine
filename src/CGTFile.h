@@ -44,7 +44,32 @@
 
 
  class CGTFile {
+ public:
 
+   CGTFile ();
+   ~CGTFile ();
+
+    /*
+   Loads a CGT File.
+   Returns true if succesfull, false if error.
+   */
+   bool load (char *filename);
+   bool load (ifstream *myStream);
+
+   GrammarInfo *getInfo ();	
+
+   DFA *getScanner ();
+
+   LALR *getParser ();
+
+   char *getError ();
+
+   void printInfo ();
+
+ private:
+
+   void readEntry (EntryStruct *entry);
+   wchar_t *readUnicodeString ();
    // Header
    wchar_t *header;
 
@@ -84,31 +109,6 @@
 
    DFA *theDFA;
    LALR *theLALR;
-
-   /*
-   Loads a CGT File.
-   Returns true if succesfull, false if error.
-   */
-   public:
-
-   CGTFile ();
-   ~CGTFile ();
-
-   bool load (char *filename);
-   bool load (ifstream *myStream);
-
-   GrammarInfo *getInfo ();	
-
-   DFA *getScanner ();
-
-   LALR *getParser ();
-
-   char *getError ();
-
-   private:
-
-   void readEntry (EntryStruct *entry);
-   wchar_t *readUnicodeString ();
 
  };
 

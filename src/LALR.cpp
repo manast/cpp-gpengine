@@ -24,7 +24,7 @@
    this->ruleTable = ruleTable;
    this->startState = startState;
 
-   error = NULL;
+   errorTab = NULL;
  }
 
  LALR::~LALR () {
@@ -43,7 +43,7 @@
 	   delete reductionsList[i];
    }
 
-   delete error;
+   delete errorTab;
  }
 
 
@@ -103,12 +103,12 @@
 
    tokenIndex = 0;
 
-   delete error;
-   error = new Error();
+   delete errorTab;
+   errorTab = new ErrorTable();
  }
 
  /*!
-  Parses the tokens until it reduces a rule.
+  Parse the tokens until it reduces a rule.
 
   /param trimReduction especifies trimming enable or disable. Trimming will
   simplify rules of the form: NonTerminal1 := Nonterminal2
@@ -135,23 +135,30 @@
      // Get next action
      actObj = getNextAction (tokens[tokenIndex]->symbolIndex, currentState);
      if (actObj == NULL) {
-       // Generate ERROR & recover pushing expected symbol in the stack
+         // Generate ERROR & recover pushing expected symbol in the stack
+         // RECOVERING IS IN THE TODO LIST!
+         // FOR THAT WE NEED A MECHANISM TO "ESTIMATE" THE NEXT TOKEN
        errorMsg[0] = 0;
 
-       wchar_t *possibleTokens = getPossibleTokens (currentState);
-       wcscat (errorMsg, L"Error parsing this token: ");
-       wcscat (errorMsg, tokens[tokenIndex]->symbol);
-       wcscat (errorMsg, L"\nExpected: ");
-       wcscat (errorMsg, possibleTokens);
-       delete [] possibleTokens;
-
-       error->addError (ERROR_PARSE, errorMsg, prevReduction, tokens[tokenIndex]->line,
-       tokens[tokenIndex]->col);
+       // Create a token traceback vector.
+       vector <Token*> traceback;
+       vector <Token*> tmptokvector = tokenStack.get_vector();
+       for (short k = tmptokvector.size()-1; k >= 0; k--) {
+            traceback.push_back (tmptokvector[k]);
+       }
+       
+       vector <wstring> expectedTokens = getPossibleTokens (currentState);
+       // Add the error to the Error class.
+       errorTab->addError (ERROR_PARSE, UNEXPECTED_TOKEN, prevReduction, 
+                           expectedTokens, traceback, 
+                           tokens[tokenIndex]->line,
+                           tokens[tokenIndex]->col);
        if (reportOnlyOneError) {
           reductionResult = REDUCTION_ERROR;
           return NULL;
        }
-
+        
+       
      }
      else {
        action = actObj->action;
@@ -275,7 +282,7 @@
          }
 
          if (newReduction == NULL) {
-           reductionResult = REDUCTION_SIMPLYFIED;
+           reductionResult = REDUCTION_SIMPLIFIED;
          } else {
            reductionResult = REDUCTION_OK;
          }
@@ -318,20 +325,18 @@
    return NULL;
  }
 
- wchar_t *LALR::getPossibleTokens (integer index) {
-   wchar_t *resStr = new wchar_t [2560];
-   resStr[0] = 0;
+ vector<wstring> LALR::getPossibleTokens (integer index) {
+   vector<wstring> tokenVector;
    for (integer i=0; i < stateTable->states[index].actions.size(); i++) {
      integer j = stateTable->states[index].actions[i].symbolIndex;
-     if (symbolTable->symbols[j].kind
-     == SYMBOL_TERMINAL) {
-       wcscat (resStr, symbolTable->symbols[j].name);
-       wcscat (resStr, L" ");
+     if (symbolTable->symbols[j].kind == SYMBOL_TERMINAL) {
+        wstring tokenName = symbolTable->symbols[j].name;
+        tokenVector.push_back (tokenName);
      }
    }
-   wcscat (resStr, L"\n");
-   return resStr;
+   return tokenVector;
  }
+
 
  /*!
    Builds a parse tree with reductions as nodes.
@@ -372,8 +377,8 @@
  }
 
 
- Error *LALR::getError() {
-     return error;
+ ErrorTable *LALR::getErrors() {
+     return errorTab;
  }
 
 

@@ -14,27 +14,41 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- #ifndef DFA_H
- #define DFA_H
+ #ifndef _GP_DFA_H
+ #define _GP_DFA_H
 
  #include <stdlib.h>
  #include <vector>
+ #include <wctype.h>
 
  #include "misc.h"
  #include "DFAStateTable.h"
  #include "SymbolTable.h"
  #include "CharacterSetTable.h"
  #include "Token.h"
- #include "Error.h"
+ #include "ErrorTable.h"
 
- #include <wctype.h>
 
 
  using namespace std;
 
 
  class DFA {
-   private:
+ public:
+   DFA (const DFAStateTable *stateTable, const SymbolTable *symbolTable,
+        const CharacterSetTable *characterSetTable, 
+        integer startState, bool caseSensitive);
+   
+   ~DFA ();
+
+   bool scan (wchar_t *text);
+   bool scan (char *text);
+
+   vector <Token*> &getTokens ();
+
+   ErrorTable *getErrors();
+ 
+ private:
    const DFAStateTable *stateTable;
    const SymbolTable *symbolTable;
    const CharacterSetTable *characterSetTable;
@@ -43,19 +57,7 @@
 
    vector<Token*> tokens;
 
-   Error *error;
-
-   public:
-   DFA (const DFAStateTable *stateTable, const SymbolTable *symbolTable,
-   const CharacterSetTable *characterSetTable, integer startState, bool caseSensitive);
-   ~DFA ();
-
-
-   bool scan (wchar_t *text);
-   bool scan (char *text);
-
-   vector <Token*> &getTokens ();
-   Error *getError();
+   ErrorTable *errorTab;
  };
 
 

@@ -28,7 +28,7 @@
  class Reduction {
    public:
    Reduction *parent;
-   Token *tok;
+   Token     *tok;
 
    deque <Token*> childs;
 

@@ -388,3 +388,12 @@
      return theLALR;
  }
 
+ void CGTFile::printInfo () {
+    // Prints the info of this grammar
+    wprintf (L"Grammar Information\n");
+    wprintf (L"Name: %s, ", gInfo->name);
+	wprintf (L"%s\n", gInfo->version);
+	wprintf (L"Author: %s\n", gInfo->author);
+	wprintf (L"About: %s\n", gInfo->about);
+ }
+

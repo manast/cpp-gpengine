@@ -92,6 +92,10 @@ SOURCE=..\..\test\test1.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=..\..\test\testErrorRep.h
+# End Source File
 # End Group
 # Begin Group "Resource Files"
 
@@ -101,5 +105,9 @@ SOURCE=..\..\test\test1.cpp
 SOURCE=.\test1.gs
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=..\VC6\Debug\gpengine.lib
+# End Source File
 # End Target
 # End Project

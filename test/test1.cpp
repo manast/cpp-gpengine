@@ -24,6 +24,8 @@
 
 #include "../src/CGTFile.h"
 #include "../src/Reduction.h"
+#include "../src/ErrorReporter.h"
+#include "testErrorRep.h"
 
 
 void printTokens (vector <Token*> &t);
@@ -35,9 +37,9 @@ int main(int argc, char *argv[])
   FILE		 *file;
   Reduction  *rdc;
 
-  Error *myError;
+  ErrorTable *myErrors;
+  testErrorRep myReporter;
   
-   
   // Load source code to compile
   file =  fopen ("test1.gs", "rb");
    if (file == NULL) {
@@ -54,23 +56,27 @@ int main(int argc, char *argv[])
   srcCode[fsize] = 0;
 
   fclose (file);
- 
         
   if (cgtFile.load ("gscript.cgt")) {
-    wprintf (L"%s\n", "file loaded succesfully");
+    wprintf (L"%s\n", "Grammar loaded succesfully");
+    cgtFile.printInfo ();
   } else {
     wprintf (L"%s\n", "error loading file");
 	return -1;
   }
-  
+
   DFA *dfa = cgtFile.getScanner();
 
   dfa->scan(srcCode);
-  myError = dfa->getError();
-  myError->print();
+  myErrors = dfa->getErrors();
+  myErrors->print();
+  
+  for (int i=0; i < myErrors->errors.size(); i++) {
+    cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
+  }
+  
+  if (myErrors->errors.size() == 0) {
  
-  if (myError->errors.size() == 0) {
-
     vector <Token*> tokens = dfa->getTokens();
 
     printTokens (tokens);
@@ -80,15 +86,18 @@ int main(int argc, char *argv[])
     lalr->parse(tokens);
    
     rdc = lalr->buildParseTree(true, true);
-
-    myError = lalr->getError(); 
-    myError->print();
    
-    if (myError->errors.size() == 0) {
+    myErrors = lalr->getErrors(); 
+    if (myErrors->errors.size() == 0) {
       lalr->printReductionTree(rdc, 0);
+    } else {
+      for (int i=0; i < myErrors->errors.size(); i++) {
+        cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
+      }
+      myErrors->print();
     }
-  } else {
-    wprintf (L"Compilation Failed");
+  } else { 
+      wprintf (L"Compilation Failed\n");
   }
 
 

@@ -1,4 +1,11 @@
-.character
+#* This is a multiline comment 
+iuou
+δεφ+65465?€%645?&
+iuou
+
+while do
+
+*#.character
 .defs
 
 
@@ -8,13 +15,10 @@ speed 5
 attack 3
 inteligence 7
 
-
-#* This is a multiline comment
-
-*#
 .events
 
 BORN:
+  a = 2 -1
   a = b or c
   c = a and d or c and (not d)
 
@@ -22,7 +26,30 @@ BORN:
      j = a + b*g
   else 
      a = c
+  end
+
   
 # This is a comment          
+  
 
-end
+
+  if a = d then
+     j = a
+
+     if b = 2 then
+        r= 4
+     end
+
+       if a = d then
+         j = a + b*g
+       else 
+         a = c
+       end
+
+       if a = d then
+           j = a + b*g
+       else 
+           a = c
+       end
+
+       b = 32

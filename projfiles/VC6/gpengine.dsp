@@ -109,7 +109,11 @@ SOURCE=..\..\src\DFAStateTable.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\Error.cpp
+SOURCE=..\..\src\ErrorReporter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\ErrorTable.cpp
 # End Source File
 # Begin Source File
 
@@ -173,7 +177,11 @@ SOURCE=..\..\src\DFAStateTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\Error.h
+SOURCE=..\..\src\ErrorReporter.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\ErrorTable.h
 # End Source File
 # Begin Source File
 

@@ -16,48 +16,83 @@
  ***************************************************************************/
 
 
-  #include "Error.h"
+  #include "ErrorTable.h"
 
-  Error::Error () {
+  ErrorTable::ErrorTable () {
     errors.clear();
   }
 
 
-  Error::~Error () {
+  ErrorTable::~ErrorTable () {
     for (unsigned short i = 0; i < errors.size(); i++) {
 	  delete errors[i];
     }
   }
 
-  void Error::clear () {
+  void ErrorTable::clear () {
     errors.clear();
   }
 
-   void Error::addError (error_codes code, wchar_t *msg, Reduction *rdc, integer line, integer col) {
-     ErrorStruct *err = new ErrorStruct;
-     err->msg = new wchar_t [wcslen (msg)+1];
+  void ErrorTable::addError (error_type type, error_value value, Reduction *rdc, 
+                             vector <wstring> expected, vector <Token*> traceback, 
+                             integer line, integer col) {  
+     GPError *err = new GPError ();
 
-     wcscpy (err->msg, msg);
+     err->expected = expected;
+     err->traceback = traceback;
 
      err->line = line;
      err->col = col;
 
-     err->code = code;
+     err->type = type;
+     err->value = value;
      err->reduction = rdc;
 
      errors.push_back (err);
    }
 
-   void Error::print () {
-     for (unsigned short i = 0; i < errors.size(); i++) {
+   void ErrorTable::addError (error_type type, error_value value, Reduction *rdc, 
+                         integer line, integer col) {
+     GPError *err = new GPError ();
+
+     err->line = line;
+     err->col = col;
+
+     err->type = type;
+     err->value = value;
+     err->reduction = rdc;
+
+     errors.push_back (err);
+   }
+
+  void ErrorTable::print () {
+    int i,k;
+    for (i = 0; i < errors.size(); i++) {
        wprintf (L"Error line: %d, col: %d ", errors[i]->line, errors[i]->col);
-       wprintf (errors[i]->msg);
+      // wprintf (errors[i]->msg);
        wprintf (L"\n");
        if (errors[i]->reduction != NULL) {
             wprintf (L"Last correct parsed token was: ");
             wprintf (errors[i]->reduction->tok->symbol);
             wprintf (L"\n");
        }
-      }
+
+       wprintf (L"Expected Tokens: \n");
+       for (k = 0; k < errors[i]->expected.size (); k++) {
+            //wchar_t *a = errors[i]->traceback[k]->symbol;
+            wprintf (errors[i]->expected[k].c_str());
+            wprintf (L"\n");
+       }
+
+       wprintf (L"Tokens Traceback: \n");
+       for (k = 0; k < errors[i]->traceback.size (); k++) {
+            wchar_t *a = errors[i]->traceback[k]->symbol;
+            if (a != NULL) {
+                wprintf (errors[i]->traceback[k]->symbol);
+                wprintf (L"\n");
+            }
+       }
+
    }
+  }
 

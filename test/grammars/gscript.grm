@@ -52,7 +52,7 @@ Comment End   =  '*#'
 <IfStmtEnd> ::= end 
                | else <StatementList> end
 
-<ForStmt> ::= for <IdDecl> = <Expression> to <Expression> do <StatementList> end
+<ForStmt> ::= for <IdDecl> '=' <Expression> to <Expression> do <StatementList> end
 
 
 <WhileStmt> ::= while <Expression> do <StatementList> end
@@ -130,11 +130,15 @@ Comment End   =  '*#'
 Whitespace = {WS}+
 
 NEWLINE = {CR}{LF} | {LF}
-ID = {Letter}{AlphaNumeric}*
-SECTION = "."{Letter}+
+{LetterSwe} = {Letter} + [öåä]
+
+{IdHead} = {Letter} + [_] + [üöçðüþýÜÞÝÇÖÐ] 
+
+ID = {IdHead}{AlphaNumeric}*
+SECTION = .{Letter}+
 
 ILIT = {Digit}+
-RLIT = {Digit}*"."{Digit}+
+RLIT = {Digit}*.{Digit}+
 BLIT = true | false
 
 {String Char} = {Printable} - ["]
