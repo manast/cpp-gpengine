@@ -18,17 +18,11 @@
 #include "GrammarInfo.h"
 
 GrammarInfo::GrammarInfo () {
-	name = NULL;
-	author = NULL;
-	version = NULL;
-	about = NULL;
+
 }
 
 
 GrammarInfo::~GrammarInfo () {
-	delete [] name;
-	delete [] author;
-	delete [] version;
-	delete [] about;
+
 }
 

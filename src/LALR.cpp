@@ -151,7 +151,7 @@
          case ACTION_SHIFT:
          if (DEBUG) {
            wprintf (L"Shifting: ");
-           wprintf (tokens[tokenIndex]->symbol);
+           wprintf (tokens[tokenIndex]->symbol.c_str());
            wprintf ( L"\nGo to state:%d\n\n", target);
          }
 
@@ -213,7 +213,7 @@
          }
 
          if (DEBUG) {
-           wprintf (symbolTable->symbols[ruleTable->rules[target].ruleIndex].name);
+           wprintf (symbolTable->symbols[ruleTable->rules[target].ruleIndex].name.c_str());
            wprintf (L" = ");
          }
 
@@ -240,7 +240,7 @@
                if (!trim) {
                     symIndex = newNonTerminal->children[i]->symbolIndex;
                }
-             wprintf (symbolTable->symbols[symIndex].name);
+             wprintf (symbolTable->symbols[symIndex].name.c_str());
              wprintf (L" ");
            }
            wprintf (L"\n");
@@ -369,7 +369,7 @@
  }
 
  if (reduction->type == NON_TERMINAL) {
-    wprintf (symbolTable->symbols[reduction->symbolIndex].name);
+    wprintf (symbolTable->symbols[reduction->symbolIndex].name.c_str());
     wprintf (L"\n");
  
     for (i=0; i < ((NonTerminal*) reduction)->children.size(); i++) {

@@ -27,8 +27,6 @@
 
    errorString = NULL;
 
-   header = NULL;
-
    ruleTable = NULL;
    symbolTable = NULL;
    stateTable = NULL;
@@ -44,7 +42,6 @@
 	 delete gInfo;
 
 	 delete [] errorString;
-     delete [] header;
 
      // Delete tables
      delete symbolTable;
@@ -343,40 +340,17 @@
  Reads a Unicode String
  */
 
- wchar_t *CGTFile::readUnicodeString () {
-   int i = 0;
+ wstring CGTFile::readUnicodeString () {
    wchar_t readChar;
-   wchar_t tmpString[512];
-   wchar_t *retString;
-   char   tmpChar1, tmpChar2;
-
-   //theStream->get (tmpChar1);
-   //theStream->get (tmpChar2);
-    theStream->read(&tmpChar1, 1);
-    theStream->read(&tmpChar2, 1);
-
-   while ((tmpChar1 != 0) || (tmpChar2 != 0)) {
-     readChar = (wchar_t) tmpChar2;
-     readChar <<= 8;
-     readChar |= tmpChar1;
-
-     tmpString[i] = readChar;
-
-     //theStream->get (tmpChar1);
-     //theStream->get (tmpChar2);
-    theStream->read(&tmpChar1,1);
-    theStream->read(&tmpChar2,1);
-
-     i++;
+   wstring str;
+   
+   theStream->read ((char*) &readChar, 2);
+   while (readChar != 0) {
+        str.append (1, readChar);
+        theStream->read ((char*)&readChar, 2);
    }
-   tmpString[i] = 0;
 
-   retString = new wchar_t [wcslen (tmpString) + 1];
-
-   wcscpy (retString, tmpString);
-   //wprintf(L"Header: %s", retString);
-
-   return retString;
+   return str;
  }
 
 
@@ -401,9 +375,9 @@
  void CGTFile::printInfo () {
     // Prints the info of this grammar
     wprintf (L"Grammar Information\n");
-    wprintf (L"Name: %s\n, ", gInfo->name);
-	wprintf (L"%s\n", gInfo->version);
-	wprintf (L"Author: %s\n", gInfo->author);
-	wprintf (L"About: %s\n", gInfo->about);
+    wprintf (L"Name: %s\n", gInfo->name.c_str());
+	wprintf (L"Version: %s\n", gInfo->version.c_str());
+	wprintf (L"Author: %s\n", gInfo->author.c_str());
+	wprintf (L"About: %s\n", gInfo->about.c_str());
  }
 

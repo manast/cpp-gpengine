@@ -27,7 +27,7 @@
 
 char *load_source (char *filename);
 void printTokens (vector <Token*> &t);
-
+   
 int main(int argc, char *argv[])
 {
   CGTFile    cgtFile;
@@ -107,11 +107,10 @@ int main(int argc, char *argv[])
 
    
 void printTokens (vector <Token*> &t) {
-  for (integer i = 0; i < t.size(); i++) {
-   wchar_t *pwe = t[i]->symbol;	
-    wprintf (t[i]->symbol);
+  for (integer i = 0; i < t.size(); i++) {	
+    wprintf (t[i]->symbol.c_str());
     wprintf (L":");
-    wprintf (t[i]->image);
+    wprintf (t[i]->image.c_str());
     wprintf (L"\n");
   }
 }

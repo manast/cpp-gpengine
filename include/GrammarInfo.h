@@ -18,17 +18,17 @@
 #ifndef GRAMMAR_INFO_H
 #define GRAMMAR_INFO_H
 
-#include <wchar.h>
+#include <string>
 
 
 
 class GrammarInfo {
 
 public:
-	wchar_t *name;
-	wchar_t *version;
-	wchar_t *author;
-	wchar_t *about;
+    std::wstring    name;
+    std::wstring    version;
+    std::wstring    author;
+    std::wstring    about;
 
 	GrammarInfo ();
 	~GrammarInfo ();
