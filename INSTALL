@@ -2,7 +2,7 @@
 UNIX Instructions
 -----------------
 
-i) On Linux and FreeBSD
+i) On GCC based environments
 Be sure that you have a gcc version >= 3.0.
 You will also need GNU make.
 

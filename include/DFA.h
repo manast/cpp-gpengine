@@ -43,16 +43,16 @@
    ~DFA ();
 
    bool scan (wchar_t *text);
-   bool scan (char *text);
+   bool scan (char	  *text);
 
    vector <Token*> &getTokens ();
 
    ErrorTable *getErrors();
  
  private:
-   const DFAStateTable *stateTable;
-   const SymbolTable *symbolTable;
-   const CharacterSetTable *characterSetTable;
+   const DFAStateTable		*stateTable;
+   const SymbolTable		*symbolTable;
+   const CharacterSetTable	*characterSetTable;
    integer startState;
    bool caseSensitive;
 

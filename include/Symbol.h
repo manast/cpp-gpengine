@@ -23,7 +23,7 @@
 #include "SymbolTable.h"
 #include "misc.h"
 
-using namespace std;
+//using namespace std;
 
 #if defined (WIN32) && defined (_USRDLL)
 	// Windows crap!. Maybe it is possible to export this without generating 
@@ -40,7 +40,7 @@ public:
     SymbolType type;
    
     Symbol *parent;
-    wstring symbol;
+    std::wstring symbol;
 
     integer symbolIndex;
     integer state;

@@ -23,7 +23,7 @@
 ErrorReporter::ErrorReporter () {
     // Default Error Messages
     endComment = "EOF Reached but end of comment was not found";
-    unknownToken = "Unknown token";
+    unknownToken = "unknown token";
 }
 
 ErrorReporter::~ErrorReporter () {
@@ -47,10 +47,10 @@ string ErrorReporter::composeErrorMsg (const GPError &err) {
 string ErrorReporter::composeScanErrorMsg (const GPError &err) {
     switch (err.value) {
         case END_COMMENT_NOT_FOUND:
-            return endComment;
+            return composeLineCol (err) + endComment;
             break;
         case UNKNOWN_TOKEN:
-            return unknownToken;
+            return composeLineCol (err) + unknownToken;
             break;
         }
     return "";
@@ -59,11 +59,7 @@ string ErrorReporter::composeScanErrorMsg (const GPError &err) {
 // This is the function that has to be strongly customized for every application.
 string ErrorReporter::composeParseErrorMsg (const GPError &err) {
     // Default Parse Error
-    string msg = atoi (err.line);
-    msg += ":";
-    msg += atoi (err.col);
-    msg += ": error parsing file";
-    return msg;
+    return composeLineCol (err) + "error parsing file";
 }
 
 wstring ErrorReporter::composeScanErrorMsgU  (const GPError &err) {
@@ -101,5 +97,9 @@ string ErrorReporter::atoi (int i) {
     char tmpbuf[10];
     sprintf(tmpbuf, "%i", i);
     return tmpbuf;
+}
+
+string ErrorReporter::composeLineCol (const GPError &err) {
+    return atoi (err.line) + ":" + atoi (err.col) + ":";
 }
 

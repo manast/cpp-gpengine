@@ -1,11 +1,13 @@
 /***************************************************************************
-				simple.cpp  
+								logic.cpp  
+    This example tries to show how the ASTCreator framework can be used 
+    to convert the Reduction tree to an Abstract Syntax Tree.
                              -------------------
     begin                : Fri May 31 00:53:11 CEST 2002
     copyright            : (C) 2002-2003 by Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
-                 
+
  /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -14,17 +16,18 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
-  
+ 
 #include <iostream>
 #include <stdlib.h>
 
 #include "CGTFile.h"
 #include "simpleErrorRep.h"
+#include "LogicASTCreator.h"
 
 
 char *load_source (char *filename);
 void printTokens (vector <Token*> &t);
-
+   
 int main(int argc, char *argv[])
 {
   CGTFile    cgtFile;
@@ -34,10 +37,11 @@ int main(int argc, char *argv[])
   LALR       *lalr;
 
   ErrorTable       *myErrors;
-  SimpleErrorRep   myReporter; 
+  ErrorReporter    myReporter;
+  LogicASTCreator  myASTCreator;
 
   // Load grammar file
-  if (cgtFile.load ("simple.cgt")) {     
+  if (cgtFile.load ("logic.cgt")) {
     wprintf (L"%s\n", "Grammar loaded succesfully");
     cgtFile.printInfo ();
   } else {
@@ -46,7 +50,7 @@ int main(int argc, char *argv[])
   }
 
   // Load source file
-  char *filename = "test1.s";
+  char *filename = "test.logic";
   source = load_source (filename);
   if (source == NULL) {
       wprintf (L"Error loading source file\n");
@@ -66,16 +70,16 @@ int main(int argc, char *argv[])
   
   // If there are errors report them
   if (myErrors->errors.size() > 0) {
-    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
-      cout << filename << ":";
-      cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
+    for (int i=0; i < myErrors->errors.size(); i++) {
+        cout << filename << ":";
+        cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }
     return -1;
   }
  
   // Get the tokens to feed the LALR machine with them
   vector <Token*> tokens = dfa->getTokens();
-  printTokens (tokens);
+  //printTokens (tokens);
 
   // Get the LALR (Look Ahead, Left-to-right parse, Rightmost-derivation)
   lalr = cgtFile.getParser();
@@ -85,14 +89,16 @@ int main(int argc, char *argv[])
    
   myErrors = lalr->getErrors(); 
   if (myErrors->errors.size() != 0) {
-    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
+    for (int i=0; i < myErrors->errors.size(); i++) {
         cout << filename << ":";
         cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }
     return -1;
   }
-     
-  lalr->printReductionTree(rdc, 0);
+  ASTNode *start = myASTCreator.createTree (*rdc);
+  start->print (0);
+  
+  //lalr->printReductionTree(rdc, 0);
 
   delete rdc;
 
@@ -101,7 +107,7 @@ int main(int argc, char *argv[])
 
    
 void printTokens (vector <Token*> &t) {
-  for (integer i = 0; i < t.size(); i++) {
+  for (integer i = 0; i < t.size(); i++) {	
     wprintf (t[i]->symbol.c_str());
     wprintf (L":");
     wprintf (t[i]->image.c_str());
@@ -127,4 +133,7 @@ char *load_source (char *filename) {
   fclose (file);
   return src_code;
 }
+
+
+
 

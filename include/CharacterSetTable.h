@@ -18,17 +18,18 @@
  #ifndef _GP_CHARACTER_SET_TABLE_H
  #define _GP_CHARACTER_SET_TABLE_H
 
+ #include <vector>
+ #include <string>
  #include "wchar.h"
  #include "misc.h"
 
- 
 
  class CharacterSetTable {
    public:
-   integer nbrEntries;
-   wchar_t **characters;
+   integer m_nbrEntries;
+   std::vector <std::wstring> characters;
 
-   CharacterSetTable (integer nbrEntries);
+   CharacterSetTable  (integer nbrEntries);
    ~CharacterSetTable ();
 
  };

@@ -16,10 +16,6 @@
  #include "Token.h"
 
  Token::Token () {
-
-   symbol = NULL;//L"EOF";
-   image = NULL;//L"EOF";
-
    symbolIndex = 0;
 
    state = 0;
@@ -27,22 +23,14 @@
  }
 
  Token::~Token () {
-   delete [] symbol;
-   delete [] image;
+  
  }
 
  Token *Token::newInstance() {
 	Token *newToken = new Token ();
 
-	if (symbol != NULL) {
-		newToken->symbol = new wchar_t [wcslen(symbol)+1];
-		wcscpy (newToken->symbol, symbol);
-	}
-
-	if (image != NULL) {
-		newToken->image = new wchar_t [wcslen(image)+1];
-		wcscpy (newToken->image, image);
-	}
+	newToken->symbol = symbol;
+    newToken->image = image;
 
 	newToken->col = col;
 	newToken->kind = kind;

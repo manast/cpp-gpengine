@@ -20,7 +20,6 @@
  #define _GP_CGTFILE_H
 
  #include <stdio.h>
- #include <wchar.h>
  #include <iostream> 
  #include <fstream>
  #include <vector>
@@ -33,11 +32,11 @@
 
  using namespace std;
 
- typedef union EntryStruct {
+ typedef struct EntryStruct {
    bool vBool;
-   integer vInteger;
-   byte vByte;
-   wchar_t *vString;
+   integer  vInteger;
+   byte     vByte;
+   wstring  vString;
  } EntryStruct ;
 
  #if defined (WIN32) && defined (_USRDLL)
@@ -71,9 +70,10 @@
  private:
 
    void readEntry (EntryStruct *entry);
-   wchar_t *readUnicodeString ();
+   wstring        readUnicodeString ();
+   
    // Header
-   wchar_t *header;
+   wstring  header;
 
    // Info
    GrammarInfo *gInfo;
@@ -82,7 +82,6 @@
 
    char *errorString;
 
-  // FILE *file;
    ifstream *theStream;
 
    // Character Table

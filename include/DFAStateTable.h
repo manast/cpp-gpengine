@@ -40,7 +40,6 @@
 
    DFAStateTable (integer nbrEntries);
    ~DFAStateTable ();
-
  };
 
  #endif

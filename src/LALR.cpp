@@ -87,10 +87,10 @@
 
   /return next reduction or NULL if error or test accepted
 
-  /sa getResult (), buildParseTree ()
+  /sa getResult (), parse ()
  */
 
- Symbol *LALR::nextReduction (bool trimReduction, bool reportOnlyOneError) {
+ Symbol *LALR::nextReduction (bool trimReductions, bool reportOnlyOneError) {
    Action *actObj;
    Token *tok;
    NonTerminal  *newNonTerminal;
@@ -151,7 +151,7 @@
          case ACTION_SHIFT:
          if (DEBUG) {
            wprintf (L"Shifting: ");
-           wprintf (tokens[tokenIndex]->symbol);
+           wprintf (tokens[tokenIndex]->symbol.c_str());
            wprintf ( L"\nGo to state:%d\n\n", target);
          }
 
@@ -190,10 +190,12 @@
          
 		 // Create a new Non Terminal (to represent this reduction)
          newNonTerminal = new NonTerminal();
-         index = ruleTable->rules[target].nonTerminal;
+         index = ruleTable->rules[target].symbolIndex;
          
          newNonTerminal->symbolIndex = index;
          newNonTerminal->symbol = symbolTable->symbols [index].name;
+         
+         newNonTerminal->ruleIndex = ruleTable->rules[target].ruleIndex;
          newNonTerminal->line = currentLine;
          newNonTerminal->col = currentCol;
          
@@ -202,7 +204,7 @@
          // User can decide to simplify this by enabling the trimming
          if ((ruleTable->rules[target].symbols.size() == 1) &&
             (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
-             NON_TERMINAL) && trimReduction) {
+             NON_TERMINAL) && trimReductions) {
                 trim = true; 
 				newNonTerminal->trimmed = true;
          } else {
@@ -211,7 +213,7 @@
          }
 
          if (DEBUG) {
-           wprintf (symbolTable->symbols[ruleTable->rules[target].nonTerminal].name);
+           wprintf (symbolTable->symbols[ruleTable->rules[target].ruleIndex].name.c_str());
            wprintf (L" = ");
          }
 
@@ -238,7 +240,7 @@
                if (!trim) {
                     symIndex = newNonTerminal->children[i]->symbolIndex;
                }
-             wprintf (symbolTable->symbols[symIndex].name);
+             wprintf (symbolTable->symbols[symIndex].name.c_str());
              wprintf (L" ");
            }
            wprintf (L"\n");
@@ -264,16 +266,6 @@
            return NULL;
          }
 
-		 /*
-         if (trim) {
-            reductionResult = REDUCTION_SIMPLIFIED;
-         //   return NULL;
-            return newNonTerminal;
-         } else {
-            reductionResult = REDUCTION_OK;
-            return newNonTerminal;
-         }
-		 */
 		 return newNonTerminal;
          break;
 
@@ -377,7 +369,7 @@
  }
 
  if (reduction->type == NON_TERMINAL) {
-    wprintf (symbolTable->symbols[reduction->symbolIndex].name);
+    wprintf (symbolTable->symbols[reduction->symbolIndex].name.c_str());
     wprintf (L"\n");
  
     for (i=0; i < ((NonTerminal*) reduction)->children.size(); i++) {

@@ -1,0 +1,16 @@
+
+Logic Abstract Grammar
+----------------------
+
+Start := AxiomList
+
+AxiomList := Axiom*
+
+Or:Axiom := Axiom Axiom
+And:Axiom := Axiom Axiom
+Not:Axiom := Axiom
+Implication:Axiom := Axiom Axiom
+DoubleImplication:Axiom := Axiom Axiom
+
+Proposition:Axiom := ID
+

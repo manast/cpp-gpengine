@@ -20,15 +20,12 @@
 
 
  SymbolTable::SymbolTable (integer nbrEntries) {
-     this->nbrEntries = nbrEntries;
+     m_nbrEntries = nbrEntries;
      symbols = new SymbolStruct [nbrEntries];
  }
 
 
  SymbolTable::~SymbolTable () {
-   for (unsigned short i=0; i < nbrEntries; i++) {
-     delete [] symbols[i].name;
-   }
    delete [] symbols;
  }
 

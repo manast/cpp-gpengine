@@ -19,18 +19,11 @@
 
 
  CharacterSetTable::CharacterSetTable (integer nbrEntries) {
-   this->nbrEntries = nbrEntries;
-   characters = new wchar_t * [nbrEntries];
-   for (int i=0; i < nbrEntries; i++) {
-     characters[i] = NULL;
-   }
-
+    m_nbrEntries = nbrEntries;
+    characters.resize (nbrEntries);
  }
 
  CharacterSetTable::~CharacterSetTable () {
-    for (int i = 0; i < nbrEntries; i++) {
-        delete [] characters[i];
-    }
-	delete [] characters;
+    
  }
 

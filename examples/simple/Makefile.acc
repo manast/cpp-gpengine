@@ -1,0 +1,24 @@
+# Project: cpp-gpengine
+# Makefile created by Pablo Garcia Ganzalez 
+# Date: 10.11.2003
+
+CPP  = aCC 
+OBJ  = 	simple.o 
+GPENGINELIB = ../../lib/cpp-gpengine-1.0.4.sl   
+LIBS = -L"../../lib" 
+CXXINCS = -I"../../include/" -I"/usr/include" 
+BIN  = simple
+CXXFLAGS = -AA -D_XOPEN_SOURCE=500 $(CXXINCS) 
+
+all: simple 
+
+clean: 
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(OBJ) $(GPENGINELIB) -AA -o "simple" $(LIBS)
+
+simple.o: simple.cpp
+	$(CPP) -c simple.cpp -o simple.o $(CXXFLAGS)
+
+

@@ -18,26 +18,23 @@
  #define SYMBOLTABLE_H
 
  #include "misc.h"
- #include <wchar.h>
-
+ #include <string>
 
  enum SymbolType {TERMINAL = 1, NON_TERMINAL = 0};
 
-
  typedef struct SymbolStruct {
-   wchar_t *name;
+   std::wstring    name;
    SymbolType kind;
  } SymbolStruct;
 
 
  class SymbolTable {
    public:
-   integer nbrEntries;
+   integer m_nbrEntries;
    SymbolStruct *symbols;
 
    SymbolTable (integer nbrEntries);
    ~SymbolTable ();
-
  };
 
 

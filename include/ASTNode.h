@@ -25,7 +25,7 @@
  #include <string>
  #include <wchar.h>
  
- #include "NonTerminal.h"
+ #include "Symbol.h"
 
  using namespace std;
 
@@ -38,28 +38,28 @@
  
  class ASTNode {
  protected:
-	wstring  symbol;
-    wstring  image;
+    std::wstring  symbol;
+    std::wstring  image;
 
 	unsigned short line, col;
 	
-	vector <ASTNode*> children;
+	std::vector <ASTNode*> children;
 	ASTNode *parent;
 
  public:
     ASTNode ();
 	virtual ~ASTNode ();
 
-	void    init (const Symbol &s);
+	void    init      (const Symbol &s);
 	void    setImage  (wstring image);
     void    setSymbol (wstring symbol);
-    wstring getImage  ();
-    wstring getSymbol ();
+    std::wstring getImage  ();
+    std::wstring getSymbol ();
 	void	setParent (ASTNode *parent);
 	ASTNode *getParent ();
 
 	void	addChild  (ASTNode *child);
-	vector <ASTNode*> *getChildren ();
+	std::vector <ASTNode*> *getChildren ();
 
 	void print (int tabs);
  };

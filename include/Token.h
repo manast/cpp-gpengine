@@ -16,7 +16,7 @@
  #ifndef TOKEN_H
  #define TOKEN_H
 
- #include <wchar.h>
+ #include <string>
  #include "misc.h"
  
 
@@ -29,8 +29,8 @@
    ~Token();
    Token *newInstance ();
 
-   wchar_t *symbol;
-   wchar_t *image;
+   std::wstring symbol;
+   std::wstring image;
    integer symbolIndex;
    integer line, col;
 

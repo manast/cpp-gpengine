@@ -58,11 +58,12 @@
    integer currentLine = 1, currentCol = 1, tokenBeginCol = 1;
 
    Token *t = NULL;
-   wchar_t tmpImage[64];
-   wchar_t *tokenSymbol, *tokenImage;
+  
+   wstring tmpImage;
+   wstring tokenSymbol, tokenImage;
    wchar_t currentChar;
    integer currentState = startState;
-   int i=0, imgIndex = 0;
+   int i=0;//, imgIndex = 0; //Unused variable
    integer j;
 
    // Free the memory for every token that might be stored in this vector
@@ -85,8 +86,9 @@
             errorTab->addError (ERROR_SCAN, END_COMMENT_NOT_FOUND, 
                                 NULL, currentLine, tokenBeginCol);
             currentState = startState;
-            imgIndex = 0;
-            return false;
+           
+            tmpImage = L"";
+			return false;
          } else {
             run = false;
          }
@@ -96,7 +98,7 @@
        currentCol = 1;
        if (commentLine) {
          commentLine = false;
-       //  i++;
+       
          if (text[i] == 0) {
            break;
          }
@@ -111,8 +113,7 @@
 
      if (!commentLine) {
 
-       tmpImage[imgIndex] = text[i];
-       imgIndex++;
+	   tmpImage.append (1,text[i]);
 
        // Check which is the next state
        integer e;
@@ -122,7 +123,7 @@
          integer index = stateTable->states[currentState].
          edges[e].characterSetIndex;
          // Check if the current character matchs one of the edge string
-         wchar_t *edgeString = characterSetTable->characters[index];
+         wstring edgeString = characterSetTable->characters[index];
          integer s = 0;
          while (edgeString[s] != 0) {
            if (currentChar == edgeString[s]) {
@@ -159,12 +160,12 @@
              // Terminal symbol
              case 1 :
              if (!commentBlock) {
-               tmpImage[imgIndex-1] = 0;
-               tokenSymbol = new wchar_t [wcslen(symbolTable->symbols[index2].name)+1];
-               tokenImage = new wchar_t [wcslen (tmpImage)+1];
+              // tmpImage[imgIndex-1] = 0;
+               tokenSymbol = symbolTable->symbols[index2].name;
+               tokenImage = tmpImage;
 
-               wcscpy (tokenSymbol, symbolTable->symbols[index2].name);
-               wcscpy (tokenImage, tmpImage);
+             //  wcscpy (tokenSymbol, symbolTable->symbols[index2].name);
+             //  wcscpy (tokenImage, tmpImage.c_str());
 
                t = new Token();
                t->symbol = tokenSymbol;
@@ -206,14 +207,16 @@
              break;
            }
            currentState = startState;
-           imgIndex = 0;
-         } else {
+       
+		   tmpImage = L"";
+		 } else {
            if (!commentBlock) {
              // Set error and return
              errorTab->addError (ERROR_SCAN, UNKNOWN_TOKEN, NULL, currentLine, tokenBeginCol);
              currentState = startState;
-             imgIndex = 0;
-             return false;
+     
+			 tmpImage = L"";            
+			 return false;
            }
            tokenBeginCol = currentCol;
          }
@@ -226,13 +229,11 @@
 
    // Generate EOF token
    t = new Token ();
-   t->symbol = new wchar_t [wcslen(L"EOF")+1];
-   t->image = new wchar_t [wcslen (L"EOF")+1];
    t->line = currentLine;
    t->col = currentCol;
 
-   wcscpy (t->symbol, L"EOF");
-   wcscpy (t->image, L"EOF");
+   t->symbol = L"EOF";
+   t->image = L"EOF";
    tokens.push_back(t);
 
    return true;

@@ -1,0 +1,26 @@
+# Project: cpp-gpengine
+# Makefile created by Pablo Garcia Gonzalez 
+# Date: 11.11.2003
+
+CPP  = g++ 
+OBJ  = 	logic.o LogicASTCreator.o 
+LIBS = -L"/usr/lib" -L"../../lib" ../../lib/cpp-gpengine-1.0.4.a  
+CXXINCS = -I"../../include/" -I"/usr/include" 
+BIN  = logic 
+CXXFLAGS = $(CXXINCS)  
+
+all: logic
+
+clean: 
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(OBJ) -o "logic" $(LIBS)
+
+logic.o: logic.cpp
+	$(CPP) -c -Wall logic.cpp -o logic.o $(CXXFLAGS)
+
+LogicASTCreator.o: LogicASTCreator.cpp
+	$(CPP) -c -Wall LogicASTCreator.cpp -o LogicASTCreator.o $(CXXFLAGS)
+
+

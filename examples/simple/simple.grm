@@ -13,7 +13,7 @@ StringLiteral = ''{String Ch}*''
 NumberLiteral = {Digit}+('.'{Digit}+)?
 
 <Statements> ::= <Statement> <Statements>
-               | <Statement>
+               |
 
 <Statement>  ::= display <Expression>
                | display <Expression> read ID
@@ -38,6 +38,7 @@ NumberLiteral = {Digit}+('.'{Digit}+)?
 <Mult Exp>    ::= <Mult Exp> '*' <Negate Exp> 
                 | <Mult Exp> '/' <Negate Exp> 
                 | <Negate Exp> 
+              
 
 <Negate Exp>  ::= '-' <Value> 
                 | <Value> 
