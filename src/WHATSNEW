@@ -1,3 +1,13 @@
+version 1.0.3 2003/07/08
+------------------------
++ Added latest succesfully parsed reduction to the error structure
+  (makes possible to report more complete error messages)
++ Added error codes
++ Added reading from file streams
+- Fixed reported bugs: #721763, #760597, #760614 and #761137 
+- Fixed other bugs that were reported by email.
++ Added some brief documentation
+
 version 1.0.2 2002/12/07
 ------------------------
 - Fixed all the memory leaks.
