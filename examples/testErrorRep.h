@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+using namespace std;
+
 class testErrorRep : public ErrorReporter {
     string composeParseErrorMsg (const GPError &err) {
         string header = "Error at ";
@@ -21,13 +23,12 @@ class testErrorRep : public ErrorReporter {
         sym = in (L"if", err.traceback, &pos); 
         if (sym != 0) {
             if (in (L"end", err.expected, &pos)) {
-                itoa (sym->line, tmpbuf, 10);
+                sprintf(tmpbuf, "%i", sym->line);
                 header += tmpbuf;
                 header += ",";
-                itoa (sym->col, tmpbuf, 10);
+		sprintf(tmpbuf, "%i", sym->col); 	
                 header += tmpbuf;
                 msg = " if statement is missing end";
-
                 return header + msg;
             } 
         }
@@ -36,13 +37,12 @@ class testErrorRep : public ErrorReporter {
         sym = in (L"while", err.traceback, &pos); 
         if (sym != 0) {
             if (in (L"end", err.expected, &pos)) {
-                itoa (sym->line, tmpbuf, 10);
+		sprintf(tmpbuf, "%i", sym->line);
                 header += tmpbuf;
                 header += ",";
-                itoa (sym->col, tmpbuf, 10);
+		sprintf(tmpbuf, "i", sym->col);
                 header += tmpbuf;
                 msg = " while statement is missing end";
-
                 return header + msg;
             } 
         }
@@ -52,10 +52,10 @@ class testErrorRep : public ErrorReporter {
         wstring tmp = L"EOF";
         if (tmp == err.lastTerminal.symbol) {
             if (in (L"end", err.expected, &pos)) {
-                itoa (err.lastTerminal.line, tmpbuf, 10);
+		sprintf(tmpbuf, "i", err.lastTerminal.line);
                 header += tmpbuf;
                 header += ",";
-                itoa (err.lastTerminal.col, tmpbuf, 10);
+		sprintf(tmpbuf, "%i", err.lastTerminal.col);
                 header += tmpbuf;
                 msg = " EOF reached but not end found";
 
@@ -65,10 +65,11 @@ class testErrorRep : public ErrorReporter {
         
         // Missing NEWLINE
         if (in (L"NEWLINE", err.expected, &pos)) {
-                itoa (err.lastTerminal.line, tmpbuf, 10);
+		sprintf(tmpbuf, "%i", err.lastTerminal.line);
                 header += tmpbuf;
                 header += ",";
-                itoa (err.lastTerminal.col, tmpbuf, 10);
+
+		sprintf(tmpbuf, "%i", err.lastTerminal.col);
                 header += tmpbuf;
                 msg = " a carry return is missing";
 
@@ -76,11 +77,11 @@ class testErrorRep : public ErrorReporter {
         }
         
         // Default error
-        itoa (err.lastTerminal.line, tmpbuf, 10);
+	
+	sprintf(tmpbuf, "%i", err.lastTerminal.line);
         header += tmpbuf;
         header += ",";
-        itoa (err.lastTerminal.col, tmpbuf, 10);
-        
+	sprintf(tmpbuf, "%i", err.lastTerminal.col);
         header += tmpbuf;
         msg = " unexpected token ";
         //msg = err.lastTerminal.image;
@@ -89,4 +90,5 @@ class testErrorRep : public ErrorReporter {
     }
 };
 
-  
+ 
+ 

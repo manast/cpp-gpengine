@@ -1,0 +1,147 @@
+
+"Name" = Game Script
+"Version" = 1.0
+"Author" = Manuel Astudillo
+"About" = Script for RTS games
+
+"Start Symbol" = Start
+
+
+Comment Line  =  '#'
+Comment Start =  '#*'
+Comment End   =  '*#'
+
+
+<Start> ::= <ScriptType> <Definitions> <Events>
+
+<NewLines> ::= NEWLINE <NewLineList>
+<NewLineList> ::= NEWLINE <NewLineList> 
+                | 
+
+<ScriptType> ::= <Section> <NewLines>
+
+<Definitions> ::= .defs <NewLines> <DefinitionList> 
+               | 
+<DefinitionList> ::= <Definition> <DefinitionList> 
+              |
+<Definition> ::= <IdDecl> <Expression> <NewLines>
+
+<Events> ::= .events <NewLines> <EventList> 
+             | 
+<EventList> ::= <Event> <EventList> 
+             |
+
+<Event> ::= <IdDecl> ':' <StatementList> end <NewLines>
+
+
+
+<StatementList> ::= <Statement> NEWLINE <StatementList> 
+                 |
+
+
+<Statement> ::= <IfStmt> 
+              | <ForStmt>  
+              | <WhileStmt> 
+              | <SwitchStmt> 
+              | <AssignStmt> 
+              | <Procedure>
+              |
+             
+
+<IfStmt> ::= if <Expression> then <StatementList> <IfStmtEnd>
+<IfStmtEnd> ::= end 
+               | else <StatementList> end
+
+<ForStmt> ::= for <IdDecl> '=' <Expression> to <Expression> do <StatementList> end
+
+
+<WhileStmt> ::= while <Expression> do <StatementList> end
+
+
+<SwitchStmt> ::= switch '(' <Expression> ')' NEWLINE <CaseList> end
+
+<CaseList> ::= <CaseOpt> <CaseList> 
+           | 
+<CaseOpt> ::= case <Expression> do <StatementList> end
+
+<AssignStmt> ::= <IdDecl> '=' <Expression>
+
+<Procedure> ::= <IdUse> '(' <ParameterList> ')'
+<FunctionCall> ::= <IdUse> '(' <ParameterList> ')'
+
+<ParameterList> ::= <Expression> ',' <ParameterList> |
+
+! This redundant rule is just to make the AST tree easier to build
+<Expression> ::= <OrExp>
+
+<OrExp>  ::= <AndExp> OR <OrExp> 
+                | <AndExp> 
+
+<AndExp>     ::= <NotExp> AND <AndExp> 
+                | <NotExp> 
+ 
+<NotExp>     ::= NOT <CompareExp> 
+                | <CompareExp> 
+
+<CompareExp> ::= <AddExp> '='  <CompareExp> 
+                | <AddExp> '<>' <CompareExp> 
+                | <AddExp> '>'  <CompareExp> 
+                | <AddExp> '>=' <CompareExp> 
+                | <AddExp> '<'  <CompareExp> 
+                | <AddExp> '<=' <CompareExp> 
+                | <AddExp> 
+
+<AddExp>     ::= <MultExp> '+' <AddExp> 
+                | <MultExp> '-' <AddExp> 
+                | <MultExp> 
+
+<MultExp>    ::= <NegateExp> '*' <MultExp> 
+                | <NegateExp> '/' <MultExp> 
+                | <NegateExp> 
+
+<NegateExp>  ::= '-' <PowerExp> 
+                | <PowerExp> 
+
+<PowerExp>   ::= <PowerExp> '^' <Value> 
+                | <Value> 
+
+<Value>       ::= '(' <Expression> ')'
+                | <IdUse> 
+                | <FunctionCall>
+                | <ConstInt>
+                | <ConstReal>
+                | <ConstBool>
+                | <ConstStr>
+
+<ConstInt> ::= ILIT 
+<ConstReal>::= RLIT
+<ConstBool>::= BLIT
+<ConstStr> ::= STRLIT 
+
+<Section> ::= SECTION
+
+<IdUse> ::= ID
+<IdDecl> ::= ID
+
+
+! Definition of Terminals
+
+{WS} = {Whitespace} - {CR} - {LF}
+Whitespace = {WS}+
+
+NEWLINE = {CR}{LF} | {LF}
+{LetterSwe} = {Letter} + [öåä]
+
+{IdHead} = {Letter} + [_] + [üöçðüþýÜÞÝÇÖÐ] 
+
+ID = {IdHead}{AlphaNumeric}*
+SECTION = .{Letter}+
+
+ILIT = {Digit}+
+RLIT = {Digit}*.{Digit}+
+BLIT = true | false
+
+{String Char} = {Printable} - ["]
+STRLIT = '"'{String Char}*'"'
+
+

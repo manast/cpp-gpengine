@@ -22,9 +22,10 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "../src/CGTFile.h"
-#include "../src/ErrorReporter.h"
+#include "CGTFile.h"
+#include "ErrorReporter.h"
 #include "testErrorRep.h"
+
 
 
 void printTokens (vector <Token*> &t);
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
   testErrorRep myReporter;
   
   // Load source code to compile
-  file =  fopen ("test1.gs", "rb");
+  file =  fopen ("test.gs", "rb");
   if (file == NULL) {
 	  wprintf (L"error loading source file\n");
       return -1;
@@ -116,9 +117,5 @@ void printTokens (vector <Token*> &t) {
     wprintf (L"\n");
   }
 }
-
-
-
-
 
 
