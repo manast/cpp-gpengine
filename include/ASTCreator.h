@@ -30,10 +30,6 @@ using namespace std;
 class __declspec(dllexport) ASTCreator;
 #endif
 
-#ifndef CREATE_NODE
-#define CREATE_NODE(X,x) X *x = new X(); x->init(*reduction); x->setParent(parent)
-#endif
-
 class ASTCreator {
 	public:
 		/*! 
