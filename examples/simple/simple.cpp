@@ -1,7 +1,7 @@
 /***************************************************************************
-								XML.cpp  
+								simple.cpp  
                              -------------------
-    begin                : Fri Nov 7 00:53:11 CEST 2003
+    begin                : Fri May 31 00:53:11 CEST 2002
     copyright            : (C) 2002-2003 by Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
@@ -15,22 +15,11 @@
  *                                                                         *
  ***************************************************************************/
  
-/***************************************************************************
-    This is just a simple example of how to use cpp-gpengine to parse a 
-    xml file.
-
-    The example aims to show how the library is used to perform lexical
-    and syntactical analysis.
-
-    It is also shown a simple error reporter class.
-
-****************************************************************************/
-
 #include <iostream>
 #include <stdlib.h>
 
 #include "CGTFile.h"
-#include "ErrorReporter.h"
+#include "SimpleErrorRep.h"
 
 
 char *load_source (char *filename);
@@ -44,11 +33,11 @@ int main(int argc, char *argv[])
   DFA        *dfa;
   LALR       *lalr;
 
-  ErrorTable      *myErrors;
-  ErrorReporter   myReporter; // Use standard reporter. (quite bad)
+  ErrorTable       *myErrors;
+  SimpleErrorRep   myReporter; 
 
   // Load grammar file
-  if (cgtFile.load ("XML.cgt")) {
+  if (cgtFile.load ("simple.cgt")) {
     wprintf (L"%s\n", "Grammar loaded succesfully");
     cgtFile.printInfo ();
   } else {
@@ -57,7 +46,7 @@ int main(int argc, char *argv[])
   }
 
   // Load source file
-  char *filename = "ex_xml.xml";
+  char *filename = "test1.s";
   source = load_source (filename);
   if (source == NULL) {
       wprintf (L"Error loading source file\n");

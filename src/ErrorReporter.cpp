@@ -33,7 +33,7 @@ ErrorReporter::~ErrorReporter () {
 string ErrorReporter::composeErrorMsg (const GPError &err) {
     switch (err.type) {
     case ERROR_SCAN:
-        
+        return composeScanErrorMsg (err);
         break;
     case ERROR_PARSE:
         // This has to be a more complex function that process
@@ -59,7 +59,11 @@ string ErrorReporter::composeScanErrorMsg (const GPError &err) {
 // This is the function that has to be strongly customized for every application.
 string ErrorReporter::composeParseErrorMsg (const GPError &err) {
     // Default Parse Error
-    return "";
+    string msg = atoi (err.line);
+    msg += ":";
+    msg += atoi (err.col);
+    msg += ": error parsing file";
+    return msg;
 }
 
 wstring ErrorReporter::composeScanErrorMsgU  (const GPError &err) {
@@ -93,3 +97,8 @@ Symbol *ErrorReporter::in (wstring a, vector <Symbol*> traceback, int *pos) {
     return NULL;
 }
 
+string ErrorReporter::atoi (int i) {
+    char tmpbuf[10];
+    sprintf(tmpbuf, "%i", i);
+    return tmpbuf;
+}
