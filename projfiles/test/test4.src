@@ -1,0 +1,12 @@
+// This is a comment
+
+Object oTest is an array
+
+    Procedure mTest
+    End_Procedure
+
+    Function fTest integer iItem returns string
+    End_Function 
+
+End_Object
+

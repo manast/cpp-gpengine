@@ -1,0 +1,29 @@
+
+ Gold Parser Engine (c) 2002 Manuel Astudillo
+ --------------------------------------------
+
+ This is a C++ implementation of the gold parser
+ engine.
+ At this moment the only documentation available
+ are the sources and a simple test program.
+
+ Project files for .NET and VC6 are provided, and the
+ sources can be compiled under linux without any problems, 
+ but complete Makefiles are not provided yet.
+
+ The use is though pretty simple and looking at the
+ sources should be enought to understand how it works.
+
+ For any questions e-mail me at:
+  
+ d00mas@efd.lth.se
+
+
+ Check my webpage for this and other projects:
+ 
+ www.efd.lth.se/~d00mas/
+
+
+ 26th June 2002,
+
+ Manuel Astudillo.
