@@ -44,9 +44,9 @@
  class LALR {
    private:
 
-   LALRStateTable *stateTable;
-   RuleTable *ruleTable;
-   SymbolTable *symbolTable;
+   const LALRStateTable *stateTable;
+   const RuleTable *ruleTable;
+   const SymbolTable *symbolTable;
 
    integer startState;
    integer currentState;
@@ -56,20 +56,23 @@
    integer tokenIndex;
 
    vector<Token*> tokens;
+   vector<Token*> tokensList; // we save a copy of all the new tokens that we create in the
+						     // parser in order to free them at the end
    stack <Token*, vector<Token*> > tokenStack;
 
    Reduction *currentReduction;
    Reduction *startReduction;
 
    Reduction *oldReduction;
+   vector <Reduction*> reductionsList; // we save the reductions in order to remove them later.
 
    int reductionResult;
 
    Error *error;
 
    public:
-   LALR (LALRStateTable *stateTable, SymbolTable *symbolTable,
-   RuleTable *ruleTable, integer startState);
+   LALR (const LALRStateTable *stateTable, const SymbolTable *symbolTable,
+   const RuleTable *ruleTable, integer startState);
    ~LALR ();
 
    /*!

@@ -18,7 +18,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
+ 
 #include <iostream>
 #include <stdlib.h>
 
@@ -36,10 +36,10 @@ int main(int argc, char *argv[])
   Reduction  *rdc;
 
   Error *myError;
-
-
+  
+   
   // Load source code to compile
-  file =  fopen ("test4.src", "rb");
+  file =  fopen ("test1.gs", "rb");
    if (file == NULL) {
 	  wprintf (L"error loading source file\n");
       return -1;
@@ -55,20 +55,20 @@ int main(int argc, char *argv[])
 
   fclose (file);
 
-  
-  if (cgtFile.load ("dataflex.cgt")) {
+    
+  if (cgtFile.load ("gscript.cgt")) {
     wprintf (L"%s\n", "file loaded succesfully");
   } else {
     wprintf (L"%s\n", "error loading file");
 	return -1;
   }
-
+ 
   DFA *dfa = cgtFile.getScanner();
 
   dfa->scan(srcCode);
   myError = dfa->getError();
   myError->print();
-
+ 
   if (myError->errors.size() == 0) {
 
     vector <Token*> tokens = dfa->getTokens();
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     LALR *lalr = cgtFile.getParser();
 
     lalr->parse(tokens);
-
+   
     rdc = lalr->buildParseTree(true);
 
     myError = lalr->getError(); 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-
+   
 void printTokens (vector <Token*> &t) {
   for (integer i = 0; i < t.size(); i++) {
    wchar_t *pwe = t[i]->symbol;	

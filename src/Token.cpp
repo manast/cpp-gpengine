@@ -42,3 +42,26 @@
    delete [] image;
  }
 
+
+ Token *Token::newInstance() {
+	Token *newToken = new Token ();
+
+	if (symbol != NULL) {
+		newToken->symbol = new wchar_t [wcslen(symbol)+1];
+		wcscpy (newToken->symbol, symbol);
+	}
+
+	if (image != NULL) {
+		newToken->image = new wchar_t [wcslen(image)+1];
+		wcscpy (newToken->image, image);
+	}
+
+	newToken->col = col;
+	newToken->kind = kind;
+	newToken->line = line;
+	newToken->reduction = reduction;
+	newToken->state = state;
+	newToken->symbolIndex = symbolIndex;
+
+	return newToken;
+ }

@@ -23,9 +23,9 @@
  }
 
  Reduction::~Reduction () {
-   delete tok;
-   for (unsigned short i=0; i < childs.size(); i++) {
-     delete childs[i]->reduction;
-     delete childs[i];
-   }
+  
+   //for (unsigned short i=0; i < childs.size(); i++) {
+   //  delete childs[i]->reduction;
+   //  delete childs[i];
+   //}
  }

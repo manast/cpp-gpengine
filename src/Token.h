@@ -26,6 +26,7 @@
    public:
    Token ();
    ~Token();
+   Token *newInstance ();
 
    wchar_t *symbol;
    wchar_t *image;

@@ -35,9 +35,9 @@
 
  class DFA {
    private:
-   DFAStateTable *stateTable;
-   SymbolTable *symbolTable;
-   CharacterSetTable *characterSetTable;
+   const DFAStateTable *stateTable;
+   const SymbolTable *symbolTable;
+   const CharacterSetTable *characterSetTable;
    integer startState;
    bool caseSensitive;
 
@@ -46,8 +46,8 @@
    Error *error;
 
    public:
-   DFA (DFAStateTable *stateTable, SymbolTable *symbolTable,
-   CharacterSetTable *characterSetTable, integer startState, bool caseSensitive);
+   DFA (const DFAStateTable *stateTable, const SymbolTable *symbolTable,
+   const CharacterSetTable *characterSetTable, integer startState, bool caseSensitive);
    ~DFA ();
 
 

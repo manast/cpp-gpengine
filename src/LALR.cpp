@@ -17,8 +17,8 @@
 
  #include "LALR.h"
 
- LALR::LALR (LALRStateTable *stateTable, SymbolTable *symbolTable,
- RuleTable *ruleTable, integer startState) {
+ LALR::LALR (const LALRStateTable *stateTable, const SymbolTable *symbolTable,
+ const RuleTable *ruleTable, integer startState) {
    this->stateTable = stateTable;
    this->symbolTable = symbolTable;
    this->ruleTable = ruleTable;
@@ -28,8 +28,21 @@
  }
 
  LALR::~LALR () {
+   
+   // Delete all the tokens
+   for (int i=0; i < this->tokens.size(); i++) {
+	   delete this->tokens[i];
+   }
+
+   for (i=0; i < this->tokensList.size(); i++) {
+	   delete tokensList[i];
+   }
+
    // delete the reduction tree
-   delete startReduction;
+   for (i=0; i < this->reductionsList.size(); i++) {
+	   delete reductionsList[i];
+   }
+
    delete error;
  }
 
@@ -43,13 +56,34 @@
 
  */
  void LALR::parse (const vector <Token*> &tokens) {
+   int i;
+
+   // First we clean the tokens and the tokensList vector
+   for (i=0; i < this->tokens.size(); i++) {
+	   delete this->tokens[i];
+   }
+   this->tokens.clear();
+
+   for (i=0; i < this->tokensList.size(); i++) {
+	   delete tokensList[i];
+   }
+   tokensList.clear();
+
+    // delete the reduction tree
+   for (i=0; i < this->reductionsList.size(); i++) {
+	   delete reductionsList[i];
+   }
+   reductionsList.clear();
+
    // Initialize stack
    while (!tokenStack.empty()) {
          tokenStack.pop();
    }
    startReduction = new Reduction();
+   reductionsList.push_back(startReduction);
 
    Token *firstToken = new Token();
+   tokensList.push_back(firstToken);
 
    startReduction->tok = firstToken;
    firstToken->reduction = startReduction;
@@ -57,8 +91,13 @@
    firstToken->state = startState;
    tokenStack.push (firstToken);
 
-   this->tokens = tokens;
+   
 
+   // We replicate all the tokens (to eliminate dependencies with other classes)
+   for (i=0; i < tokens.size(); i++) {
+	   this->tokens.push_back (tokens[i]->newInstance());
+   }
+ 
    currentState = startState;
    currentReduction = NULL;
 
@@ -74,7 +113,7 @@
   Parses the tokens until it reduces a rule.
 
   /param trimReduction especifies trimming enable or disable. Trimming will
-  silplfy rules of the form: NonTerminal1 := Nonterminal2
+  simplify rules of the form: NonTerminal1 := Nonterminal2
 
   /return next reduction or NULL if error or test accepted
 
@@ -135,7 +174,9 @@
 		 currentCol = tokens[tokenIndex]->col;
 
          tokens[tokenIndex]->state = currentState;
-         tokenStack.push (tokens[tokenIndex]);
+
+	
+		 tokenStack.push (tokens[tokenIndex]);
          break;
 
          /*
@@ -149,6 +190,10 @@
 
          // Create a new token for this rule
          newToken = new Token();
+
+		 // Save it in the pool to release it later
+		 tokensList.push_back(newToken);
+
          newToken->kind = SYMBOL_NON_TERMINAL;
          newToken->symbolIndex = ruleTable->rules[target].nonTerminal;
 
@@ -176,6 +221,7 @@
         } else {
           // Create a new Reduction
           newReduction = new Reduction();
+		  reductionsList.push_back(newReduction);
           oldReduction = newReduction;
           newReduction->tok = newToken;
         }

@@ -19,8 +19,8 @@
  #include "DFA.h"
 
 
- DFA::DFA (DFAStateTable *stateTable, SymbolTable *symbolTable,
- CharacterSetTable *characterSetTable, integer startState, bool caseSensitive) {
+ DFA::DFA (const DFAStateTable *stateTable, const SymbolTable *symbolTable,
+ const CharacterSetTable *characterSetTable, integer startState, bool caseSensitive) {
    this->startState = startState;
    this->stateTable = stateTable;
    this->symbolTable = symbolTable;
