@@ -1,0 +1,24 @@
+
+UNIX Instructions
+-----------------
+
+i) On Linux and FreeBSD
+Be sure that you have a gcc version >= 3.0.
+You will also need GNU make.
+
+then type: make -f gcc-linux.mak
+And it will compile the library in directory ./lib
+
+ii) On HPUX
+type: make -f acc-hpux.mak
+
+the compiled library will be created on ./lib
+
+
+WINDOWS
+-------
+
+Go to the projfiles directory and load the desired 
+Visual Studio project.
+
+

@@ -1,0 +1,32 @@
+History
+-------
+
+version 1.0.4 2003/11/11
+------------------------
++ UNIX support. The engine compiles and runs on UNIX-based operating 
+  systems. It has been tested on FreeBSD, Linux and HPUX.
++ Lots of clean ups. Changed the Reduction tree structure to a 
+  better, cleaner, more consistent one.
++ Improved error system. A special class called 
+  ErrorReporter has been added.
+- Fixed a bug in multiline comments. If the content of the
+  comment had an unknown token an error would occur.
+
+
+version 1.0.3 2003/07/08
+------------------------
++ Added latest succesfully parsed reduction to the error structure
+  (makes possible to report more complete error messages)
++ Added error codes
++ Added reading from input streams
+- Fixed reported bugs: #721763, #760597, #760614 and #761137 
+- Fixed other bugs that were reported by email.
++ Added some brief documentation
+
+version 1.0.2 2002/12/07
+------------------------
+- Fixed all the memory leaks.
+
+version 1.0.1 summer 2002
+-------------------------
+- initial version
