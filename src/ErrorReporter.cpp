@@ -102,3 +102,4 @@ string ErrorReporter::atoi (int i) {
     sprintf(tmpbuf, "%i", i);
     return tmpbuf;
 }
+
