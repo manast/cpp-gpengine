@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
   ErrorTable       *myErrors;
   ErrorReporter    myReporter;
   LogicASTCreator  myASTCreator;
-
+ 
   // Load grammar file
   if (cgtFile.load ("logic.cgt")) {
     wprintf (L"%s\n", "Grammar loaded succesfully");
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
   
   // If there are errors report them
   if (myErrors->errors.size() > 0) {
-    for (int i=0; i < myErrors->errors.size(); i++) {
+    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
         cout << filename << ":";
         cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
    
   myErrors = lalr->getErrors(); 
   if (myErrors->errors.size() != 0) {
-    for (int i=0; i < myErrors->errors.size(); i++) {
+    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
         cout << filename << ":";
         cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }

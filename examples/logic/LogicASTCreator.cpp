@@ -7,7 +7,7 @@
 // Please read AbstractSyntaxGrammr.txt for info on the abstract grammar
 
 ASTNode *LogicASTCreator::getASTNode (const Symbol *reduction, 
-				      ASTNode *parent) {    
+				                      ASTNode *parent) {    
   vector <ASTNode*> *children = NULL;
   int ind; 
   
@@ -31,7 +31,8 @@ ASTNode *LogicASTCreator::getASTNode (const Symbol *reduction,
     // <Start> ::= <NewLineList> <AxiomList>
     // Start := AxiomList
     if ( ind == RULE_START) {
-      CREATE_NODE (Start, start);
+      Start *start = new Start ();
+      start->init (reduction, parent);
       
       start->addChild (getASTNode(rdcChildren[1], start));
       return start;
@@ -40,7 +41,8 @@ ASTNode *LogicASTCreator::getASTNode (const Symbol *reduction,
     // <AxiomList> ::= <Axiom> <AxiomList>
     // AxiomList := Axiom*
     if (ind == RULE_AXIOMLIST) {
-      CREATE_NODE (AxiomList, axiomList);
+      AxiomList *axiomList = new AxiomList ();
+      axiomList->init (reduction, parent);
       
       axiomList->addChild (getASTNode (rdcChildren[0], axiomList));
       
@@ -53,7 +55,8 @@ ASTNode *LogicASTCreator::getASTNode (const Symbol *reduction,
     // <Implication> ::= <DoubleImplication> '->' <Implication>
     // Implication:Axiom := Axiom Axiom
     if (ind == RULE_IMPLICATION_MINUSGT) {
-      CREATE_NODE (Implication, implication);
+      Implication *implication = new Implication ();
+      implication->init (reduction, parent);
       
       implication->addChild (getASTNode (rdcChildren[0], implication));
       implication->addChild (getASTNode (rdcChildren[2], implication));
@@ -63,7 +66,8 @@ ASTNode *LogicASTCreator::getASTNode (const Symbol *reduction,
     // <DoubleImplication> ::= <Or> '<->' <DoubleImplication>
     // DoubleImplication:Axiom := Axiom Axiom
     if (ind == RULE_DOUBLEIMPLICATION_LTMINUSGT) {
-      CREATE_NODE (DoubleImplication, doubleImplication);
+      DoubleImplication *doubleImplication = new DoubleImplication ();
+      doubleImplication->init (reduction, parent);
       
       doubleImplication->addChild (getASTNode (rdcChildren[0], 
 					       doubleImplication));
@@ -75,52 +79,58 @@ ASTNode *LogicASTCreator::getASTNode (const Symbol *reduction,
     // <Or> ::= <And> OR <Or>
     // Or:Axiom := Axiom Axiom
     if (ind == RULE_OR_OR) {
-      CREATE_NODE (Or, or);
+      Or *_or = new Or ();
+      _or->init (reduction, parent);
       
-      or->addChild (getASTNode (rdcChildren[0], or));
-      or->addChild (getASTNode (rdcChildren[2], or));
-      return or;
+      _or->addChild (getASTNode (rdcChildren[0], _or));
+      _or->addChild (getASTNode (rdcChildren[2], _or));
+      return _or;
     }
     
     // <And> ::= <Not> AND <And>
     // And:Axiom := Axiom Axiom
     if (ind == RULE_AND_AND) {
-      CREATE_NODE (And, and);
+      And *_and = new And ();
+      _and->init (reduction, parent);
       
-      and->addChild (getASTNode (rdcChildren[0], and));
-      and->addChild (getASTNode (rdcChildren[2], and));
-      return and;
+      _and->addChild (getASTNode (rdcChildren[0], _and));
+      _and->addChild (getASTNode (rdcChildren[2], _and));
+      return _and;
     }
     
     // <Not> ::= NOT <Value> 
     // Not:Axiom := Axiom
     if (ind == RULE_NOT_NOT) {
-      CREATE_NODE (Not, not);
+      Not *_not = new Not ();
+      _not->init (reduction, parent);
       
-      not->addChild (getASTNode (rdcChildren[1], not));
-      return not;
+      _not->addChild (getASTNode (rdcChildren[1], _not));
+      return _not;
     }    
     
     
     // <Proposition> ::= ID
     // Proposition:Axiom := ID
     if (ind == RULE_PROPOSITION_ID) {
-      CREATE_NODE (Proposition, proposition);
+      Proposition *proposition = new Proposition ();
+      proposition->init (reduction, parent);
       proposition->addChild (getASTNode (rdcChildren[0],proposition));
       return proposition;
         }
     
-    // Process Terminal Symbols (just create nodes for everyone of it, maybe
-    // Convert data types from wstring to other more convenient types
+    // Process Terminal Symbols (just create nodes for everyone of it, maybe also
+    // convert data types from wstring to other more convenient types)
   } else {
     ind = reduction->symbolIndex;
     // Terminal:
     // ID
     if (ind == SYMBOL_ID) {
-      CREATE_NODE (Terminal_ID, id);
+      Terminal_ID *id = new Terminal_ID ();
+      id->init (reduction, parent);
       return id;
     }
   }
   
+  // Search for equivalent nodes among the childrens of this reduction
   return searchEquivNode( rdcChildren, parent);
 }

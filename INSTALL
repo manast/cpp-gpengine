@@ -6,19 +6,26 @@ i) On GCC based environments
 Be sure that you have a gcc version >= 3.0.
 You will also need GNU make.
 
-then type: make -f gcc-linux.mak
+then type: make -f Makefile.gcc
 And it will compile the library in directory ./lib
 
 ii) On HPUX
-type: make -f acc-hpux.mak
+type: make -f Makefile.acc
 
 the compiled library will be created on ./lib
 
+The examples contained in ./examples can be 
+compiled separately in the same way as the 
+library.
 
 WINDOWS
 -------
 
 Go to the projfiles directory and load the desired 
 Visual Studio project.
+Add in the tools->directories>include the path to the
+include directory in the cpp-gpengine directory.
+
+Project files are also provided for the examples.
 
 

@@ -66,7 +66,8 @@
 	<Start> ::= <ConstList> <DefsList> <StatementList>
 
 	 if ( sym == L"Start" ) {
-		CREATE_NODE (Start, start); // Check this macro definition for more details
+		Start *start = new Start ();
+        start->init (reduction, parent);
 
 		start->addChild (getASTNode(rdcChildren[1], start));
 		start->addChild (getASTNode(rdcChildren[3], start));
@@ -84,7 +85,8 @@
 	<StatementList> ::= <Statement>*
 
 	 if (sym == L"StatementList") {
-		CREATE_NODE (StatementList, statementList);
+		StatementList *statementList = new StatementList ();
+        statementList->init (reduction, parent);
 		
 		if (rdcChildren.size() == 3) {
 			statementList->addChild (getASTNode (rdcChildren[0], stmtList));
@@ -98,30 +100,30 @@
 */
 
 	 /*
-        If the symbol constants are included it is possible to use a switch-case 
-        for all the rules:
-
-        switch (reduction->symbolIndex) {
+        If the symbol constants are included it is possible to do it in the possible way: 
 
             // <If Statement> ::= if <Expression> then <StatementList> end
-            case RULE_IF_THEN_END_STATEMENT:
-                CREATE_NODE (IfStatement, ifStmt);
+            if (sym == RULE_IF_THEN_END_STATEMENT) {
+                IfStatement *ifStatement = new IfStatement ();
+                ifStatement->init (reduction, parent);
                     
                 ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
                 ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
 	
                 return ifStmt;
+            }
 
             // <If Statement> ::= if <Expression> then <StatementList> else <StatementList> end
-            case RULE_IF_THEN_END_ELSE_STATEMENT:
-                CREATE_NODE (IfStatement, ifStatement);
+            if ( sym == RULE_IF_THEN_END_ELSE_STATEMENT) {
+                IfStatement *ifStatement = new IfStatement ();
+                ifStatement->init (reduction, parent);
 
                 ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
                 ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
 	            ifStmt->addChild (getASTNode(rdcChildren[5], ifStmt));
                 return ifStmt;
-            default: return searchEquivNode( rdcChildren, parent);
-        }
+            }
+           
 
      */
 

@@ -55,7 +55,7 @@ protected:
     string composeLineCol (const GPError &err);
 public:
     ErrorReporter ();
-    ~ErrorReporter ();
+    virtual ~ErrorReporter ();
 
     string  composeErrorMsg   (const GPError &err);
     wstring composeErrorMsgU  (const GPError &err);

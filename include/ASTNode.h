@@ -38,19 +38,18 @@
  
  class ASTNode {
  protected:
-    std::wstring  symbol;
-    std::wstring  image;
+    std::wstring  m_symbol;
+    std::wstring  m_image;
 
-	unsigned short line, col;
+    ASTNode *m_parent;
+	unsigned short m_line, m_col;
 	
 	std::vector <ASTNode*> children;
-	ASTNode *parent;
-
+	
  public:
-    ASTNode ();
 	virtual ~ASTNode ();
 
-	void    init      (const Symbol &s);
+	void    init      (const Symbol *s, ASTNode *parent);
 	void    setImage  (wstring image);
     void    setSymbol (wstring symbol);
     std::wstring getImage  ();

@@ -78,7 +78,6 @@ bool CGTFile::load (ifstream *myStream) {
   // Read Header
   //////////////
   header = readUnicodeString();
-  wprintf (header.c_str());
 
   // Read Records
   ////////////////
@@ -372,9 +371,14 @@ LALR *CGTFile::getParser () {
 void CGTFile::printInfo () {
   // Prints the info of this grammar
   wprintf (L"Grammar Information\n");
-  wprintf (L"Name: %s\n", gInfo->name.c_str());
-  wprintf (L"Version: %s\n", gInfo->version.c_str());
-  wprintf (L"Author: %s\n", gInfo->author.c_str());
-  wprintf (L"About: %s\n", gInfo->about.c_str());
+  wprintf (L"Name: ");
+  wprintf (gInfo->name.c_str());
+  wprintf (L"\nVersion: ");
+  wprintf (gInfo->version.c_str());
+  wprintf (L"\nAuthor: ");
+  wprintf (gInfo->author.c_str());
+  wprintf (L"\nAbout: ");
+  wprintf (gInfo->about.c_str());
+  wprintf (L"\n");
 }
 
