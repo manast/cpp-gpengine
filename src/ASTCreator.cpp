@@ -23,11 +23,16 @@
 // Include the header with YOUR AST node classes
 // (example)  #include "ASTClasses.h"	
 
- ASTNode *ASTCreator::createTree (const Reduction &reduction) {
-	 return getASTNode (&reduction, NULL);
+ ASTNode *ASTCreator::createTree (const Symbol &reductionTree) {
+	 // If the tree is an empty terminal node return null
+     if (reductionTree.type == TERMINAL) {
+         return NULL;
+     } else {
+        return getASTNode ((NonTerminal*) &reductionTree, NULL);
+     }
  }
 
- ASTNode *ASTCreator::getASTNode (const Reduction *reduction, ASTNode *parent) {
+ ASTNode *ASTCreator::getASTNode (const NonTerminal *reduction, ASTNode *parent) {
      
 	 vector <ASTNode*> *children = NULL;
 
@@ -53,9 +58,9 @@
 
 	 */
 
-	 Token *tok = reduction->tok;
-	 wchar_t *sym = tok->symbol;
-	 deque <Token*> rdcChildren = reduction->childs;
+//	 Token *tok = reduction->tok;
+	 wstring sym = reduction->symbol;
+	 deque <Symbol*> rdcChildren = reduction->children;
 
 	 /*
 	 Next is a colection of if statements that checks for the
@@ -115,7 +120,6 @@
 	 }
 */
 
-
 	 return searchEquivNode(rdcChildren, parent);
  }
 
@@ -123,12 +127,12 @@
  If the node has not an equivalent in the Abstract Tree we just search
  for more equivalent nodes in their children. If none found return NULL.
 */
- ASTNode *ASTCreator::searchEquivNode (const deque <Token*> &rdcChildren,
+ ASTNode *ASTCreator::searchEquivNode (const deque <Symbol*> &rdcChildren,
 	 ASTNode *parent) {
  	 ASTNode *result = NULL;
 	 for (unsigned short i=0; i < rdcChildren.size(); i ++) {
-		 if (rdcChildren[i]->reduction != NULL) {
-			result = getASTNode(rdcChildren[i]->reduction, parent);
+		 if (rdcChildren[i]->type == NON_TERMINAL) {
+			result = getASTNode((NonTerminal*)rdcChildren[i], parent);
 			if (result != NULL) {
 				break;
 			}	
@@ -149,16 +153,15 @@
 	 /param nbrElements specifies the number of element in the "iterative" production.
 	 /param parent Parent node, where the list will be hanging.
  */
- void ASTCreator::getASTNodeList (vector <ASTNode*> *children, wchar_t *iterNode,
-	 Reduction *reduction, int nbrInsert, int nbrElements, ASTNode *parent) {
+ void ASTCreator::getASTNodeList (vector <ASTNode*> *children, wstring iterNode,
+	              NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent) {
 	integer i;
 	ASTNode *ast;
 
-	Token *tok = reduction->tok;
-	wchar_t *sym = tok->symbol;
+	wstring sym = reduction->symbol;
 
-	deque <Token*> rdcChildren = reduction->childs;
-	if (wcscmp (sym, iterNode) == 0) {
+	deque <Symbol*> rdcChildren = reduction->children;
+	if (sym == iterNode) {
 		int size = rdcChildren.size();
 		if (size > 0) {
 			if (size < nbrElements) {
@@ -166,10 +169,10 @@
 					if (i < nbrInsert) {
 					// if the child reduction is NULL, we have a rule that produces a
 					// terminal symbol. so we only get the node for this reduction
-						if (rdcChildren[i]->reduction == NULL) {
+						if (rdcChildren[i]->type == TERMINAL) {
 							ast = getASTNode (reduction,parent);
 						} else {
-							ast = getASTNode (rdcChildren[i]->reduction,parent);
+							ast = getASTNode ((NonTerminal*)rdcChildren[i],parent);
 						}
 						// Do not insert NULL childs
 						if (ast!=NULL) {
@@ -181,14 +184,21 @@
 				for (i=0; i < rdcChildren.size()-1; i++) {
 					if (i < nbrInsert) {
 						// Do not insert NULL childs
-						ast = getASTNode (rdcChildren[i]->reduction, parent);
-						if (ast!=NULL) {
+                        if (rdcChildren[i]->type == NON_TERMINAL) {
+						    ast = getASTNode ((NonTerminal*)rdcChildren[i], parent);
+                        } else {
+                            ast = NULL;
+                        }
+
+                        if (ast!=NULL) {
 							children->push_back(ast);
 						}
 					}	
 				}
-				getASTNodeList (children, iterNode, rdcChildren[i]->reduction,
-				nbrInsert, nbrElements, parent);
+                if (rdcChildren[i]->type == NON_TERMINAL) {
+				    getASTNodeList (children, iterNode, (NonTerminal*) rdcChildren[i],
+                                    nbrInsert, nbrElements, parent);
+                }
 			}
 		}
 
@@ -214,10 +224,10 @@
  */
 
  void ASTCreator::getASTNodeList (vector <ASTNode*> *children, 
-	 Reduction *reduction, int nbrInsert, int nbrElements, ASTNode *parent) {
+	 NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent) {
 	integer i;
 	ASTNode *ast;
-	deque <Token*> rdcChildren = reduction->childs;
+	deque <Symbol*> rdcChildren = reduction->children;
 	
 	int size = rdcChildren.size();
 
@@ -227,10 +237,10 @@
 				if (i < nbrInsert) {
 					// if the child reduction is NULL, we have a rule that produces a
 					// terminal symbol. so we only get the node for this reduction
-					if (rdcChildren[i]->reduction == NULL) {
-						ast = getASTNode (reduction,parent);
+					if (rdcChildren[i]->type == TERMINAL) {
+						ast = getASTNode (reduction, parent);
 					} else {
-						ast = getASTNode (rdcChildren[i]->reduction,parent);
+						ast = getASTNode ((NonTerminal*)rdcChildren[i], parent);
 					}
 					// Do not insert NULL childs
 					if (ast!=NULL) {
@@ -242,14 +252,20 @@
 			for (i=0; i < rdcChildren.size()-1; i++) {
 				if (i < nbrInsert) {
 					// Do not insert NULL childs
-					ast = getASTNode (rdcChildren[i]->reduction, parent);
-					if (ast!=NULL) {
+                    if (rdcChildren[i]->type == NON_TERMINAL) {
+					    ast = getASTNode ((NonTerminal*)rdcChildren[i], parent);
+                    } else {
+                        ast = NULL;
+                    }
+                    if (ast!=NULL) {
 						children->push_back(ast);
 					}
 				}	
 			}
-			getASTNodeList (children, rdcChildren[i]->reduction,
-			nbrInsert, nbrElements, parent);
+            if (rdcChildren[i]->type == NON_TERMINAL) {
+			    getASTNodeList (children, (NonTerminal*) rdcChildren[i],
+			    nbrInsert, nbrElements, parent);
+            }
 		}
 	}
 }

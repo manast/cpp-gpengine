@@ -33,9 +33,9 @@
     errors.clear();
   }
 
-  void ErrorTable::addError (error_type type, error_value value, Reduction *rdc, 
-                             vector <wstring> expected, vector <Token*> traceback, 
-                             integer line, integer col) {  
+  void ErrorTable::addError (error_type type, error_value value, Symbol *rdc, 
+                             Terminal *lastTerminal, vector <wstring> expected, 
+                             vector <Symbol*> traceback, integer line, integer col) {  
      GPError *err = new GPError ();
 
      err->expected = expected;
@@ -48,10 +48,12 @@
      err->value = value;
      err->reduction = rdc;
 
+     err->lastTerminal = *lastTerminal;
+
      errors.push_back (err);
    }
 
-   void ErrorTable::addError (error_type type, error_value value, Reduction *rdc, 
+   void ErrorTable::addError (error_type type, error_value value, Symbol *rdc, 
                          integer line, integer col) {
      GPError *err = new GPError ();
 
@@ -73,7 +75,7 @@
        wprintf (L"\n");
        if (errors[i]->reduction != NULL) {
             wprintf (L"Last correct parsed token was: ");
-            wprintf (errors[i]->reduction->tok->symbol);
+            wprintf (errors[i]->reduction->symbol.c_str());
             wprintf (L"\n");
        }
 
@@ -86,11 +88,11 @@
 
        wprintf (L"Tokens Traceback: \n");
        for (k = 0; k < errors[i]->traceback.size (); k++) {
-            wchar_t *a = errors[i]->traceback[k]->symbol;
-            if (a != NULL) {
-                wprintf (errors[i]->traceback[k]->symbol);
+            //wchar_t *a = errors[i]->traceback[k]->symbol;
+            //if (a != NULL) {
+                wprintf (errors[i]->traceback[k]->symbol.c_str());
                 wprintf (L"\n");
-            }
+            //}
        }
 
    }

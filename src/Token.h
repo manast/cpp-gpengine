@@ -16,11 +16,12 @@
  #ifndef TOKEN_H
  #define TOKEN_H
 
+ #include <wchar.h>
  #include "misc.h"
+ 
 
  class Token;
 
- #include "Reduction.h"
 
  class Token {
    public:
@@ -32,8 +33,6 @@
    wchar_t *image;
    integer symbolIndex;
    integer line, col;
-
-   Reduction *reduction;
 
    integer state;
    integer kind;

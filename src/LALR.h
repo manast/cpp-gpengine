@@ -1,6 +1,6 @@
 /***************************************************************************
                           LALR.h  -  LALR automata
-                             -------------------
+                          ------------------------
     begin                : Thu Jun 13 2002
     copyright            : (C) 2002 by Manuel Astudillo
     email                : d00mas@efd.lth.se
@@ -19,14 +19,15 @@
 
  #include <vector>
  #include <string>
- #include "Tokenstack.h"
+ #include "SymbolStack.h"
  #include "Token.h"
- #include "Reduction.h"
  #include "LALRStateTable.h"
  #include "RuleTable.h"
  #include "SymbolTable.h"
  #include "ErrorTable.h"
-
+ #include "Symbol.h"
+ #include "Terminal.h"
+ #include "NonTerminal.h" 
 
 /*
  #define REDUCTION_OK 0
@@ -52,8 +53,7 @@ enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTI
    */
    void parse (const vector <Token*> &tokens);
 
-   Reduction *nextReduction (bool trimReduction, bool reportOnlyOneError);
-
+   Symbol *nextReduction (bool trimReduction, bool reportOnlyOneError);
 
    /*!
      Gets the result constant for the last reduction attempt.
@@ -66,22 +66,19 @@ enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTI
      Every Reduction node has a list of tokens, and every token a pointer to
      its correspondent reduction node.
    */
-   Reduction *buildParseTree (bool trimReductions, bool reportOnlyOneError);
+   Symbol *buildParseTree (bool trimReductions, bool reportOnlyOneError);
 
-   void symplifyParseTree (Reduction *reduction);
+ //  void symplifyParseTree (Reduction *reduction);
 
    void printRule (integer rule);
-   void printReductionTree (Reduction *reduction, int deep);
+   void printReductionTree (Symbol *reduction, int deep);
 
    ErrorTable *getErrors ();
 
  private:
    Action *getNextAction (integer symbolIndex, integer index);
 
-  // wchar_t       *getPossibleTokens (integer index);
    vector<wstring> getPossibleTokens (integer index);
-
-   void deleteReductionTree ();
 
    // Member variables
    const LALRStateTable *stateTable;
@@ -94,19 +91,12 @@ enum Reductions {REDUCTION_OK, REDUCTION_ERROR, REDUCTION_TEXT_ACCEPTED, REDUCTI
    integer currentLine, currentCol;
 
    integer tokenIndex;
-
    vector<Token*> tokens;
-   vector<Token*> tokensList; // we save a copy of all the new tokens that we create in the
-						     // parser in order to free them at the end
-  // stack <Token*, vector<Token*> > tokenStack;
-   TokenStack tokenStack;
 
-   Reduction *currentReduction;
-   Reduction *startReduction;
-   Reduction *prevReduction;
+   SymbolStack symbolStack;
 
-   Reduction *oldReduction;
-   vector <Reduction*> reductionsList; // we save the reductions in order to remove them later.
+   Symbol       *prevReduction; // last correctly reduced non terminal
+   Terminal      lastTerminal;   // last parsed symbol
 
    int reductionResult;
 

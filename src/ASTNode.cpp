@@ -1,7 +1,7 @@
 /***************************************************************************
                           ASTNode.cpp
-                          
-                             -------------------
+    Base class for all the nodes in the AST.                       
+                          -------------------
     begin                : Tue Jun 25 09:52:11 CEST 2002
     copyright            : (C) 2002 by Manuel Astudillo
     email                : d00mas@efd.lth.se

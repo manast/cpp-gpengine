@@ -1,6 +1,6 @@
 /***************************************************************************
                           LALR.cpp  -  description
-                             -------------------
+                          ------------------------
     begin                : Fri Jun 14 2002
     copyright            : (C) 2002 by Manuel Astudillo
     email                : d00mas@efd.lth.se
@@ -28,25 +28,16 @@
  }
 
  LALR::~LALR () {
-   
-   // Delete all the tokens
-   for (int i=0; i < this->tokens.size(); i++) {
-	   delete this->tokens[i];
-   }
-
-   for (i=0; i < this->tokensList.size(); i++) {
-	   delete tokensList[i];
-   }
-
-   // delete the reduction tree
-   for (i=0; i < this->reductionsList.size(); i++) {
-	   delete reductionsList[i];
-   }
-
    delete errorTab;
+
+   // Clean the stack in case elements are still there
+   // TODO: Investigate why there are elements in the stack if the parser worked nicely
+   while (!symbolStack.empty()) {
+      //   delete symbolStack.top(); 
+         symbolStack.pop();
+   }
+   
  }
-
-
 
  /*!
  Initializes the parser.
@@ -56,56 +47,33 @@
 
  */
  void LALR::parse (const vector <Token*> &tokens) {
-   int i;
 
-   // First we clean the tokens and the tokensList vector
-   for (i=0; i < this->tokens.size(); i++) {
-	   delete this->tokens[i];
+   // Copy the tokens vector (maybe just having a reference to it is enough...)
+   this->tokens = tokens;
+
+   // Initialize stack (And clear it in case there still are elements there)
+   while (!symbolStack.empty()) {
+         //delete symbolStack.top();
+         symbolStack.pop();
    }
-   this->tokens.clear();
+   
+   // Create the start symbol (maybe it is not needed to place it in both stack and reductionList
+   // Maybe is enough to put it in the stack and then at the end of the parsing return the top
+   // of the stack, which would possible be the desired reduction
+   Symbol *startReduction;
+   startReduction = new Symbol ();
+   startReduction->state = startState;
+   
+   symbolStack.push (startReduction);
 
-   for (i=0; i < this->tokensList.size(); i++) {
-	   delete tokensList[i];
-   }
-   tokensList.clear();
-
-    // delete the reduction tree
-   for (i=0; i < this->reductionsList.size(); i++) {
-	   delete reductionsList[i];
-   }
-   reductionsList.clear();
-
-   // Initialize stack
-   while (!tokenStack.empty()) {
-         tokenStack.pop();
-   }
-   startReduction = new Reduction();
-   reductionsList.push_back(startReduction);
-
-   Token *firstToken = new Token();
-   tokensList.push_back(firstToken);
-
-   startReduction->tok = firstToken;
-   firstToken->reduction = startReduction;
-
-   firstToken->state = startState;
-   tokenStack.push (firstToken);
-
-   // We replicate all the tokens (to eliminate dependencies with other classes)
-   for (i=0; i < tokens.size(); i++) {
-	   this->tokens.push_back (tokens[i]->newInstance());
-   }
- 
    currentState = startState;
-   currentReduction = NULL;
-
-   oldReduction = NULL;
 
    tokenIndex = 0;
 
    delete errorTab;
    errorTab = new ErrorTable();
  }
+
 
  /*!
   Parse the tokens until it reduces a rule.
@@ -118,38 +86,45 @@
   /sa getResult (), buildParseTree ()
  */
 
- Reduction *LALR::nextReduction (bool trimReduction, bool reportOnlyOneError) {
+ Symbol *LALR::nextReduction (bool trimReduction, bool reportOnlyOneError) {
    Action *actObj;
-   Token *newToken;
+   Token *tok;
+   NonTerminal  *newNonTerminal;
+   Terminal     *newTerminal;
+
+   bool trim;
+   integer index;
 
    integer i;
-   wchar_t errorMsg[512];
 
    int action, target;
-
-   Reduction *newReduction;
-
-   integer symIndex;
 
    for (;tokenIndex < tokens.size();tokenIndex++) {
      // Get next action
      actObj = getNextAction (tokens[tokenIndex]->symbolIndex, currentState);
+   
+     // Save this tokens information for the error system.
+     tok = tokens[tokenIndex];
+     lastTerminal.symbol = tok->symbol;
+     lastTerminal.image = tok->image;
+     lastTerminal.line =  tok->line;
+     lastTerminal.col = tok->col;
+   
      if (actObj == NULL) {
-         // Generate ERROR & recover pushing expected symbol in the stack
-         // RECOVERING IS IN THE TODO LIST!
-         // FOR THAT WE NEED A MECHANISM TO "ESTIMATE" THE NEXT TOKEN
-       errorMsg[0] = 0;
+       // Generate ERROR & recover pushing expected symbol in the stack
+       // RECOVERING IS IN THE TODO LIST!
+       // FOR THAT WE NEED A MECHANISM TO "ESTIMATE" THE NEXT TOKEN
 
-       // Create a token traceback vector.
-       vector <Token*> traceback;
-       vector <Token*> tmptokvector = tokenStack.get_vector();
+       // Create a symbol traceback vector.
+       vector <Symbol*> traceback;
+       vector <Symbol*> tmptokvector = symbolStack.get_vector();
        for (short k = tmptokvector.size()-1; k >= 0; k--) {
             traceback.push_back (tmptokvector[k]);
        }
        
        vector <wstring> expectedTokens = getPossibleTokens (currentState);
        // Add the error to the Error class.
-       errorTab->addError (ERROR_PARSE, UNEXPECTED_TOKEN, prevReduction, 
+       errorTab->addError (ERROR_PARSE, UNEXPECTED_TOKEN, prevReduction, &lastTerminal,
                            expectedTokens, traceback, 
                            tokens[tokenIndex]->line,
                            tokens[tokenIndex]->col);
@@ -157,8 +132,7 @@
           reductionResult = REDUCTION_ERROR;
           return NULL;
        }
-        
-       
+          
      }
      else {
        action = actObj->action;
@@ -185,7 +159,20 @@
 
          tokens[tokenIndex]->state = currentState;
 
-		 tokenStack.push (tokens[tokenIndex]);
+         // Create a terminal symbol and push it on the stack
+         newTerminal = new Terminal();
+         tok = tokens[tokenIndex];
+         newTerminal->symbol = tok->symbol;
+         newTerminal->image = tok->image;
+         newTerminal->symbolIndex = tok->symbolIndex;
+         newTerminal->state = tok->state;
+         newTerminal->line = tok->line;
+         newTerminal->col = tok->col;
+
+         currentLine = tok->line;
+         currentCol = tok->col;
+
+		 symbolStack.push (newTerminal);
          break;
 
          /*
@@ -197,45 +184,25 @@
            wprintf (L"Reducing...\n");
          }
 
-         // Create a new token for this rule
-         newToken = new Token();
-
-		 // Save it in the token pool to release it later
-		 tokensList.push_back(newToken);
-
-         newToken->kind = SYMBOL_NON_TERMINAL;
-         newToken->symbolIndex = ruleTable->rules[target].nonTerminal;
-
-		 newToken->symbol = new wchar_t [wcslen(symbolTable->symbols
-			 [newToken->symbolIndex].name)+1];
-  	  	 newToken->image = new wchar_t [wcslen(symbolTable->symbols
-			 [newToken->symbolIndex].name)+1];
-
-		 wcscpy (newToken->symbol, symbolTable->symbols[newToken->symbolIndex].name);
-		 wcscpy (newToken->image, symbolTable->symbols[newToken->symbolIndex].name);
-
-		 newToken->line = currentLine;
-		 newToken->col = currentCol;
-
-
          // If the rule has only a nonterminal then we dont create a reduction
          // node for this rule in the tree since its not usefull.
          // User can decide to simplfy this enabling the trimming
-        // if (trimReduction) &&
+         if ((ruleTable->rules[target].symbols.size() == 1) &&
+            (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
+            NON_TERMINAL) && trimReduction) {
+                trim = true;  
+         } else {
+                trim = false;
+         }
 
-        if ((ruleTable->rules[target].symbols.size() == 1) &&
-        (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
-        SYMBOL_NON_TERMINAL) && trimReduction) {
-          newReduction = NULL;
-        } else {
-          // Create a new Reduction
-          newReduction = new Reduction();
-		  reductionsList.push_back(newReduction);
-          oldReduction = newReduction;
-          newReduction->tok = newToken;
-        }
-
-         newToken->reduction = oldReduction;
+         // Create a new Non Terminal (to represent this reduction)
+         newNonTerminal = new NonTerminal();
+         index = ruleTable->rules[target].nonTerminal;
+         
+         newNonTerminal->symbolIndex = index;
+         newNonTerminal->symbol = symbolTable->symbols [index].name;
+         newNonTerminal->line = currentLine;
+         newNonTerminal->col = currentCol;
 
          if (DEBUG) {
            wprintf (symbolTable->symbols[ruleTable->rules[target].nonTerminal].name);
@@ -245,18 +212,17 @@
          // pop from the stack the tokens for the reduced rule
          // and store them in the reduction
          for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
-           symIndex = tokenStack.top()->symbolIndex;
-           if (newReduction != NULL) {
-             newReduction->childs.push_front (tokenStack.top());
+           if (!trim) {
+                newNonTerminal->children.push_front (symbolStack.top());
            }
-           tokenStack.pop();
+           symbolStack.pop();
          }
          if (DEBUG) {
            for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
-
-             if (newReduction != NULL) {
-               symIndex = newReduction->childs[i]->symbolIndex;
-             }
+               int symIndex;
+               if (!trim) {
+                   symIndex = newNonTerminal->children[i]->symbolIndex;
+               }
              wprintf (symbolTable->symbols[symIndex].name);
              wprintf (L" ");
            }
@@ -265,28 +231,31 @@
 
          // Perform GOTO
          if (DEBUG) {
-           wprintf (L"state: %d index: %d\n", tokenStack.top()->state, newToken->symbolIndex);
+           wprintf (L"state: %d index: %d\n", symbolStack.top()->state, 
+                    newNonTerminal->symbolIndex);
          }
-         actObj = getNextAction (newToken->symbolIndex, tokenStack.top()->state);
+         actObj = getNextAction (newNonTerminal->symbolIndex, symbolStack.top()->state);
+         
          if ((actObj != NULL) && (actObj->action == ACTION_GOTO)) {
            if (DEBUG) wprintf (L"Go to state: %d\n\n", actObj->target);
            currentState = actObj->target;
-           newToken->state = currentState;
+           newNonTerminal->state = currentState;
 
            // Push the reduced nonterminal in the stack
-           tokenStack.push (newToken);
+           symbolStack.push (newNonTerminal);
          } else {
            wprintf (L"Internal Error!!\n");
            reductionResult = REDUCTION_ERROR;
            return NULL;
          }
 
-         if (newReduction == NULL) {
-           reductionResult = REDUCTION_SIMPLIFIED;
+         if (trim) {
+            reductionResult = REDUCTION_SIMPLIFIED;
+            return NULL;
          } else {
-           reductionResult = REDUCTION_OK;
+            reductionResult = REDUCTION_OK;
+            return newNonTerminal;
          }
-         return newReduction;
          break;
 
          // This Action can never happen...
@@ -310,7 +279,7 @@
 
 
  /*!
-    Computes an Action object for the input parameters
+    Computes an Action object from the input parameters
 
     /param symbolIndex  the index in the symbol table that we want to match
     /param index the current state in the LALR state machine
@@ -329,7 +298,7 @@
    vector<wstring> tokenVector;
    for (integer i=0; i < stateTable->states[index].actions.size(); i++) {
      integer j = stateTable->states[index].actions[i].symbolIndex;
-     if (symbolTable->symbols[j].kind == SYMBOL_TERMINAL) {
+     if (symbolTable->symbols[j].kind == TERMINAL) {
         wstring tokenName = symbolTable->symbols[j].name;
         tokenVector.push_back (tokenName);
      }
@@ -337,32 +306,24 @@
    return tokenVector;
  }
 
-
  /*!
    Builds a parse tree with reductions as nodes.
    Sets the Error object with the possible compiling errors.
 
   /sa getError(), getNextReduction()
  */
- Reduction *LALR::buildParseTree (bool trimReductions, bool reportOnlyOneError) {
-   Reduction *reduction;
+ Symbol *LALR::buildParseTree (bool trimReductions, bool reportOnlyOneError) {
+   Symbol *reduction;
    prevReduction = NULL;
    while (true) {
      reduction = nextReduction(trimReductions, reportOnlyOneError);
      if ((reduction == NULL) && ((getResult() == REDUCTION_ERROR) ||
-     (getResult() == REDUCTION_TEXT_ACCEPTED))) {
-       break;
+        (getResult() == REDUCTION_TEXT_ACCEPTED))) {
+            break;
      } else if (reduction) {
-       prevReduction = reduction;
+            prevReduction = reduction;
      }
    }
-/*
-   // Clean the stack
-   for (integer i=0; i < tokenStack.size(); i++) {
-	  delete tokenStack.top();
-	  tokenStack.pop();
-   }
-*/
 
    if (getResult() == REDUCTION_TEXT_ACCEPTED) {
       return prevReduction;
@@ -370,7 +331,6 @@
       return NULL;
    }
  }
-
 
  int LALR::getResult () {
      return reductionResult;
@@ -382,10 +342,10 @@
  }
 
 
- void LALR::printReductionTree (Reduction *reduction, int deep) {
-   // print tabs
+ void LALR::printReductionTree (Symbol *reduction, int deep) {
  integer i;
 
+ // print tabs
  for (i=0; i < deep; i++) {
    wprintf (L" ");
  }
@@ -395,21 +355,18 @@
    return;
  }
 
- // print this node
- wprintf (symbolTable->symbols[reduction->tok->symbolIndex].name);
- wprintf (L"\n");
- for (i=0; i < reduction->childs.size(); i++) {
-   if (reduction->childs[i]->kind == SYMBOL_NON_TERMINAL) {
-     printReductionTree (reduction->childs[i]->reduction, deep+1);
-   } else {
-     for (int j=0; j < deep+1; j++) {
-       wprintf (L" ");
-     }
-     wprintf (reduction->childs[i]->symbol);
-     wprintf (L":");
-     wprintf (reduction->childs[i]->image);
-     wprintf (L"\n");
-   }
+ if (reduction->type == NON_TERMINAL) {
+    wprintf (symbolTable->symbols[reduction->symbolIndex].name);
+    wprintf (L"\n");
+ 
+    for (i=0; i < ((NonTerminal*) reduction)->children.size(); i++) {
+        printReductionTree (((NonTerminal*)reduction)->children[i], deep+1);
+    }
+ } else {
+    wprintf (((Terminal*)reduction)->symbol.c_str());
+    wprintf (L":");
+    wprintf (((Terminal*)reduction)->image.c_str());
+    wprintf (L"\n");
  }
 }
 

@@ -19,7 +19,8 @@
 
  #include <vector>
  #include "misc.h"
- #include "Reduction.h"
+ #include "Terminal.h"
+
 
  using namespace std;
 
@@ -40,12 +41,12 @@
      error_type type;
      error_value value;
   
-     Reduction *reduction;
+     Symbol *reduction;
      integer line;
      integer col;
      vector <wstring> expected;
-     vector <Token*>  traceback;
-     // Token *latestToken??
+     vector <Symbol*>  traceback;
+     Terminal lastTerminal;
  };
 
   
@@ -55,10 +56,11 @@
 
    ErrorTable ();
    ~ErrorTable ();
-   void addError (error_type type, error_value value , Reduction *rdc, 
-                  vector <wstring> expected, vector <Token*> traceback, 
-                  integer line, integer col);
-   void addError (error_type type, error_value value, Reduction *rdc, 
+   void addError (error_type type, error_value value , Symbol *rdc, 
+                  Terminal *lastTerminal, vector <wstring> expected, 
+                  vector <Symbol*> traceback, integer line, integer col);
+
+   void addError (error_type type, error_value value, Symbol *rdc, 
                   integer line, integer col);
    void clear ();
 

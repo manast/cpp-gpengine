@@ -16,22 +16,11 @@
  #include "Token.h"
 
  Token::Token () {
-  /* wchar_t *eofStr = L"EOF";
 
-   // This creates a memory leak...
-   symbol = new wchar_t (wcslen(eofStr)+1);
-   wcscpy (symbol, eofStr);
-
-   image = new wchar_t (wcslen(eofStr)+1);
-   wcscpy (image, eofStr);
-    */
    symbol = NULL;//L"EOF";
    image = NULL;//L"EOF";
 
-
    symbolIndex = 0;
-
-   reduction = NULL;
 
    state = 0;
    kind = 0;
@@ -41,7 +30,6 @@
    delete [] symbol;
    delete [] image;
  }
-
 
  Token *Token::newInstance() {
 	Token *newToken = new Token ();
@@ -59,9 +47,9 @@
 	newToken->col = col;
 	newToken->kind = kind;
 	newToken->line = line;
-	newToken->reduction = reduction;
 	newToken->state = state;
 	newToken->symbolIndex = symbolIndex;
 
 	return newToken;
  }
+

@@ -202,7 +202,7 @@
        symbolTable->symbols[index].name = entry.vString;
 
        readEntry (&entry);
-       symbolTable->symbols[index].kind = entry.vInteger;
+       symbolTable->symbols[index].kind = (SymbolType) entry.vInteger;
        break;
 
        // Rule

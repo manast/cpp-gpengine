@@ -21,7 +21,7 @@
 #define AST_CREATOR_H
 
 #include <vector>
-#include "Reduction.h"
+#include "NonTerminal.h"
 #include "ASTNode.h"
 
 using namespace std;
@@ -31,7 +31,7 @@ class ASTCreator {
 		/*! 
 			Creates an AST based on the reduction tree.
 		*/
-		ASTNode *createTree (const Reduction &reduction);
+		ASTNode *createTree (const Symbol &reductionTree);
 
 	protected:
 		/*!
@@ -39,15 +39,15 @@ class ASTCreator {
 		  must be customized.
 		  See the implementation of this method for guidelines.
 		*/
-		virtual ASTNode *getASTNode (const Reduction *reduction, ASTNode *parent);
+		virtual ASTNode *getASTNode (const NonTerminal *reduction, ASTNode *parent);
 
-		void getASTNodeList (vector <ASTNode*> *children, wchar_t *iterNode,
-			Reduction *reduction, int nbrInsert, int nbrElements, ASTNode *parent);
+		void getASTNodeList (vector <ASTNode*> *children, wstring iterNode,
+			NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent);
 
 		void getASTNodeList (vector <ASTNode*> *children, 
-			Reduction *reduction, int nbrInsert, int nbrElements, ASTNode *parent);
+			NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent);
 
-		ASTNode *ASTCreator::searchEquivNode (const deque <Token*> &rdcChildren,
+		ASTNode *ASTCreator::searchEquivNode (const deque <Symbol*> &rdcChildren,
 			ASTNode *parent);
 };
 

@@ -6,6 +6,7 @@ iuou
 while do
 
 *#.character
+
 .defs
 
 
@@ -14,6 +15,7 @@ while do
 speed 5
 attack 3
 inteligence 7
+
 
 .events
 
@@ -28,28 +30,10 @@ BORN:
      a = c
   end
 
-  
 # This is a comment          
   
 
 
-  if a = d then
-     j = a
 
-     if b = 2 then
-        r= 4
-     end
 
-       if a = d then
-         j = a + b*g
-       else 
-         a = c
-       end
-
-       if a = d then
-           j = a + b*g
-       else 
-           a = c
-       end
-
-       b = 32
+end

@@ -23,7 +23,6 @@
 #include <stdlib.h>
 
 #include "../src/CGTFile.h"
-#include "../src/Reduction.h"
 #include "../src/ErrorReporter.h"
 #include "testErrorRep.h"
 
@@ -35,17 +34,17 @@ int main(int argc, char *argv[])
   CGTFile    cgtFile;
   char       *srcCode;
   FILE		 *file;
-  Reduction  *rdc;
+  Symbol     *rdc;
 
   ErrorTable *myErrors;
   testErrorRep myReporter;
   
   // Load source code to compile
   file =  fopen ("test1.gs", "rb");
-   if (file == NULL) {
+  if (file == NULL) {
 	  wprintf (L"error loading source file\n");
       return -1;
-   }
+  }
 
   fseek (file, 0, SEEK_END);
   int fsize = ftell(file);
@@ -99,9 +98,10 @@ int main(int argc, char *argv[])
   } else { 
       wprintf (L"Compilation Failed\n");
   }
-
+ 
 
   delete [] srcCode;
+  delete rdc;
 
   return EXIT_SUCCESS;
 }

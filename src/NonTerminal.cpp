@@ -1,11 +1,12 @@
 /***************************************************************************
-                          SymbolTable.h  -  description
-                             -------------------
-    begin                : Sun Jun 2 2002
-    copyright            : (C) 2002 by Manuel Astudillo
+                          NonTerminal.cpp
+ 
+   Baseclass for the non-terminals of the reduction tree
+                          -------------------
+    begin                : Fri Oct 24 2003
+    copyright            : (C) 2002-2003 Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
-
  /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -14,30 +15,16 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- #ifndef SYMBOLTABLE_H
- #define SYMBOLTABLE_H
 
- #include "misc.h"
- #include "wchar.h"
+#include "NonTerminal.h"
 
- enum SymbolType {TERMINAL = 1, NON_TERMINAL = 0};
+NonTerminal::NonTerminal () {
+    type = NON_TERMINAL;
+}
 
+NonTerminal::~NonTerminal () {
+    for (int i=0; i < children.size(); i++) {
+        delete children[i];
+    }
+}
 
- typedef struct SymbolStruct {
-   wchar_t *name;
-   SymbolType kind;
- } SymbolStruct;
-
-
- class SymbolTable {
-   public:
-   integer nbrEntries;
-   SymbolStruct *symbols;
-
-   SymbolTable (integer nbrEntries);
-   ~SymbolTable ();
-
- };
-
-
- #endif

@@ -1,11 +1,12 @@
 /***************************************************************************
-                          Reduction.cpp  -  description
-                             -------------------
-    begin                : Sun Jun 16 2002
-    copyright            : (C) 2002 Manuel Astudillo
+                          Symbol.h
+ 
+   Superclass for the symbols of the reduction tree
+                          -------------------
+    begin                : Fri Oct 24 2003
+    copyright            : (C) 2002-2003 Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
-
  /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -14,18 +15,28 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- #include "Reduction.h"
 
- Reduction::Reduction () {
-   parent = NULL;
-   tok = NULL;
+#ifndef _GP_SYMBOL_H
+#define _GP_SYMBOL_H
 
- }
+#include <string>
+#include "SymbolTable.h"
+#include "misc.h"
 
- Reduction::~Reduction () {
-  
-   //for (unsigned short i=0; i < childs.size(); i++) {
-   //  delete childs[i]->reduction;
-   //  delete childs[i];
-   //}
- }
+using namespace std;
+
+struct Symbol {
+public:
+    virtual ~Symbol ();
+    SymbolType type;
+   
+    Symbol *parent;
+    wstring symbol;
+
+    integer symbolIndex;
+    integer state;
+    integer line, col;
+};
+
+
+#endif

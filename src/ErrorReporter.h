@@ -44,7 +44,7 @@ protected:
 
     // Help functions  needed to compose error messages
     bool  in (wstring a, vector <wstring> expected, int *pos);
-    Token *in (wstring b, vector <Token*> traceback, int *pos);
+    Symbol *in (wstring b, vector <Symbol*> traceback, int *pos);
 public:
     ErrorReporter ();
     ~ErrorReporter ();

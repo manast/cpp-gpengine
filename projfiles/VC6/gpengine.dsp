@@ -129,11 +129,7 @@ SOURCE=..\..\src\LALRStateTable.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\misc.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\Reduction.cpp
+SOURCE=..\..\src\NonTerminal.cpp
 # End Source File
 # Begin Source File
 
@@ -141,7 +137,15 @@ SOURCE=..\..\src\RuleTable.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\Symbol.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\SymbolTable.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\Terminal.cpp
 # End Source File
 # Begin Source File
 
@@ -197,7 +201,11 @@ SOURCE=..\..\src\LALRStateTable.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\Reduction.h
+SOURCE=..\..\src\misc.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\NonTerminal.h
 # End Source File
 # Begin Source File
 
@@ -205,11 +213,27 @@ SOURCE=..\..\src\RuleTable.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\Symbol.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\SymbolStack.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\SymbolTable.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\Terminal.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\Token.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\Tokenstack.h
 # End Source File
 # End Group
 # End Target

@@ -170,7 +170,7 @@
                t->symbol = tokenSymbol;
                t->image = tokenImage;
                t->symbolIndex = index2;
-               t->kind = SYMBOL_TERMINAL;
+               t->kind = TERMINAL;
 
                t->line = currentLine;
                t->col = tokenBeginCol;

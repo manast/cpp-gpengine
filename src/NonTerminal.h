@@ -1,12 +1,13 @@
 /***************************************************************************
-                          Reduction.h  -  description
-                             -------------------
-    begin                : Sun Jun 16 2002
-    copyright            : (C) 2002 by Manuel Astudillo
+                          NonTerminal.h
+ 
+   Baseclass for the non-terminals of the reduction tree
+                          -------------------
+    begin                : Fri Oct 24 2003
+    copyright            : (C) 2002-2003 Manuel Astudillo
     email                : d00mas@efd.lth.se
  ***************************************************************************/
-
-  /***************************************************************************
+ /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Lesser General Public License as        *
@@ -14,30 +15,20 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
- #ifndef REDUCTION_H
- #define REDUCTION_H
 
- #include <deque>
+#ifndef _GP_NON_TERMINAL_H
+#define _GP_NON_TERMINAL_H
 
- class Reduction;
+#include <deque>
+using namespace std;
 
- #include "Token.h"
+#include "Symbol.h"
 
- using namespace std;
+struct NonTerminal : public Symbol {
+    NonTerminal  ();
+    ~NonTerminal ();
 
- class Reduction {
-   public:
-   Reduction *parent;
-   Token     *tok;
+    deque <Symbol*> children;
+};
 
-   deque <Token*> childs;
-
-   Reduction ();
-   ~Reduction ();
- };
-
-
- #endif
-
-
-
+#endif
