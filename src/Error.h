@@ -19,13 +19,18 @@
 
  #include <vector>
  #include "misc.h"
+ #include "Reduction.h"
 
  using namespace std;
+
+ typedef enum error_codes {ERROR_PARSE, ERROR_SCAN};
 
  typedef struct ErrorStruct  {
       ErrorStruct() { msg = NULL; }
      ~ErrorStruct() { delete [] msg; }
+     int code;
      wchar_t *msg;
+     Reduction *reduction;
      integer line;
      integer col;
  } ErrorStruct;
@@ -37,7 +42,7 @@
 
    Error ();
    ~Error ();
-   void addError (wchar_t *msg, integer line, integer col);
+   void addError (error_codes code, wchar_t *msg, Reduction *rdc, integer line, integer col);
    void clear ();
 
    void print ();

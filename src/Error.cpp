@@ -33,7 +33,7 @@
     errors.clear();
   }
 
-   void Error::addError (wchar_t *msg, integer line, integer col) {
+   void Error::addError (error_codes code, wchar_t *msg, Reduction *rdc, integer line, integer col) {
      ErrorStruct *err = new ErrorStruct;
      err->msg = new wchar_t [wcslen (msg)+1];
 
@@ -41,6 +41,9 @@
 
      err->line = line;
      err->col = col;
+
+     err->code = code;
+     err->reduction = rdc;
 
      errors.push_back (err);
    }
@@ -50,6 +53,11 @@
        wprintf (L"Error line: %d, col: %d ", errors[i]->line, errors[i]->col);
        wprintf (errors[i]->msg);
        wprintf (L"\n");
-     }
+       if (errors[i]->reduction != NULL) {
+            wprintf (L"Last correct parsed token was: ");
+            wprintf (errors[i]->reduction->tok->symbol);
+            wprintf (L"\n");
+       }
+      }
    }
 

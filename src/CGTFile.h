@@ -21,6 +21,8 @@
 
  #include <stdio.h>
  #include <wchar.h>
+ #include <iostream> 
+ #include <fstream>
 
  #include <vector>
 
@@ -53,7 +55,8 @@
 
    char *errorString;
 
-   FILE *file;
+  // FILE *file;
+   ifstream *theStream;
 
    // Character Table
    integer nbrCharacterSets;
@@ -92,6 +95,7 @@
    ~CGTFile ();
 
    bool load (char *filename);
+   bool load (ifstream *myStream);
 
    GrammarInfo *getInfo ();	
 

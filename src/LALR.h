@@ -62,6 +62,7 @@
 
    Reduction *currentReduction;
    Reduction *startReduction;
+   Reduction *prevReduction;
 
    Reduction *oldReduction;
    vector <Reduction*> reductionsList; // we save the reductions in order to remove them later.

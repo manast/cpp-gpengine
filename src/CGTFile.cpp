@@ -57,42 +57,49 @@
 	 delete theLALR;
  }
 
-
  bool CGTFile::load (char *filename) {
+    ifstream cgtStream;
+
+    cgtStream.open (filename, ifstream::in | ifstream::binary);
+
+    if (cgtStream.bad()) {
+        return false;
+    }
+
+    bool result = load (&cgtStream);
+    cgtStream.close();
+    return result;
+ }
+
+ bool CGTFile::load (ifstream *myStream) {
    int i;	
 
    EntryStruct entry;
 
-   file =  fopen (filename, "rb");
-   if (file == NULL) {
-     return false;
-   }
-
+   theStream = myStream;
 
    // Read Header
    //////////////
    header = readUnicodeString();
 
-
    // Read Records
    ////////////////
-
    unsigned char recordType;
    integer nbrEntries;
    integer index;
 
-   while (!feof(file)) {
+   while (!theStream->eof()) {
      // Read record type & number of entries
-	 if (fread ((unsigned char*) &recordType, sizeof(recordType), 1, file) == 0) {
-		 if (feof(file)) {
+     theStream->read ((char*)&recordType, sizeof (unsigned char));
+     if (theStream->fail()) {
+        if (theStream->eof()) {
 			break;
-		 } else {
+        } else {
 			return false;
-		 }
-	 }
+        }
+     }
 
-     fread ((integer*) &nbrEntries, sizeof(integer), 1, file);
-
+     theStream->read ((char*) &nbrEntries, sizeof(integer));
   //  wprintf (L"Record Type: %d\n", recordType);
   //  wprintf (L"Entries: %d\n", nbrEntries);
 
@@ -287,38 +294,37 @@
      }
 
    }
-   fclose(file);
    return true;
  }
 
    /*
    Reads an entry in a record
    */
-
    void CGTFile::readEntry (EntryStruct *entry) {
 
      char tmpChar;
      char dataType;
 
-     if (fread ((char*) &dataType, sizeof(char),1, file) != 1) {
+     theStream->get (dataType);
+     if (theStream->fail()) {
 		 wprintf (L"Error reading entry\n");
 	 } else {
 		 switch (dataType) {
 		case 'E': break;
 		case 'B':
-		fread ((char*) &tmpChar, sizeof(char), 1, file );
-		if (tmpChar) {
+		theStream->get (tmpChar);
+        if (tmpChar) {
 		  entry->vBool = true;
 		} else {
 		  entry->vBool = false;
 		}
 		break;
 		case 'b':
-		fread ((byte*) &entry->vByte, sizeof(byte), 1, file);
-		break;
+		theStream->read ((char*) &entry->vByte, sizeof(byte));
+        break;
 		case 'I':
-		fread ((integer*) &entry->vInteger, sizeof(integer), 1, file);
-		break;
+		theStream->read ((char*) &entry->vInteger, sizeof(integer));
+        break;
 		case 'S':
 		entry->vString = readUnicodeString();
 		break;
@@ -329,7 +335,7 @@
 
 
  /*
- Reads Unicode String
+ Reads a Unicode String
  */
 
  wchar_t *CGTFile::readUnicodeString () {
@@ -339,8 +345,8 @@
    wchar_t *retString;
    char   tmpChar1, tmpChar2;
 
-   fread ((char*) &tmpChar1, sizeof(char), 1, file);
-   fread ((char*) &tmpChar2, sizeof(char), 1, file);
+   theStream->get (tmpChar1);
+   theStream->get (tmpChar2);
 
    while ((tmpChar1 != 0) || (tmpChar2 != 0)) {
      readChar = (wchar_t) tmpChar2;
@@ -349,8 +355,8 @@
 
      tmpString[i] = readChar;
 
-     fread ((char*) &tmpChar1, sizeof(char), 1, file);
-     fread ((char*) &tmpChar2, sizeof(char), 1, file);
+     theStream->get (tmpChar1);
+     theStream->get (tmpChar2);
 
      i++;
    }
@@ -359,7 +365,6 @@
    retString = new wchar_t [wcslen (tmpString) + 1];
 
    wcscpy (retString, tmpString);
-
 
    return retString;
  }

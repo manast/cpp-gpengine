@@ -145,7 +145,7 @@
        wcscat (errorMsg, possibleTokens);
        delete [] possibleTokens;
 
-       error->addError (errorMsg, tokens[tokenIndex]->line,
+       error->addError (ERROR_PARSE, errorMsg, prevReduction, tokens[tokenIndex]->line,
        tokens[tokenIndex]->col);
        if (reportOnlyOneError) {
           reductionResult = REDUCTION_ERROR;
@@ -319,7 +319,7 @@
  }
 
  wchar_t *LALR::getPossibleTokens (integer index) {
-   wchar_t *resStr = new wchar_t [256];
+   wchar_t *resStr = new wchar_t [2560];
    resStr[0] = 0;
    for (integer i=0; i < stateTable->states[index].actions.size(); i++) {
      integer j = stateTable->states[index].actions[i].symbolIndex;
@@ -340,7 +340,8 @@
   /sa getError(), getNextReduction()
  */
  Reduction *LALR::buildParseTree (bool trimReductions, bool reportOnlyOneError) {
-   Reduction *reduction, *prevReduction;
+   Reduction *reduction;
+   prevReduction = NULL;
    while (true) {
      reduction = nextReduction(trimReductions, reportOnlyOneError);
      if ((reduction == NULL) && ((getResult() == REDUCTION_ERROR) ||

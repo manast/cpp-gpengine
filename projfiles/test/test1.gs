@@ -10,8 +10,8 @@ inteligence 7
 
 
 #* This is a multiline comment
-*#
 
+*#
 .events
 
 BORN:
@@ -22,8 +22,7 @@ BORN:
      j = a + b*g
   else 
      a = c
-  end
+  
 # This is a comment          
-
 
 end

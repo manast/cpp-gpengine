@@ -65,7 +65,7 @@
    int i=0, imgIndex = 0;
    integer j;
 
-	// Free the memory for every token that might be stored in this vector
+   // Free the memory for every token that might be stored in this vector
    for (j = 0; j < tokens.size(); j++) {
 		delete tokens[j];
    }	
@@ -79,7 +79,21 @@
 
    while (run) {
 	 if (text[i] == 0) {
-		run = false;
+         // Check if Comment Block not ended
+         if (commentBlock) {
+		    // Set error message and exit
+            wchar_t *msg = new wchar_t [256];
+            msg[0] = 0;
+		    wcscat (msg, L"EOF reached but not end comment symbol found\n");
+            error->addError (ERROR_SCAN, msg, NULL, currentLine, tokenBeginCol);
+            delete [] msg;
+            currentState = startState;
+            imgIndex = 0;
+            return false;
+         } else {
+            run = false;
+         }
+
 	 }
      if (text[i] == L'\n') {
        currentLine++;
@@ -185,7 +199,8 @@
              case 4:
              commentBlock = true;
              break;
-
+             
+             // Comment End
              case 5:
              commentBlock = false;
              break;
@@ -200,9 +215,10 @@
            // Set error message and exit
            wchar_t *msg = new wchar_t [256];
 		   msg[0] = 0;
+           tmpImage[imgIndex] = 0;
 		   wcscat (msg, tmpImage);
 		   wcscat (msg, L" is not any known token\n");
-           error->addError (msg, currentLine, tokenBeginCol);
+           error->addError (ERROR_SCAN,msg, NULL, currentLine, tokenBeginCol);
            delete [] msg;
            currentState = startState;
            imgIndex = 0;
