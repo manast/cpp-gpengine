@@ -15,12 +15,27 @@
  *                                                                         *
  ***************************************************************************/
 
- #ifndef MISC_H
- #define MISC_H
+#ifndef MISC_H
+#define MISC_H
 
- #define integer unsigned short
- #define byte unsigned char
+#define integer unsigned short
+#define byte unsigned char
 
+typedef unsigned short UBYTE2;
+#if defined (_BIGENDIAN)
+    inline UBYTE2 EndianConversion (UBYTE2 input)
+    {
+	    UBYTE2 result = 
+		      ((input & 0x00FF) << 8)
+	        | ((input & 0xFF00) >> 8);
+	    return result ;
+    }
+#else
+    inline UBYTE2 EndianConversion (UBYTE2 input)
+{
+	return input ;
+}
+#endif 
 
- #endif
+#endif
 
