@@ -82,18 +82,20 @@
  }
 
 
- void ASTNode::toString (int tabs) {
+ void ASTNode::print (int tabs) {
 	integer i,j;
 	for (i=0; i < tabs; i++) {
 		wprintf (L" ");
 	}
 
+	wprintf (symbol.c_str());
+	wprintf (L":");
 	wprintf (image.c_str());
 	wprintf (L"\n");
 	
 	for (i=0; i < children.size(); i++) {
 		if (children[i] != NULL) {
-			children[i]->toString (tabs+1);
+			children[i]->print (tabs+1);
 		} else {
 			for (j=0; j < tabs+1; j++) {
 				wprintf (L" ");

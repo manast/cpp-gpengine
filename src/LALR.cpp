@@ -204,7 +204,9 @@
             (symbolTable->symbols[ruleTable->rules[target].symbols[0]].kind ==
              NON_TERMINAL) && trimReduction) {
                 trim = true; 
+				newNonTerminal->trimmed = true;
          } else {
+				newNonTerminal->trimmed = false;
                 trim = false;
          }
 
@@ -215,21 +217,20 @@
 
          // pop from the stack the tokens for the reduced rule
          // and store them in the reduction
-		 if (trim) {
-			// Since it is a trimmed reduction we take directly the children of the terminal at the 
-		    // right side of the reduction
-			assert (symbolStack.top()->type == NON_TERMINAL);
-		    NonTerminal *trimmedNT = (NonTerminal*) symbolStack.top ();
-			for (i=0; i < trimmedNT->children.size(); i++) {
-				newNonTerminal->children.push_back (trimmedNT->children[i]);
-			}
-			symbolStack.pop();
-		 } else {
-			for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
-                newNonTerminal->children.push_front (symbolStack.top());
+		 for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {
+                Symbol *s = symbolStack.top ();
+				// If the symbol is trimmed we just pick up its children
+				if (s->trimmed) {
+					assert (s->type == NON_TERMINAL);
+					NonTerminal *trimmedNT = (NonTerminal*) s;
+					
+					assert (trimmedNT->children.size() == 1);
+					newNonTerminal->children.push_front (trimmedNT->children[0]);
+				} else {
+					newNonTerminal->children.push_front (s);
+				}
 				symbolStack.pop();
-			}
-         }
+		 }
 
          if (DEBUG) {
            for (i=0; i < ruleTable->rules[target].symbols.size(); i++) {

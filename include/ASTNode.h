@@ -54,7 +54,7 @@
 	ASTNode *getParent ();
 	vector <ASTNode*> *getChildren ();
 
-	void toString (int tabs);
+	void print (int tabs);
  };
 
 

@@ -18,6 +18,10 @@
 
 #include "Symbol.h"
 
+Symbol::Symbol () {
+	trimmed = false;
+}
+
 Symbol::~Symbol () {
   // Empty destructor
 }

@@ -35,6 +35,7 @@ using namespace std;
 
 struct Symbol {
 public:
+	Symbol ();
     virtual ~Symbol ();
     SymbolType type;
    
@@ -44,6 +45,8 @@ public:
     integer symbolIndex;
     integer state;
     integer line, col;
+
+	bool trimmed;
 };
 
 
