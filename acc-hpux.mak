@@ -7,7 +7,7 @@ OBJ  = 	src/ASTCreator.o  src/ASTNode.o src/CGTFile.o src/CharacterSetTable.o sr
 #LIBS =   
 CXXINCS = -I"include/"
 BIN  = lib/cpp-gpengine-1.0.4.sl
-CXXFLAGS = -AA +z -D_XOPEN_SOURCE=500 $(CXXINCS) 
+CXXFLAGS = -AA +z -g0 -D_XOPEN_SOURCE=500 -D_BIGENDIAN=500 $(CXXINCS) 
 all: $(BIN) 
 
 clean: 
