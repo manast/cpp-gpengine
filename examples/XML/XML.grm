@@ -1,0 +1,91 @@
+! -----------------------------------------------------------------------
+! XML
+!
+! eXtenable Markup Language
+!
+
+! XML, like the commonly used HTML format, is a descendant of SGML
+! (Standardized General Markup Language). However, XML is not a descendant 
+! of HTML and structural differences exist between the two formats.
+!
+! The XML syntax essentially allows a tree to be defined using normal ASCII
+! characters. The format used to start and end logical objects is identical
+! to the format used by HTML with three major exceptions:
+!
+!   1. All starting tags must have an ending tag
+!   2. Single tags (objects without sub-objects) end in />
+!   3. All attributes must be delimited by double quotes
+!   
+! XML has been adopted by leading software companies including Sun Microsystems
+! and Microsoft for their SOAP framework.
+!
+! For more information, please visit:  
+!   * http://www.w3.org/XML/ 
+!   * http://www.w3schools.com/xml/
+!
+! This version of the grammar does not include the language's namespace 
+! syntax.
+!
+! Note: This is an ad hoc version of the grammar. If there are any flaws, 
+! please e-mail GOLDParser@DevinCook.com and I will update the grammar. 
+! -----------------------------------------------------------------------
+
+"Name"         = 'XML'
+"Version"      = '1.0'
+"Author"       = 'W3C Recommendation 10-February-1998' 
+"About"        = 'eXtenable Markup Language'
+
+"Start Symbol" = <XML Doc> 
+
+
+{Symbol Chars}     = {Printable} - {Letter} - [<>''"=] - {Whitespace}
+{Attribute Chars}  = {Printable} - ["]
+
+Comment Start = '<!--'
+Comment End   = '-->'
+
+AttributeValue =  '"' {Attribute Chars}* '"' 
+
+Name    = {Letter}{Alphanumeric}*
+Symbol  = {Symbol Chars}
+
+CharName    = '&' {Letter}+ ';'
+CharNumber  = '&#' {Digit}+ ';'
+
+
+! --------------------------------------------------------------------
+
+<XML Doc> ::= '<?' Name <Attributes> '?>' <Objects> 
+
+
+<Objects>   ::= <Object> <Objects>
+              | <Object>
+
+<Object>    ::= <Start Tag> <Content> <End Tag>
+              | <Unary Tag>
+
+<Start Tag> ::= '<' Name <Attributes> '>'
+<End Tag>   ::= '</' Name '>' 
+
+<Unary Tag> ::= '<' Name <Attributes> '/>'
+
+<Content>   ::= <Objects>
+              | <Text>
+              |
+
+<Attributes> ::=  <Attribute> <Attributes>               
+               | 
+
+<Attribute> ::= Name '=' AttributeValue 
+
+! --------------------------------------------------------------------
+
+<Text> ::= <Word> <Text>
+         | <Word> 
+
+<Word> ::= Name
+         | Symbol
+         | '='
+         | CharName
+         | CharNumber
+
