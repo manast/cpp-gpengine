@@ -99,9 +99,11 @@
         }
      }
 
-     theStream->read ((char*) &nbrEntries, 2);
-  //  wprintf (L"Record Type: %d\n", recordType);
-  //  wprintf (L"Entries: %d\n", nbrEntries);
+    theStream->read ((char*) &nbrEntries, 2);
+    //Convert to little endian if needed.
+    nbrEntries = EndianConversion(nbrEntries);
+    //wprintf (L"Record Type: %i\n", recordType);
+    //wprintf (L"Entries: %i\n", nbrEntries);
 
      if (recordType != 77) {
        errorString = "Record type is not supported\n";
@@ -113,7 +115,7 @@
      readEntry (&entry);
      contentType = entry.vByte;
 
-   //  wprintf (L"Content Type: %d\n", contentType);
+     //wprintf (L"Content Type: %d\n", contentType);
 
      switch (contentType) {
 
@@ -124,6 +126,7 @@
 
        // read name
        readEntry (&entry);
+        
        gInfo->name = entry.vString;
 
        // read version
@@ -324,6 +327,7 @@
         break;
 		case 'I':
 		theStream->read ((char*) &entry->vInteger, 2);
+        entry->vInteger = EndianConversion(entry->vInteger); 
         break;
 		case 'S':
 		entry->vString = readUnicodeString();
@@ -345,8 +349,10 @@
    wchar_t *retString;
    char   tmpChar1, tmpChar2;
 
-   theStream->get (tmpChar1);
-   theStream->get (tmpChar2);
+   //theStream->get (tmpChar1);
+   //theStream->get (tmpChar2);
+    theStream->read(&tmpChar1, 1);
+    theStream->read(&tmpChar2, 1);
 
    while ((tmpChar1 != 0) || (tmpChar2 != 0)) {
      readChar = (wchar_t) tmpChar2;
@@ -355,8 +361,10 @@
 
      tmpString[i] = readChar;
 
-     theStream->get (tmpChar1);
-     theStream->get (tmpChar2);
+     //theStream->get (tmpChar1);
+     //theStream->get (tmpChar2);
+    theStream->read(&tmpChar1,1);
+    theStream->read(&tmpChar2,1);
 
      i++;
    }
@@ -365,6 +373,7 @@
    retString = new wchar_t [wcslen (tmpString) + 1];
 
    wcscpy (retString, tmpString);
+   //wprintf(L"Header: %s", retString);
 
    return retString;
  }
@@ -391,7 +400,7 @@
  void CGTFile::printInfo () {
     // Prints the info of this grammar
     wprintf (L"Grammar Information\n");
-    wprintf (L"Name: %s, ", gInfo->name);
+    wprintf (L"Name: %s\n, ", gInfo->name);
 	wprintf (L"%s\n", gInfo->version);
 	wprintf (L"Author: %s\n", gInfo->author);
 	wprintf (L"About: %s\n", gInfo->about);
