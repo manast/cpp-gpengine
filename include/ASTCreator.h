@@ -51,7 +51,7 @@ class ASTCreator {
 		void getASTNodeList (vector <ASTNode*> *children, 
 			NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent);
 
-		ASTNode *ASTCreator::searchEquivNode (const deque <Symbol*> &rdcChildren,
+		ASTNode *searchEquivNode (const deque <Symbol*> &rdcChildren,
 			ASTNode *parent);
 };
 
