@@ -1,0 +1,23 @@
+# Project: cpp-gpengine
+# Makefile created by Pablo Garcia Gonzalez 
+# Date: 11.11.2003
+
+CPP  = g++ 
+OBJ  = 	simple.o   
+LIBS = -L"/usr/lib" -L"../../lib" ../../lib/cpp-gpengine-1.0.4.a  
+CXXINCS = -I"../../include/" -I"/usr/include" 
+BIN  = simple 
+CXXFLAGS = $(CXXINCS)  
+
+all: simple 
+
+clean: 
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(OBJ) -o "simple" $(LIBS)
+
+simple.o: simple.cpp
+	$(CPP) -c -Wall simple.cpp -o simple.o $(CXXFLAGS)
+
+
