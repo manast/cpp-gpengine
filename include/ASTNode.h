@@ -23,8 +23,8 @@
 
  #include <vector>
  #include <string>
-
- #include "wchar.h"
+ #include <wchar.h>
+ 
  #include "NonTerminal.h"
 
  using namespace std;
