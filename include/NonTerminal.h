@@ -1,7 +1,7 @@
 /***************************************************************************
                           NonTerminal.h
  
-   Baseclass for the non-terminals of the reduction tree
+            Baseclass for the non-terminals of the reduction tree
                           -------------------
     begin                : Fri Oct 24 2003
     copyright            : (C) 2002-2003 Manuel Astudillo
@@ -27,7 +27,8 @@ using namespace std;
 struct NonTerminal : public Symbol {
     NonTerminal  ();
     ~NonTerminal ();
-
+    
+    integer ruleIndex;
     deque <Symbol*> children;
 };
 

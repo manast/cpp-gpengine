@@ -97,7 +97,7 @@ using namespace std;
    SymbolStack symbolStack;
 
    Symbol       *prevReduction; // last correctly reduced non terminal
-   Terminal      lastTerminal;   // last parsed symbol
+   Terminal      lastTerminal;  // last parsed symbol
 
    int reductionResult;
 

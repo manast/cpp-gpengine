@@ -1,0 +1,6 @@
+
+a -> b OR c
+
+c and b <-> a
+
+not a and not b <-> not c and d

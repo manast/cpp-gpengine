@@ -87,7 +87,7 @@
                                 NULL, currentLine, tokenBeginCol);
             currentState = startState;
            
-            tmpImage.clear();
+            tmpImage = L"";
 			return false;
          } else {
             run = false;
@@ -208,14 +208,14 @@
            }
            currentState = startState;
        
-		   tmpImage.clear();
+		   tmpImage = L"";
 		 } else {
            if (!commentBlock) {
              // Set error and return
              errorTab->addError (ERROR_SCAN, UNKNOWN_TOKEN, NULL, currentLine, tokenBeginCol);
              currentState = startState;
      
-			 tmpImage.clear();            
+			 tmpImage = L"";            
 			 return false;
            }
            tokenBeginCol = currentCol;

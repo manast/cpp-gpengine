@@ -190,10 +190,12 @@
          
 		 // Create a new Non Terminal (to represent this reduction)
          newNonTerminal = new NonTerminal();
-         index = ruleTable->rules[target].nonTerminal;
+         index = ruleTable->rules[target].symbolIndex;
          
          newNonTerminal->symbolIndex = index;
          newNonTerminal->symbol = symbolTable->symbols [index].name;
+         
+         newNonTerminal->ruleIndex = ruleTable->rules[target].ruleIndex;
          newNonTerminal->line = currentLine;
          newNonTerminal->col = currentCol;
          
@@ -211,7 +213,7 @@
          }
 
          if (DEBUG) {
-           wprintf (symbolTable->symbols[ruleTable->rules[target].nonTerminal].name);
+           wprintf (symbolTable->symbols[ruleTable->rules[target].ruleIndex].name);
            wprintf (L" = ");
          }
 

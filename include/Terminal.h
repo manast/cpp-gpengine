@@ -23,7 +23,7 @@
 
 struct Terminal : public Symbol {
     Terminal ();
-    wstring image;
+    std::wstring image;
 };
 
 

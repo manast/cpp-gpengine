@@ -1,0 +1,50 @@
+"Name" = Logic Grammar
+"Version" = 0.1
+"Author" = Manuel Astudillo
+"About" = Grammar for logic formulas
+
+"Start Symbol" = Start
+
+Comment Line  =  '#'
+Comment Start =  '#*'
+Comment End   =  '*#'
+
+
+<Start> ::= <NewLineList> <AxiomList>
+
+<NewLines> ::= NEWLINE <NewLineList>
+<NewLineList> ::= NEWLINE <NewLineList> 
+                | 
+<AxiomList> ::= <Axiom> <AxiomList>
+             |
+
+<Axiom> ::= <Implication> <NewLines>
+
+<Implication> ::= <DoubleImplication> '->'  <Implication> 
+                | <DoubleImplication> 
+             
+<DoubleImplication> ::= <Or> '<->' <DoubleImplication>
+                 | <Or>
+
+<Or>  ::= <And> OR <Or> 
+                | <And> 
+
+<And>     ::= <Not> AND <And> 
+                | <Not> 
+ 
+<Not>     ::= NOT <Value> 
+                | <Value> 
+
+<Value>       ::= '(' <Implication> ')'
+                | <Proposition> 
+  
+<Proposition> ::= ID
+
+! Definition of Terminals
+
+{WS} = {Whitespace} - {CR} - {LF}
+Whitespace = {WS}+
+
+NEWLINE = {CR}{LF} | {LF}
+ID = {Letter}{AlphaNumeric}*
+

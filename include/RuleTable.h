@@ -24,13 +24,14 @@
 
 
  typedef struct RuleStruct {
-   integer nonTerminal;
+   integer       ruleIndex;
+   integer       symbolIndex;
    vector<integer> symbols;
  } RuleStruct;
 
  class RuleTable {
    public:
-   integer nbrEntries;
+   integer    nbrEntries;
    RuleStruct *rules;
 
    RuleTable (integer nbrEntries);

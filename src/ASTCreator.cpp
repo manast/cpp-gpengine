@@ -34,21 +34,6 @@
 	  Base your Abstract Grammar in the Context Free Grammar.
 	  Check for nodes that are equivalent in both grammars and convert
 	  the nodes that are not equivalent.
-
-	  Here we make some assumptions:
-	  1 - The reduction tree is correct. If it is not correct the behaviour of this
-	  method is undefined.
-
-	  2 - if one node in the reduction has no AST equivalent, then this node's associated
-	  reduction (in case of a non terminal symbol) can only have 1 or less children which
-	  have an AST equivalent node. 
-	  (this is a bit tricky, but it means that if a non terminal is not relevant in the 
-	  AST tree then the rules produced by this non terminal can only have at most one 
-	  symbol which has an equivalent in the AST tree)
-
-	  3 - The reductions should not be trimmed. (i.e. reductions in this form:
-		nonTerminal1 ::= nonTerminal2 are not removed)
-
 	 */
 
 	 vector <ASTNode*> *children = NULL;
@@ -58,34 +43,6 @@
 	 if (reduction->type == NON_TERMINAL) {
 		rdcChildren = ((NonTerminal*) reduction)->children;
 	 } 
-
-     /*
-        If the symbol constants are included it is possible to use a switch-case 
-        instead.
-        switch (reduction->symbolIndex) {
-
-            // <If Statement> ::= if <Expression> then <StatementList> end
-            case RULE_IF_THEN_END_STATEMENT:
-                CREATE_NODE (IfStatement, ifStmt);
-                    
-                ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
-                ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
-	
-                return ifStmt;
-
-            // <If Statement> ::= if <Expression> then <StatementList> else <StatementList> end
-            case RULE_IF_THEN_END_ELSE_STATEMENT:
-                CREATE_NODE (IfStatement, ifStatement);
-
-                ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
-                ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
-	            ifStmt->addChild (getASTNode(rdcChildren[5], ifStmt));
-                return ifStmt;
-            default: return searchEquivNode( rdcChildren, parent);
-        }
-
-     */
-
 
 	 /*
 	  Next is a colection of if statements that checks for the
@@ -139,11 +96,35 @@
 	 }
 */
 
-	 if (reduction->type == NON_TERMINAL) {
-		return searchEquivNode( rdcChildren, parent);
-	 } else {
-		return NULL;
-	 }
+	 /*
+        If the symbol constants are included it is possible to use a switch-case 
+        for all the rules:
+
+        switch (reduction->symbolIndex) {
+
+            // <If Statement> ::= if <Expression> then <StatementList> end
+            case RULE_IF_THEN_END_STATEMENT:
+                CREATE_NODE (IfStatement, ifStmt);
+                    
+                ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
+                ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
+	
+                return ifStmt;
+
+            // <If Statement> ::= if <Expression> then <StatementList> else <StatementList> end
+            case RULE_IF_THEN_END_ELSE_STATEMENT:
+                CREATE_NODE (IfStatement, ifStatement);
+
+                ifStmt->addChild (getASTNode(rdcChildren[1], ifStmt));
+                ifStmt->addChild (getASTNode(rdcChildren[3], ifStmt));
+	            ifStmt->addChild (getASTNode(rdcChildren[5], ifStmt));
+                return ifStmt;
+            default: return searchEquivNode( rdcChildren, parent);
+        }
+
+     */
+
+	 return searchEquivNode( rdcChildren, parent);
  }
 
 /*!
@@ -165,7 +146,7 @@
  }
 
 
-	 /*!
+/*!
 	 This method is usefull to create nodes in the tree for rules that
 	 have the following structure:
 	 NonTerminal1 ::= NonTerminalA NonTerminalB ... NonTerminal1
@@ -177,35 +158,36 @@
 	  Begining from the left of the rule.
 	 /param nbrElements specifies the number of element in the "iterative" production.
 	 /param parent Parent node, where the list will be hanging.
-    */
+ */
 
  void ASTCreator::getASTNodeList (vector <ASTNode*> *children, 
     NonTerminal *reduction, int nbrInsert, int nbrElements, ASTNode *parent) {
-	integer i;
-	ASTNode *ast;
-	deque <Symbol*> rdcChildren = reduction->children;
+	    integer i;
+	    ASTNode *ast;
+	    deque <Symbol*> rdcChildren = reduction->children;
 	
-	int size = rdcChildren.size();
+	    int size = rdcChildren.size();
 
-	if (size > 0) {
-		if (size < nbrElements) {
-			for (i=0; i < rdcChildren.size(); i++) {
-				if (i < nbrInsert) {
-					// if we have a rule that produces a
-					// terminal symbol, we only get the node for this reduction
-					if (rdcChildren[i]->type == TERMINAL) {
-						ast = getASTNode (reduction, parent);
-					} else {
-						ast = getASTNode (rdcChildren[i], parent);
-					}
-					// Do not insert NULL childs
-					if (ast!=NULL) {
-						children->push_back(ast);
-					}
-				}
-			}
-		} else {
-			for (i=0; i < rdcChildren.size()-1; i++) {
+	    if (size > 0) {
+		    if (size < nbrElements) {
+			    for (i=0; i < rdcChildren.size(); i++) {
+				    if (i < nbrInsert) {
+					    // if we have a rule that produces a
+					    // terminal symbol, we only get the node for this reduction
+					    if (rdcChildren[i]->type == TERMINAL) {
+						    ast = getASTNode (reduction, parent);
+					    } else {
+						    ast = getASTNode (rdcChildren[i], parent);
+					    }
+					    // Do not insert NULL childs
+					    if (ast!=NULL) {
+						    children->push_back(ast);
+					    }
+				    }
+			    }
+		    } else {
+			
+            for (i=0; i < rdcChildren.size()-1; i++) {
 				if (i < nbrInsert) {
                     ast = getASTNode (rdcChildren[i], parent);
 	                if (ast!=NULL) {

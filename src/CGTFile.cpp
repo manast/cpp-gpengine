@@ -212,9 +212,10 @@
        case 'R' :
        readEntry (&entry);
        index = entry.vInteger;
+       ruleTable->rules[index].ruleIndex = index;
 
        readEntry (&entry);
-       ruleTable->rules[index].nonTerminal = entry.vInteger;
+       ruleTable->rules[index].symbolIndex = entry.vInteger;
 
        // Read empty field
        readEntry (&entry);
