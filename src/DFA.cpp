@@ -63,7 +63,7 @@
    wstring tokenSymbol, tokenImage;
    wchar_t currentChar;
    integer currentState = startState;
-   int i=0//, imgIndex = 0; //Unused variable
+   int i=0;//, imgIndex = 0; //Unused variable
    integer j;
 
    // Free the memory for every token that might be stored in this vector
