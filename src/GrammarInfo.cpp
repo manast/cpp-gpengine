@@ -31,3 +31,4 @@ GrammarInfo::~GrammarInfo () {
 	delete [] version;
 	delete [] about;
 }
+

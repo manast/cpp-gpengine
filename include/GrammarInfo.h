@@ -20,6 +20,8 @@
 
 #include "wchar.h"
 
+using namespace std;
+
 class GrammarInfo {
 
 public:
@@ -33,3 +35,4 @@ public:
 };
 
 #endif
+

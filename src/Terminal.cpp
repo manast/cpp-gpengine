@@ -21,3 +21,4 @@
 Terminal::Terminal () {
     type = TERMINAL;
 }
+

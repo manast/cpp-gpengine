@@ -21,6 +21,7 @@
  #include "wchar.h"
  #include "misc.h"
 
+ using namespace std;
 
  class CharacterSetTable {
    public:
@@ -34,6 +35,7 @@
 
 
  #endif
+
 
 
 

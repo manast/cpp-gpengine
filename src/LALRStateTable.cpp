@@ -26,3 +26,4 @@
  LALRStateTable::~LALRStateTable () {
      delete [] states;
  }
+

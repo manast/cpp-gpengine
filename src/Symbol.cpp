@@ -25,3 +25,4 @@ Symbol::Symbol () {
 Symbol::~Symbol () {
   // Empty destructor
 }
+

@@ -31,3 +31,4 @@
    }
    delete [] symbols;
  }
+

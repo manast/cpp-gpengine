@@ -20,6 +20,7 @@
  #include "misc.h"
  #include "wchar.h"
 
+
  enum SymbolType {TERMINAL = 1, NON_TERMINAL = 0};
 
 
@@ -41,3 +42,4 @@
 
 
  #endif
+

@@ -47,6 +47,8 @@
 
  #define DEBUG false
 
+using namespace std;
+
  class LALR {
  public:
    LALR (const LALRStateTable *stateTable, const SymbolTable *symbolTable,

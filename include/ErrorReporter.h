@@ -33,6 +33,8 @@
     class __declspec(dllexport) ErrorReporter;
 #endif
 
+using namespace std;
+
 class ErrorReporter {
 protected:
     string endComment;
