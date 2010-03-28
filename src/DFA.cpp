@@ -181,28 +181,24 @@
 			   tokenBeginCol = currentCol;
              break;
 
-             // Whitespaces
-             case 2:
+             case WHITESPACE:
              // Just dont do anything or generate error for token not accepted
 				tokenBeginCol = currentCol;
              break;
 
-             // End symbol
-             case 3:
+             case END_SYMBOL:
              wprintf (L"EOF SYMBOL");
              break;
 
-             // Comment Start
-             case 4:
+             case START_COMMENT:
              commentBlock = true;
              break;
              
-             // Comment End
-             case 5:
+             case END_COMMENT:
              commentBlock = false;
              break;
 
-             case 6:
+             case LINE_COMMENT:
              commentLine = true;
              break;
            }
