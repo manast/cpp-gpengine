@@ -4,7 +4,9 @@
 
 CPP  = aCC 
 OBJ  = 	simple.o 
+
 GPENGINELIB = ../../lib/cpp-gpengine-1.2.0.sl   
+
 LIBS = -L"../../lib" 
 CXXINCS = -I"../../include/" -I"/usr/include" 
 BIN  = simple

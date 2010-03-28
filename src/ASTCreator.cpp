@@ -6,7 +6,7 @@
                           -------------------
     begin                : Sun Jun 2 2002
     copyright            : (C) 2002 by Manuel Astudillo
-    email                : d00mas@efd.lth.se
+
  ***************************************************************************/
  /***************************************************************************
  *                                                                         *
@@ -98,9 +98,9 @@
 		return stmtList;
 	 }
 */
-
 	 /*
         If the symbol constants are included it is possible to do it in the possible way: 
+
 
             // <If Statement> ::= if <Expression> then <StatementList> end
             if (sym == RULE_IF_THEN_END_STATEMENT) {

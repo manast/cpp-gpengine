@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sun Jun 2 2002
     copyright            : (C) 2002 by Manuel Astudillo
-    email                : d00mas@efd.lth.se
+
  ***************************************************************************/
 
  /***************************************************************************
@@ -20,7 +20,18 @@
  #include "misc.h"
  #include <string>
 
- enum SymbolType {TERMINAL = 1, NON_TERMINAL = 0};
+
+ enum SymbolType 
+{ 
+	TERMINAL = 1, 
+	NON_TERMINAL = 0,
+	WHITESPACE = 2,
+	END_SYMBOL = 3,
+	START_COMMENT = 4,
+	END_COMMENT = 5,
+	LINE_COMMENT = 6
+ };
+
 
  typedef struct SymbolStruct {
    std::wstring    name;

@@ -6,6 +6,7 @@
 
 // Please read AbstractSyntaxGrammr.txt for info on the abstract grammar
 
+
 ASTNode *LogicASTCreator::getASTNode (const Symbol *reduction, 
 				                      ASTNode *parent) {    
   vector <ASTNode*> *children = NULL;

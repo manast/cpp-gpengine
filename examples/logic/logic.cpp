@@ -5,9 +5,11 @@
                              -------------------
     begin                : Fri May 31 00:53:11 CEST 2002
     copyright            : (C) 2002-2003 by Manuel Astudillo
-    email                : d00mas@efd.lth.se
+
  ***************************************************************************/
+
  
+
  /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -16,7 +18,7 @@
  *   License, or (at your option) any later version.                       *
  *                                                                         *
  ***************************************************************************/
-  
+
 #include <iostream>
 #include <stdlib.h>
 
@@ -39,7 +41,7 @@ int main(int argc, char *argv[])
   ErrorTable       *myErrors;
   ErrorReporter    myReporter;
   LogicASTCreator  myASTCreator;
- 
+
   // Load grammar file
   if (cgtFile.load ("logic.cgt")) {
     wprintf (L"%s\n", "Grammar loaded succesfully");
@@ -70,7 +72,9 @@ int main(int argc, char *argv[])
   
   // If there are errors report them
   if (myErrors->errors.size() > 0) {
-    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
+
+	for (unsigned int i=0; i < myErrors->errors.size(); i++) {
+
         cout << filename << ":";
         cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }
@@ -89,7 +93,9 @@ int main(int argc, char *argv[])
    
   myErrors = lalr->getErrors(); 
   if (myErrors->errors.size() != 0) {
-    for (unsigned int i=0; i < myErrors->errors.size(); i++) {
+
+	for (unsigned int i=0; i < myErrors->errors.size(); i++) {
+
         cout << filename << ":";
         cout << myReporter.composeErrorMsg (*myErrors->errors[i]) << endl;
     }

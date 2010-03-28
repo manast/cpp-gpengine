@@ -4,7 +4,7 @@
                              -------------------
     begin                : Tue Jun 25 09:50:11 CEST 2002
     copyright            : (C) 2002 by Manuel Astudillo
-    email                : d00mas@efd.lth.se
+
  ***************************************************************************/
 
  /***************************************************************************
@@ -50,6 +50,7 @@
 	virtual ~ASTNode ();
 
 	void    init      (const Symbol *s, ASTNode *parent);
+
 	void    setImage  (wstring image);
     void    setSymbol (wstring symbol);
 
@@ -57,6 +58,7 @@
     std::wstring getSymbol ();
 	
     void	setParent (ASTNode *parent);
+
 	ASTNode *getParent ();
 
 	void	addChild  (ASTNode *child);
