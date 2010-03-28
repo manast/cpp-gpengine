@@ -37,7 +37,7 @@
 	 */
 
    
-	 vector <ASTNode*> *children= NULL;
+	 //vector <ASTNode*> *children= NULL;
 	 wstring sym = reduction->symbol;
 
 	 deque <Symbol*> rdcChildren;
